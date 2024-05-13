@@ -12,7 +12,6 @@ import coffee.client.helper.event.impl.PacketEvent;
 import me.x150.jmessenger.MessageSubscription;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.play.KeepAliveC2SPacket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +29,6 @@ public class Blink extends Module {
 
     @MessageSubscription
     void onPacket(PacketEvent.Sent event) {
-        if (event.getPacket() instanceof KeepAliveC2SPacket) {
-            return;
-        }
         event.setCancelled(true);
         if (mode.getValue() == Mode.Delay) {
             queue.add(event.getPacket());

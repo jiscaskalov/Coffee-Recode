@@ -5,10 +5,12 @@
 
 package coffee.client.mixin;
 
-import net.minecraft.client.util.Session;
+import net.minecraft.client.session.Session;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import java.util.UUID;
 
 @Mixin(Session.class)
 public interface ISessionMixin {
@@ -18,7 +20,7 @@ public interface ISessionMixin {
 
     @Mutable
     @Accessor("uuid")
-    void setUuid(String uuid);
+    void setUuid(UUID uuid);
 
     @Mutable
     @Accessor("accessToken")

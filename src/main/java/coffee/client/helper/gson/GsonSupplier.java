@@ -83,7 +83,7 @@ public class GsonSupplier {
 
         builder.registerTypeAdapter(Vec3d.class, vec3dJsonDeserializer);
         builder.registerTypeAdapter(Vec3d.class, vec3dJsonSerializer);
-        builder.registerTypeAdapter(Text.class, new Text.Serializer());
+        builder.registerTypeAdapter(Text.class, new Text.Serializer(null));
     }
 
     private static int getAsIntOrDefault(JsonElement el, int defaultVal) {

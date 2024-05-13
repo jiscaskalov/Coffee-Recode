@@ -11,6 +11,7 @@ import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 
 import java.util.Objects;
@@ -30,8 +31,8 @@ public class ShulkerDeflector extends Module {
     }
 
     boolean inHitRange(Entity attacker, Entity target) {
-        return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= Objects.requireNonNull(CoffeeMain.client.interactionManager)
-            .getReachDistance();
+        return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= Objects.requireNonNull(CoffeeMain.client.player)
+            .getAttributeValue(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE);
     }
 
     @Override

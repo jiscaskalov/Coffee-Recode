@@ -28,7 +28,7 @@ public class InfiniteEntity extends Item {
         NbtGroup ng = new NbtGroup(new NbtObject("EntityTag", new NbtList("Pos", new NbtProperty(pos.x), new NbtProperty(Double.MAX_VALUE), new NbtProperty(pos.z))));
         NbtCompound nc = ng.toCompound();
         ItemStack is = new ItemStack(Items.COW_SPAWN_EGG);
-        is.setNbt(nc);
+//        is.setNbt(nc);        @TODO fix
         return is;
     }
 }

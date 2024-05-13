@@ -13,6 +13,7 @@ import coffee.client.feature.command.coloring.PossibleArgument;
 import coffee.client.feature.command.exception.CommandException;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.registry.Registries;
 
 public class Effect extends Command {
 
@@ -53,12 +54,12 @@ public class Effect extends Command {
                 int id = iap.parse(args[1]);
                 int duration = iap.parse(args[2]);
                 int strength = iap.parse(args[3]);
-                StatusEffect effect = StatusEffect.byRawId(id);
+                StatusEffect effect = Registries.STATUS_EFFECT.get(id);
                 if (effect == null) {
                     error("Didnt find that status effect");
                     return;
                 }
-                StatusEffectInstance inst = new StatusEffectInstance(effect, duration, strength);
+                StatusEffectInstance inst = new StatusEffectInstance(Registries.STATUS_EFFECT.getEntry(effect), duration, strength);
                 CoffeeMain.client.player.addStatusEffect(inst);
             }
             case "clear" -> {

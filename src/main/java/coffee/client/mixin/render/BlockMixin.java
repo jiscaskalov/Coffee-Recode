@@ -39,16 +39,16 @@ public abstract class BlockMixin extends AbstractBlock {
             cir.setReturnValue(XRAY.blocks.contains(state.getBlock()));
         }
     }
-
-    @Inject(method = "isTransparent", at = @At("HEAD"), cancellable = true)
-    public void coffee_setTranslucent(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (MinecraftClient.getInstance() == null) {
-            return; // somehow this can be called before we init????
-        }
-        if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
-            cir.setReturnValue(!XRAY.blocks.contains(state.getBlock()));
-        }
-    }
+/// @TODO fix
+//    @Inject(method = "isTransparent", at = @At("HEAD"), cancellable = true)
+//    public void coffee_setTranslucent(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+//        if (MinecraftClient.getInstance() == null) {
+//            return; // somehow this can be called before we init????
+//        }
+//        if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
+//            cir.setReturnValue(!XRAY.blocks.contains(state.getBlock()));
+//        }
+//    }
 
     private BoingBoing getBoing() {
         return ModuleRegistry.getByClass(BoingBoing.class);

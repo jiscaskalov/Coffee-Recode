@@ -5,9 +5,11 @@
 
 package coffee.client.feature.module.impl.movement;
 
+import coffee.client.CoffeeMain;
 import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.effect.StatusEffects;
 
 public class NoLevitation extends Module {
 
@@ -17,7 +19,9 @@ public class NoLevitation extends Module {
 
     @Override
     public void tick() {
-
+        if (CoffeeMain.client.player.hasStatusEffect(StatusEffects.LEVITATION) && isEnabled()) {
+            CoffeeMain.client.player.removeStatusEffect(StatusEffects.LEVITATION);
+        }
     }
 
     @Override

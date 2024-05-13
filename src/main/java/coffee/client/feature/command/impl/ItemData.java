@@ -57,10 +57,10 @@ public class ItemData extends Command {
             giveItem(item);
             message("Item copied.");
         } else {
-            NbtCompound tag = item.getNbt();
-            String nbt = tag == null ? "" : tag.asString();
-            CoffeeMain.client.keyboard.setClipboard(nbt);
-            message("Nbt copied.");
+//            NbtCompound tag = item.getNbt(); @TODO fix
+//            String nbt = tag == null ? "" : tag.asString();
+//            CoffeeMain.client.keyboard.setClipboard(nbt);
+//            message("Nbt copied.");
         }
 
     }

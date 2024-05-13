@@ -64,12 +64,12 @@ public class AnyPlacer extends Module {
                     spawnPos = hr.getPos();
                 }
                 spawnPos = spawnPos.add(0, heightOffset, 0);
-                NbtCompound entityTag = sex.getOrCreateSubNbt("EntityTag");
+                /// NbtCompound entityTag = sex.getOrCreateSubNbt("EntityTag"); @TODO fix
                 NbtList nl = new NbtList();
                 nl.add(NbtDouble.of(spawnPos.x));
                 nl.add(NbtDouble.of(spawnPos.y));
                 nl.add(NbtDouble.of(spawnPos.z));
-                entityTag.put("Pos", nl);
+                /// entityTag.put("Pos", nl);
                 CreativeInventoryActionC2SPacket a = new CreativeInventoryActionC2SPacket(
                     Utils.Inventory.slotIndexToId(CoffeeMain.client.player.getInventory().selectedSlot),
                     sex

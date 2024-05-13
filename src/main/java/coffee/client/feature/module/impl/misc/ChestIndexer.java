@@ -78,10 +78,10 @@ public class ChestIndexer extends Module {
             }
             this.stacks.putIfAbsent(this.currentPosClicked, new Int2ObjectArrayMap<>());
             Int2ObjectMap<ItemStack> itemStackInt2ObjectMap = this.stacks.get(this.currentPosClicked);
-            if (e.getItemStack().isEmpty()) {
+            if (e.getStack().isEmpty()) {
                 itemStackInt2ObjectMap.remove(e.getSlot());
             } else {
-                itemStackInt2ObjectMap.put(e.getSlot(), e.getItemStack().copy());
+                itemStackInt2ObjectMap.put(e.getSlot(), e.getStack().copy());
             }
         } else if (packet instanceof InventoryS2CPacket e && e.getSyncId() == this.currentSid) {
             if (this.currentPosClicked == null) {

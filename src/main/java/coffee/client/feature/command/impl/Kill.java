@@ -66,7 +66,7 @@ public class Kill extends Command {
             new NbtProperty("id", "minecraft:area_effect_cloud"),
             new NbtList("Pos", new NbtProperty(pos.x), new NbtProperty(pos.y + 1), new NbtProperty(pos.z))
         ));
-        newStack.setNbt(group.toCompound());
+//        newStack.setNbt(group.toCompound()); @TODO fix
         BlockHitResult bhr = new BlockHitResult(pos, Direction.DOWN, BlockPos.ofFloored(pos), false);
         client.getNetworkHandler().sendPacket(new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(client.player.getInventory().selectedSlot), newStack));
         client.getNetworkHandler().sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, bhr, Utils.increaseAndCloseUpdateManager(CoffeeMain.client.world)));

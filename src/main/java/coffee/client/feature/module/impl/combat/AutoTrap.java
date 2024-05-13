@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -80,7 +81,7 @@ public class AutoTrap extends Module {
     }
 
     boolean inHitRange(Entity attacker, Vec3d pos) {
-        return attacker.getCameraPosVec(1f).distanceTo(pos) <= Objects.requireNonNull(CoffeeMain.client.interactionManager).getReachDistance() + .5;
+        return attacker.getCameraPosVec(1f).distanceTo(pos) <= Objects.requireNonNull(CoffeeMain.client.player).getAttributeValue(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE) + .5;
     }
 
     @Override

@@ -17,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -76,7 +77,7 @@ public class SurvivalNuker extends Module {
         } else if (mode.getValue() == Mode.Wood) {
             return Arrays.stream(WOOD).anyMatch(block -> block == b);
         } else if (mode.getValue() == Mode.Grass) {
-            return b == Blocks.GRASS || b == Blocks.TALL_GRASS;
+            return b == Blocks.SHORT_GRASS || b == Blocks.TALL_GRASS;
         }
         return false;
     }
@@ -101,7 +102,7 @@ public class SurvivalNuker extends Module {
                     BlockPos vp = BlockPos.ofFloored(x, y, z);
                     BlockPos np = ppos1.add(vp);
                     Vec3d vp1 = Vec3d.of(np).add(.5, .5, .5);
-                    if (vp1.distanceTo(client.player.getEyePos()) >= client.interactionManager.getReachDistance()) {
+                    if (vp1.distanceTo(client.player.getEyePos()) >= client.player.getAttributeValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE)) {
                         continue;
                     }
                     toHit.add(np);

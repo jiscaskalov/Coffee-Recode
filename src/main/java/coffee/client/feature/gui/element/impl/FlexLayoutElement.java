@@ -199,13 +199,14 @@ public class FlexLayoutElement extends Element {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double vAmount, double hAmount) {
         if (iterateOverChildren(element -> element.getPositionY() + scroller.getScroll() <= getPositionY() + getHeight() &&
             element.getPositionY() + element.getHeight() + scroller.getScroll() >= getPositionY() && element.getPositionX() >= getPositionX() &&
             element.getPositionX() <= getPositionX() + getWidth() && element.mouseScrolled(
             mouseX,
             mouseY,
-            amount
+            vAmount,
+            hAmount
         ))) {
             return true;
         }
@@ -214,7 +215,7 @@ public class FlexLayoutElement extends Element {
             double current = getHeight();
             double scrollToAllow = Math.max(viewport - current, 0);
             scroller.setBounds(0, scrollToAllow);
-            scroller.scroll(amount);
+            scroller.scroll(vAmount+hAmount);
             return true;
         }
         return false;

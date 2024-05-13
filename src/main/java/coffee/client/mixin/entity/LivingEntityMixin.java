@@ -50,15 +50,6 @@ public class LivingEntityMixin {
         }
     }
 
-    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"), require = 0)
-    boolean coffee_stopLevitationEffect(LivingEntity instance, StatusEffect effect) {
-        if (instance.equals(CoffeeMain.client.player) && ModuleRegistry.getByClass(NoLevitation.class).isEnabled() && effect == StatusEffects.LEVITATION) {
-            return false;
-        } else {
-            return instance.hasStatusEffect(effect);
-        }
-    }
-
     @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true, require = 0)
     public void coffee_cancelCollision(Entity entity, CallbackInfo ci) {
         if (this.equals(CoffeeMain.client.player)) {
@@ -70,7 +61,6 @@ public class LivingEntityMixin {
 
     // INCREDIBLE baritone hack, never fucking do this
     // also fuck you leijurv for doing the same redirect as me
-    @SuppressWarnings("all") // ALSO never do this but in this case its ok because the mcdev plugin will not stop screaming
     @ModifyVariable(method = "jump", at = @At(value = "STORE"), ordinal = 0)
     private float coffee_replaceYaw(float f) {
         if (equals(CoffeeMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled() && !((boolean) FreeLook.instance().getEnableAA().getValue())) {

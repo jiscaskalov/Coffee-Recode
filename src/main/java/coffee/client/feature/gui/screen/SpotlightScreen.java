@@ -236,14 +236,14 @@ public class SpotlightScreen extends ClientScreen implements FastTickable {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double vAmount, double hAmount) {
         if (mouseX >= suggestionsField.getX() && mouseX <= suggestionsField.getX1() && mouseY >= suggestionsField.getY() && mouseY <= suggestionsField.getY1()) {
-            scroll -= amount * 10;
+            scroll -= vAmount+hAmount * 10;
             double suggestionsWindowHeight = suggestionsField.getY1() - suggestionsField.getY();
             double entitledScroll = suggestionsHeight - suggestionsWindowHeight;
             scroll = MathHelper.clamp(scroll, 0, entitledScroll);
         }
-        return super.mouseScrolled(mouseX, mouseY, amount);
+        return super.mouseScrolled(mouseX, mouseY, vAmount, hAmount);
     }
 
     @Override

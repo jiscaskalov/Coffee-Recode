@@ -82,12 +82,12 @@ public class FakeItem extends Command {
             Item item = Registries.ITEM.get(idParsed);
             ItemStack stack = new ItemStack(item);
             if (args.length > 2) { // we got additional nbt
-                try {
-                    stack.setNbt(StringNbtReader.parse(String.join(" ", Arrays.copyOfRange(args, 2, args.length))));
-                } catch (CommandSyntaxException e) {
-                    error("Invalid NBT: " + e.getContext());
-                    return;
-                }
+//                try { @TODO fix
+//                    stack.setNbt(StringNbtReader.parse(String.join(" ", Arrays.copyOfRange(args, 2, args.length))));
+//                } catch (CommandSyntaxException e) {
+//                    error("Invalid NBT: " + e.getContext());
+//                    return;
+//                }
             }
             le.equipStack(EquipmentSlot.MAINHAND, stack);
         }

@@ -152,7 +152,7 @@ public class CategoryDisplay extends Element {
     }
 
     @Override
-    public boolean mouseScrolled(double x, double y, double amount) {
-        return layout.mouseScrolled(x, y, amount);
+    public boolean mouseScrolled(double x, double y, double vAmount, double hAmount) {
+        return layout.mouseScrolled(x, y, vAmount, hAmount);
     }
 }

@@ -15,8 +15,10 @@ import coffee.client.helper.util.Timer;
 import net.minecraft.block.Block;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -25,6 +27,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 
 import java.awt.Color;
+import java.util.jar.Attributes;
 
 public class AutoLavacast extends Module {
 
@@ -77,7 +80,7 @@ public class AutoLavacast extends Module {
             }
         }
 
-        if (placeCenter.distanceTo(CoffeeMain.client.player.getCameraPosVec(1)) < CoffeeMain.client.interactionManager.getReachDistance()) {
+        if (placeCenter.distanceTo(CoffeeMain.client.player.getCameraPosVec(1)) < CoffeeMain.client.player.getAttributeValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE)) {
             moveForwards = false;
 
             ItemStack is = CoffeeMain.client.player.getInventory().getMainHandStack();

@@ -12,6 +12,7 @@ import coffee.client.feature.command.coloring.PossibleArgument;
 import coffee.client.feature.command.coloring.StaticArgumentServer;
 import coffee.client.feature.command.exception.CommandException;
 import coffee.client.helper.util.Utils;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.text.Text;
@@ -38,7 +39,7 @@ public class Rename extends Command {
             return;
         }
         ItemStack iStack = CoffeeMain.client.player.getInventory().getMainHandStack();
-        iStack.setCustomName(Text.of("§r" + String.join(" ", args).replaceAll("&", "§")));
+        iStack.set(DataComponentTypes.CUSTOM_NAME, Text.of("§r" + String.join(" ", args).replaceAll("&", "§")));
         if (!CoffeeMain.client.interactionManager.hasCreativeInventory()) {
             warn("You dont have creative mode; the item will only be renamed client side");
         } else {

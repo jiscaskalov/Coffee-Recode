@@ -16,6 +16,7 @@ import coffee.client.helper.util.Utils;
 import me.x150.jmessenger.MessageSubscription;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -106,7 +107,7 @@ public class Scaffold extends Module {
                 Vec3d v = ppos;
                 for (double i = 0; i < extend.getValue(); i += 0.5) {
                     v = v.add(dir);
-                    if (v.distanceTo(client.player.getPos()) >= Objects.requireNonNull(client.interactionManager).getReachDistance()) {
+                    if (v.distanceTo(client.player.getPos()) >= Objects.requireNonNull(client.player).getAttributeValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE)) {
                         break;
                     }
                     if (sneaking) {

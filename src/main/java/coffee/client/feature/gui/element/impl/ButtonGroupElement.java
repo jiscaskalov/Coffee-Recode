@@ -121,7 +121,7 @@ public class ButtonGroupElement extends Element {
     }
 
     @Override
-    public boolean mouseScrolled(double x, double y, double amount) {
+    public boolean mouseScrolled(double x, double y, double vAmount, double hAmount) {
         return false;
     }
 
@@ -220,7 +220,7 @@ public class ButtonGroupElement extends Element {
         }
 
         @Override
-        public boolean mouseScrolled(double x, double y, double amount) {
+        public boolean mouseScrolled(double x, double y, double vAmount, double hAmount) {
             return false;
         }
     }

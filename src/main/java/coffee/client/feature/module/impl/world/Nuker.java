@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Util;
@@ -60,7 +61,7 @@ public class Nuker extends Module {
     @Override
     public void tick() {
         switch (modeSetting.getValue()) {
-            case Packet -> iterateOverRange(client.interactionManager.getReachDistance(), vec3d -> {
+            case Packet -> iterateOverRange(client.player.getAttributeValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE), vec3d -> {
                 BlockPos bp = BlockPos.ofFloored(vec3d);
                 BlockState bs = client.world.getBlockState(bp);
                 if (bs.isAir()) {
@@ -80,7 +81,7 @@ public class Nuker extends Module {
                     500
                 );
             });
-            case Griefing -> iterateOverRange(client.interactionManager.getReachDistance(), vec3d -> {
+            case Griefing -> iterateOverRange(client.player.getAttributeValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE), vec3d -> {
                 BlockPos bp = BlockPos.ofFloored(vec3d);
                 BlockState bs = client.world.getBlockState(bp);
                 if (bs.isAir()) {
@@ -98,7 +99,7 @@ public class Nuker extends Module {
                     );
                 }
             });
-            case Interaction -> iterateOverRange(client.interactionManager.getReachDistance(), vec3d -> {
+            case Interaction -> iterateOverRange(client.player.getAttributeValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE), vec3d -> {
                 BlockPos bp = BlockPos.ofFloored(vec3d);
                 BlockState bs = client.world.getBlockState(bp);
                 if (bs.isAir()) {

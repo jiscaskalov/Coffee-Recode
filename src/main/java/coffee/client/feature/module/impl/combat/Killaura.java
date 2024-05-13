@@ -19,7 +19,6 @@ import coffee.client.helper.manager.AttackManager;
 import coffee.client.helper.util.Rotations;
 import coffee.client.helper.util.Timer;
 import coffee.client.helper.util.Utils;
-import coffee.client.mixin.IPlayerListEntryMixin;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import it.unimi.dsi.fastutil.ints.Int2DoubleArrayMap;
@@ -37,9 +36,11 @@ import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.network.packet.s2c.play.PlayerSpawnS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerSpawnPositionS2CPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.BlockPointer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import org.apache.commons.lang3.StringUtils;
@@ -106,6 +107,8 @@ public class Killaura extends Module {
         super("Killaura", "Automatically attacks all entities in range", ModuleType.COMBAT);
     }
 
+    int i = 0;
+
     private static Vec3d[] getHitboxPoints(LivingEntity le) {
         float width = le.getWidth();
         float height = le.getHeight();
@@ -136,11 +139,13 @@ public class Killaura extends Module {
     @MessageSubscription
     void onPacketRecv(PacketEvent.Received pe) {
         Packet<?> packet = pe.getPacket();
-        if (packet instanceof PlayerSpawnS2CPacket ps) {
+        if (packet instanceof PlayerSpawnPositionS2CPacket ps) {
             Vec3d lastKnownServerPos = Rotations.getLastKnownServerPos();
-            Vec3d f = new Vec3d(ps.getX(), ps.getY(), ps.getZ());
+            BlockPos spawnPos = ps.getPos();
+            Vec3d f = new Vec3d(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             double v = f.distanceTo(lastKnownServerPos);
-            playersWhoHaveSpawnedAndStayedInOurRange.put(ps.getId(), v);
+            i++;
+            playersWhoHaveSpawnedAndStayedInOurRange.put(i, v);
         }
     }
 
@@ -196,11 +201,11 @@ public class Killaura extends Module {
                 return 10;
             }
             AtomicDouble speed = new AtomicDouble(CoffeeMain.client.player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_SPEED));
-            hand.getAttributeModifiers(EquipmentSlot.MAINHAND).forEach((entityAttribute, entityAttributeModifier) -> {
-                if (entityAttribute == EntityAttributes.GENERIC_ATTACK_SPEED) {
-                    speed.addAndGet(entityAttributeModifier.getValue());
-                }
-            });
+//            hand.getAttributeModifiers(EquipmentSlot.MAINHAND).forEach((entityAttribute, entityAttributeModifier) -> {
+//                if (entityAttribute == EntityAttributes.GENERIC_ATTACK_SPEED) {
+//                    speed.addAndGet(entityAttributeModifier.getValue());
+//                }
+//            }); @TODO fix
             return (int) (20d / speed.get()) * 50 + 20; // ticks -> ms + 1 tick
         }
     }
@@ -221,11 +226,11 @@ public class Killaura extends Module {
 
 
     double getRange() {
-        if (CoffeeMain.client.interactionManager == null) {
+        if (CoffeeMain.client.player == null) {
             return 0;
         }
         if (automaticRange) {
-            return CoffeeMain.client.interactionManager.getReachDistance();
+            return CoffeeMain.client.player.getAttributeValue(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE);
         } else {
             return range;
         }
@@ -352,6 +357,7 @@ public class Killaura extends Module {
         if (BaritoneHelper.isPaused()) {
             BaritoneHelper.resume("killaura");
         }
+        i = 0;
     }
 
     @Override
@@ -389,12 +395,8 @@ public class Killaura extends Module {
     public static class Antibot {
         public static AntibotEntry MATRIX = new AntibotEntry(
             "Matrix",
-            AntibotCheck.from("NameLowercase", 0.3, e -> StringUtils.isAllLowerCase(e.getEntityName())),
+            AntibotCheck.from("NameLowercase", 0.3, e -> StringUtils.isAllLowerCase(String.valueOf(e.getName()))),
             AntibotCheck.from("NoVelocity", 0.1, e -> e.getVelocity().equals(Vec3d.ZERO)),
-            AntibotCheck.from("DefaultSkin", 0.1, e -> {
-                PlayerListEntry playerListEntry = client.getNetworkHandler().getPlayerListEntry(e.getUuid());
-                return playerListEntry != null && ((IPlayerListEntryMixin) playerListEntry).coffee_getTextures().get(MinecraftProfileTexture.Type.SKIN) == null;
-            }),
             AntibotCheck.from("YTooClose", 0.1, e -> {
                 double diff = e.getPos().y - Rotations.getLastKnownServerPos().y;
                 return Math.abs(diff) < 1.4;

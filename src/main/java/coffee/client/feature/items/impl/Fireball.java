@@ -50,7 +50,7 @@ public class Fireball extends Item {
                 new NbtList("Lore", new NbtProperty("{\"text\": \"Fireball of power " + strength + " (" + desc + ")\", \"color\": \"gray\"}"))
             )
         );
-        is.setNbt(ng.toCompound());
+//        is.setNbt(ng.toCompound());
         return is;
     }
 }

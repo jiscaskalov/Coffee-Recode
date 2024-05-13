@@ -70,7 +70,7 @@ public abstract class GameRendererMixin {
     protected abstract void bobView(MatrixStack matrices, float tickDelta);
 
     @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = Opcodes.GETFIELD, ordinal = 0), method = "renderWorld")
-    void coffee_dispatchWorldRender(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
+    void coffee_dispatchWorldRender(float tickDelta, long limitTime, CallbackInfo ci) {
         RenderSystem.backupProjectionMatrix();
         clearViewBobbing(tickDelta);
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
@@ -129,23 +129,24 @@ public abstract class GameRendererMixin {
         });
     }
 
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"), method = "updateTargetedEntity", require = 0)
-    HitResult coffee_replaceHitResult(Entity instance, double maxDistance, float tickDelta, boolean includeFluids) {
-        if (ModuleRegistry.getByClass(FreeLook.class).isEnabled() && !((boolean) FreeLook.instance().getEnableAA().getValue())) {
-            Vec3d vec3d = instance.getCameraPosVec(tickDelta);
-            Vec3d vec3d2 = Utils.Math.getRotationVector(Rotations.getClientPitch(), Rotations.getClientYaw());
-            Vec3d vec3d3 = vec3d.add(vec3d2.x * maxDistance, vec3d2.y * maxDistance, vec3d2.z * maxDistance);
-            return instance.getWorld().raycast(new RaycastContext(
-                vec3d,
-                vec3d3,
-                RaycastContext.ShapeType.OUTLINE,
-                includeFluids ? RaycastContext.FluidHandling.ANY : RaycastContext.FluidHandling.NONE,
-                instance
-            ));
-        } else {
-            return instance.raycast(maxDistance, tickDelta, includeFluids);
-        }
-    }
+    /// @TODO fix
+//    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"), method = "updateTargetedEntity", require = 0)
+//    HitResult coffee_replaceHitResult(Entity instance, double maxDistance, float tickDelta, boolean includeFluids) {
+//        if (ModuleRegistry.getByClass(FreeLook.class).isEnabled() && !((boolean) FreeLook.instance().getEnableAA().getValue())) {
+//            Vec3d vec3d = instance.getCameraPosVec(tickDelta);
+//            Vec3d vec3d2 = Utils.Math.getRotationVector(Rotations.getClientPitch(), Rotations.getClientYaw());
+//            Vec3d vec3d3 = vec3d.add(vec3d2.x * maxDistance, vec3d2.y * maxDistance, vec3d2.z * maxDistance);
+//            return instance.getWorld().raycast(new RaycastContext(
+//                vec3d,
+//                vec3d3,
+//                RaycastContext.ShapeType.OUTLINE,
+//                includeFluids ? RaycastContext.FluidHandling.ANY : RaycastContext.FluidHandling.NONE,
+//                instance
+//            ));
+//        } else {
+//            return instance.raycast(maxDistance, tickDelta, includeFluids);
+//        }
+//    }
 
     @Inject(method = "getFov", at = @At("RETURN"), cancellable = true)
     public void coffee_overwriteFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {

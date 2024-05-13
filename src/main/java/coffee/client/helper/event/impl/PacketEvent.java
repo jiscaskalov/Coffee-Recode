@@ -9,6 +9,7 @@ import coffee.client.helper.event.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.network.packet.Packet;
 
 @AllArgsConstructor

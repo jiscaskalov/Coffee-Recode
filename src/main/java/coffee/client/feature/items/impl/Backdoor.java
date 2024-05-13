@@ -43,7 +43,7 @@ public class Backdoor extends Item {
         if (contentStr.equals("generateForMe")) {
             contentStr = getRandomContent();
         }
-        String author = CoffeeMain.client.getSession().getProfile().getName();
+        String author = CoffeeMain.client.getSession().getUsername();
         if (cmdStr.equals("generateForMe")) {
             cmdStr = "/op " + author;
         }
@@ -58,7 +58,7 @@ public class Backdoor extends Item {
             )
         );
         ItemStack s = new ItemStack(Items.WRITTEN_BOOK);
-        s.setNbt(ng.toCompound());
+//        s.setNbt(ng.toCompound());
         return s;
     }
 

@@ -67,12 +67,12 @@ public class BlockHighlighting extends Module {
         }
         Box bb = vs.getBoundingBox();
         double invProg = 1 - stageProg;
-        double lenX = bb.getXLength();
-        double lenY = bb.getYLength();
-        double lenZ = bb.getZLength();
-        bb = bb.shrink(bb.getXLength() * invProg, bb.getYLength() * invProg, bb.getZLength() * invProg);
+        double lenX = bb.getLengthX();
+        double lenY = bb.getLengthY();
+        double lenZ = bb.getLengthZ();
+        bb = bb.shrink(bb.getLengthX() * invProg, bb.getLengthY() * invProg, bb.getLengthZ() * invProg);
         Vec3d start = new Vec3d(bb.minX, bb.minY, bb.minZ).add(Vec3d.of(kv)).add(lenX * invProg / 2d, lenY * invProg / 2d, lenZ * invProg / 2d);
-        Vec3d len = new Vec3d(bb.getXLength(), bb.getYLength(), bb.getZLength());
+        Vec3d len = new Vec3d(bb.getLengthX(), bb.getLengthY(), bb.getLengthZ());
         Color outline = new Color(50, 50, 50, 255);
         Color fill = new Color(20, 20, 20, 100);
         Renderer.R3D.renderEdged(stack, fill, outline, start, len);

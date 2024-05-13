@@ -91,8 +91,8 @@ public class HologramManager {
             if (isEgg) {
                 tag.put("id", NbtString.of("minecraft:armor_stand"));
             }
-            stack.setSubNbt("EntityTag", tag);
-            stack.setCustomName(Text.of("§r§cHologram"));
+//            stack.setSubNbt("EntityTag", tag);
+//            stack.setCustomName(Text.of("§r§cHologram"));     @TODO fix
             return stack;
         }
     }

@@ -40,9 +40,10 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.session.ProfileKeys;
+import net.minecraft.client.session.ProfileKeysImpl;
+import net.minecraft.client.session.Session;
 import net.minecraft.client.util.DefaultSkinHelper;
-import net.minecraft.client.util.ProfileKeysImpl;
-import net.minecraft.client.util.Session;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import org.apache.logging.log4j.Level;
@@ -283,7 +284,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     }
 
     void updateCurrentAccount() {
-        UUID uid = CoffeeMain.client.getSession().getProfile().getId();
+        UUID uid = CoffeeMain.client.getSession().getUuidOrNull();
 
         this.currentAccountTexture = PlayerHeadResolver.resolve(uid);
     }
@@ -302,7 +303,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             }
             Session newSession = new Session(
                 selectedAlt.storage.cachedName,
-                selectedAlt.storage.cachedUuid.toString(),
+                selectedAlt.storage.cachedUuid,
                 selectedAlt.storage.accessToken,
                 Optional.empty(),
                 Optional.empty(),
@@ -315,8 +316,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                 YggdrasilAuthenticationService authenticationService = accessor.getAuthenticationService();
                 UserApiService userApiService = authenticationService.createUserApiService(newSession.getAccessToken());
                 accessor.setUserApiService(userApiService);
-                ProfileKeysImpl pk = new ProfileKeysImpl(userApiService, newSession.getProfile().getId(), CoffeeMain.client.runDirectory.toPath());
-                accessor.setProfileKeys(pk);
+                accessor.setProfileKeys(ProfileKeys.create(userApiService, newSession, CoffeeMain.client.runDirectory.toPath()));
 
                 HudNotification.create("Logged into account " + newSession.getUsername(), 5000, HudNotification.Type.INFO);
             } catch (Exception e) {
@@ -346,8 +346,8 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        scroll -= amount * 10;
+    public boolean mouseScrolled(double mouseX, double mouseY, double hAmount, double vAmount) {
+        scroll -= hAmount + vAmount * 10;
         double max = 0;
         for (AltContainer alt : getAlts()) {
             max = Math.max(max, alt.y + alt.getHeight());
@@ -356,7 +356,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         max += getPadding();
         max = Math.max(0, max);
         scroll = MathHelper.clamp(scroll, 0, max);
-        return super.mouseScrolled(mouseX, mouseY, amount);
+        return super.mouseScrolled(mouseX, mouseY, hAmount, vAmount);
     }
 
     @Override
@@ -509,7 +509,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 8, 8, 8, 8, 64, 64);
         }
         RenderSystem.defaultBlendFunc();
-        String uuid = CoffeeMain.client.getSession().getUuid();
+        String uuid = String.valueOf(CoffeeMain.client.getSession().getUuidOrNull());
         double uuidWid = FontRenderers.getRenderer().getStringWidth(uuid);
         double maxWid = leftWidth - texDim - padding * 3;
         if (uuidWid > maxWid) {
@@ -606,13 +606,13 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             username.setText(session.getUsername());
             y += username.getHeight() + padding;
             RoundTextFieldWidget uuid = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "UUID");
-            uuid.setText(session.getUuid());
+            uuid.setText(String.valueOf(session.getUuidOrNull()));
             y += uuid.getHeight() + padding;
             RoundButton save = new RoundButton(RoundButton.STANDARD, width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Save", () -> {
                 ISessionMixin sa = (ISessionMixin) session;
                 sa.setUsername(username.get());
                 sa.setAccessToken(accessToken.get());
-                sa.setUuid(uuid.get());
+                sa.setUuid(UUID.fromString(uuid.get()));
                 Objects.requireNonNull(client).setScreen(parent);
             });
             y += 20 + padding;
@@ -991,7 +991,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
         public AltContainer(double x, double y, double width, AltStorage inner) {
             this.storage = inner;
-            this.tex = new Texture(DefaultSkinHelper.getTexture(inner.cachedUuid));
+            this.tex = new Texture(DefaultSkinHelper.getTexture());
             this.x = x;
             this.y = y;
             this.width = width;

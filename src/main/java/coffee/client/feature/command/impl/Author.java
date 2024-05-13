@@ -10,6 +10,7 @@ import coffee.client.feature.command.Command;
 import coffee.client.feature.command.coloring.ArgumentType;
 import coffee.client.feature.command.coloring.PossibleArgument;
 import coffee.client.feature.command.exception.CommandException;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtString;
@@ -40,7 +41,7 @@ public class Author extends Command {
             return;
         }
         String author = String.join(" ", args);
-        heldItem.setSubNbt("author", NbtString.of(author));
+        /// heldItem.setSubNbt("author", NbtString.of(author)); @TODO fix
     }
 
     @Override

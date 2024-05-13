@@ -18,6 +18,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.BlockItem;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -72,7 +73,7 @@ public class Flattener extends Module {
             for (double z = -rangeMid; z < rangeMid + 1; z++) {
                 Vec3d offset = eyep.add(x, 0, z);
                 Vec3d actual = new Vec3d(offset.x + .5, origin.y - .5, offset.z + .5);
-                if (actual.distanceTo(eyep) > Objects.requireNonNull(client.interactionManager).getReachDistance()) {
+                if (actual.distanceTo(eyep) > Objects.requireNonNull(client.player).getAttributeValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE)) {
                     continue;
                 }
                 BlockPos c = BlockPos.ofFloored(actual);

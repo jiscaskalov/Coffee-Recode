@@ -358,7 +358,7 @@ public class Utils {
     public static ItemStack generateItemStackWithMeta(String nbt, Item item) {
         try {
             ItemStack stack = new ItemStack(item);
-            stack.setNbt(StringNbtReader.parse(nbt));
+            /// stack.setNbt(StringNbtReader.parse(nbt)); fuck this new nbt system
             return stack;
         } catch (Exception ignored) {
             return new ItemStack(item);

@@ -79,7 +79,7 @@ public class FakeHacker extends Module {
 
     @Override
     public String getContext() {
-        return target == null ? null : target.getEntityName();
+        return target == null ? null : String.valueOf(target.getName());
     }
 
     @Override

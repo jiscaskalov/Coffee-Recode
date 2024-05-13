@@ -60,11 +60,11 @@ public class TargetHud extends Module {
         if (check.distanceTo(CoffeeMain.client.player) > 64) {
             return false;
         }
-        int l = check.getEntityName().length();
+        int l = String.valueOf(check.getName()).length();
         if (l < 3 || l > 16) {
             return false;
         }
-        boolean isValidEntityName = Utils.Players.isPlayerNameValid(check.getEntityName());
+        boolean isValidEntityName = Utils.Players.isPlayerNameValid(String.valueOf(check.getName()));
         if (!isValidEntityName) {
             return false;
         }
@@ -171,7 +171,7 @@ public class TargetHud extends Module {
             Renderer.R2D.renderTexture(stack, 5, 5, 32, 32, 0, 0, 32, 32, 32, 32);
             RenderSystem.defaultBlendFunc();
 
-            FontRenderers.getRenderer().drawString(stack, entity.getEntityName(), textLeftAlign, yOffset, 0xFFFFFF);
+            FontRenderers.getRenderer().drawString(stack, String.valueOf(entity.getName()), textLeftAlign, yOffset, 0xFFFFFF);
             yOffset += FontRenderers.getRenderer().getFontHeight();
             PlayerListEntry ple = Objects.requireNonNull(CoffeeMain.client.getNetworkHandler()).getPlayerListEntry(entity.getUuid());
             if (ple != null && renderPing.getValue()) {

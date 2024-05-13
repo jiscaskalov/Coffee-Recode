@@ -125,7 +125,7 @@ public class HomeScreen extends AAScreen {
     }
 
     void updateCurrentAccount(Runnable callback) {
-        UUID uid = CoffeeMain.client.getSession().getProfile().getId();
+        UUID uid = CoffeeMain.client.getSession().getUuidOrNull();
         if (previousChecked != null && previousChecked.equals(uid)) {
             callback.run();
             return;

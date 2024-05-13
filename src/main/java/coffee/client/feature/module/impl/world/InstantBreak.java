@@ -14,6 +14,7 @@ import coffee.client.helper.util.Utils;
 import coffee.client.mixin.IClientPlayerInteractionManagerMixin;
 import me.x150.jmessenger.MessageSubscription;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -68,7 +69,7 @@ public class InstantBreak extends Module {
             return;
         }
         Vec3d latest = positions.get(0);
-        if (latest.add(0.5, 0.5, 0.5).distanceTo(p) >= client.interactionManager.getReachDistance()) {
+        if (latest.add(0.5, 0.5, 0.5).distanceTo(p) >= client.player.getAttributeValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE)) {
             positions.remove(0);
             return;
         }

@@ -69,7 +69,7 @@ public class Nuke extends Item {
                 )
             )
         ));
-        spawn.setNbt(blt.toCompound());
+//        spawn.setNbt(blt.toCompound());       @TODO fix
         return spawn;
     }
 }

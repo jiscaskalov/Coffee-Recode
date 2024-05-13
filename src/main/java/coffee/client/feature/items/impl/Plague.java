@@ -72,7 +72,7 @@ public class Plague extends Item {
     }
 }
         * */
-        spawn.setNbt(ng.toCompound());
+//        spawn.setNbt(ng.toCompound());
         return spawn;
     }
 }

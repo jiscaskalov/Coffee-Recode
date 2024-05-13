@@ -59,7 +59,7 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double vAmount, double hAmount) {
         if (new Rectangle(width / 2d - WIDGET_WIDTH / 2d, height / 2d - WIDGET_HEIGHT / 2d, width / 2d + WIDGET_WIDTH / 2d, height / 2d + WIDGET_HEIGHT / 2d).contains(
             mouseX,
             mouseY
@@ -67,10 +67,10 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
             double contentHeight = viewerList.stream().map(addonViewer -> addonViewer.getHeight() + 5).reduce(Double::sum).orElse(0d) + 5;
             double entitledScroll = Math.max(0, contentHeight - WIDGET_HEIGHT);
             scroller.setBounds(0, entitledScroll);
-            scroller.scroll(amount);
+            scroller.scroll(vAmount+hAmount);
 
         }
-        return super.mouseScrolled(mouseX, mouseY, amount);
+        return super.mouseScrolled(mouseX, mouseY, vAmount, hAmount);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
 
     @Override
     public void renderInternal(DrawContext stack, int mouseX, int mouseY, float delta) {
-        renderBackground(stack);
+        renderBackground(stack, mouseX, mouseY, delta);
         Renderer.R2D.renderRoundedQuad(
             stack.getMatrices(),
             new Color(20, 20, 20),

@@ -50,12 +50,12 @@ public class TitleLag extends Command {
         client.getNetworkHandler().sendCommand("title " + targetName + " times 0 999999999 0");
         client.getNetworkHandler().sendCommand("gamerule sendCommandFeedback true");
         ItemStack stack = new ItemStack(Items.COMMAND_BLOCK, 1);
-        try {
-            stack.setNbt(StringNbtReader.parse(
-                "{BlockEntityTag:{Command:\"/title " + targetName + " title {\\\"text\\\":\\\"" + "l".repeat(32767) + "\\\",\\\"obfuscated\\\":true}\",powered:0b,auto:1b,conditionMet:1b}}"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try { @TODO fix
+//            stack.setNbt(StringNbtReader.parse(
+//                "{BlockEntityTag:{Command:\"/title " + targetName + " title {\\\"text\\\":\\\"" + "l".repeat(32767) + "\\\",\\\"obfuscated\\\":true}\",powered:0b,auto:1b,conditionMet:1b}}"));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         CoffeeMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + CoffeeMain.client.player.getInventory().selectedSlot, stack));
         message("Place the command block to keep lagging the player");
     }

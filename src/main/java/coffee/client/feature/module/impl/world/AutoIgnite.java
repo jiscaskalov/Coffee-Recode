@@ -12,6 +12,7 @@ import coffee.client.helper.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
@@ -46,13 +47,13 @@ public class AutoIgnite extends Module {
         if (lighterSlot == -1) {
             return;
         }
-        double searchRad = Math.ceil(CoffeeMain.client.interactionManager.getReachDistance());
+        double searchRad = Math.ceil(CoffeeMain.client.player.getAttributeValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE));
         List<BlockPos> blocksToIgnite = new ArrayList<>();
         for (double x = -searchRad; x < searchRad; x++) {
             for (double y = -searchRad; y < searchRad; y++) {
                 for (double z = -searchRad; z < searchRad; z++) {
                     Vec3d vPos = CoffeeMain.client.player.getEyePos().add(x, y, z);
-                    if (vPos.distanceTo(CoffeeMain.client.player.getEyePos()) > CoffeeMain.client.interactionManager.getReachDistance()) {
+                    if (vPos.distanceTo(CoffeeMain.client.player.getEyePos()) > CoffeeMain.client.player.getAttributeValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE)) {
                         continue;
                     }
                     BlockPos bp = BlockPos.ofFloored(vPos);

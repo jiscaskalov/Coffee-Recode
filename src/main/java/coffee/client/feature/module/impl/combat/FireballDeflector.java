@@ -14,6 +14,7 @@ import coffee.client.helper.Rotation;
 import coffee.client.helper.util.Rotations;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
@@ -58,8 +59,8 @@ public class FireballDeflector extends Module {
     }
 
     boolean inHitRange(Entity attacker, Entity target) {
-        return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= Objects.requireNonNull(CoffeeMain.client.interactionManager)
-            .getReachDistance();
+        return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= Objects.requireNonNull(CoffeeMain.client.player)
+            .getAttributeValue(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE);
     }
 
     @Override

@@ -23,6 +23,6 @@ public class SelectWorldScreenMixin extends Screen {
 
     @Inject(method = "render", at = @At("HEAD"))
     void coffee_preRender(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        renderBackground(context);
+        renderBackground(context, mouseX, mouseY, delta);
     }
 }

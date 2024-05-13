@@ -131,8 +131,8 @@ public class AAScreen extends Screen implements FastTickable {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        return iterateOverChildren(element -> element.mouseScrolled(mouseX, mouseY, amount));
+    public boolean mouseScrolled(double mouseX, double mouseY, double vAmount, double hAmount) {
+        return iterateOverChildren(element -> element.mouseScrolled(mouseX, mouseY, vAmount, hAmount));
     }
 
     @Override

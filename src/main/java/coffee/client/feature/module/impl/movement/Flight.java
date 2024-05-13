@@ -22,7 +22,6 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
-import net.minecraft.network.packet.c2s.play.KeepAliveC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
@@ -265,9 +264,6 @@ public class Flight extends Module {
             }
             if (client.player == null || client.world == null) {
                 setEnabled(false);
-                return;
-            }
-            if (event.getPacket() instanceof KeepAliveC2SPacket) {
                 return;
             }
             queue.add(event.getPacket());

@@ -7,21 +7,28 @@ package coffee.client.mixin.screen;
 
 import coffee.client.feature.module.ModuleRegistry;
 import coffee.client.feature.module.impl.misc.MoreChatHistory;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.gui.hud.ChatHud;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(ChatHud.class)
 public abstract class ChatHudMixin {
-    @ModifyConstant(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V",
-                    constant = @Constant(intValue = 100), require = 0)
-    int coffee_increaseHistorySize(int constant) {
-        MoreChatHistory hist = ModuleRegistry.getByClass(MoreChatHistory.class);
-        if (hist.isEnabled()) {
-            return hist.getHistSize();
-        } else {
-            return 100;
-        }
+    @Unique MoreChatHistory mch = ModuleRegistry.getByClass(MoreChatHistory.class);
+
+    @ModifyExpressionValue(method = "addMessage(Lnet/minecraft/client/gui/hud/ChatHudLine;)V", at = @At(value = "CONSTANT", args = "intValue=100"))
+    private int maxLength(int size) {
+        if (mch == null || !mch.isEnabled()) return size;
+
+        return mch.getHistSize();
+    }
+    @ModifyExpressionValue(method = "addVisibleMessage", at = @At(value = "CONSTANT", args = "intValue=100"))
+    private int maxLengthVisible(int size) {
+        if (mch == null || !mch.isEnabled()) return size;
+
+        return mch.getHistSize();
     }
 }

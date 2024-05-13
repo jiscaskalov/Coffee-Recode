@@ -39,11 +39,11 @@ public class ItemByteSize extends Module {
         ByteCounter inst = ByteCounter.instance();
         inst.reset();
         boolean error = false;
-        try {
-            e.getSource().getOrCreateNbt().write(inst);
-        } catch (Exception ignored) {
-            error = true;
-        }
+//        try {
+//            e.getSource().getOrCreateNbt().write(inst);
+//        } catch (Exception ignored) {                     @TODO fix
+//            error = true;
+//        }
         long count = inst.getSize();
         String fmt;
         if (error) {

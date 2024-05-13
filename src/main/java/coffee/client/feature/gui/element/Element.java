@@ -42,7 +42,7 @@ public abstract class Element {
 
     public abstract boolean keyReleased(int keyCode, int mods);
 
-    public abstract boolean mouseScrolled(double x, double y, double amount);
+    public abstract boolean mouseScrolled(double x, double y, double vAmount, double hAmount);
 
     public boolean inBounds(double x, double y) {
         return getBounds().contains(x, y);

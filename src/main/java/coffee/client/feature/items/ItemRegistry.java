@@ -27,13 +27,13 @@ public class ItemRegistry {
 
     void init() {
         items.clear();
-        items.add(new Nuke());
-        items.add(new Plague());
-        items.add(new Poof());
-        items.add(new Backdoor());
-        items.add(new Fireball());
-        items.add(new InfiniteEntity());
-        items.add(new InfiniSculk());
+//        items.add(new Nuke());
+//        items.add(new Plague());
+//        items.add(new Poof());
+//        items.add(new Backdoor());        @TODO add items real popbob
+//        items.add(new Fireball());
+//        items.add(new InfiniteEntity());
+//        items.add(new InfiniSculk());
     }
 
     public List<Item> getItems() {

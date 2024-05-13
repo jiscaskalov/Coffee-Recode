@@ -19,6 +19,7 @@ import coffee.client.helper.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -92,7 +93,7 @@ public class AimAssist extends Module {
                 if (!entity.isAlive()) {
                     continue;
                 }
-                if (entity.getPos().distanceTo(CoffeeMain.client.player.getPos()) > Objects.requireNonNull(CoffeeMain.client.interactionManager).getReachDistance()) {
+                if (entity.getPos().distanceTo(CoffeeMain.client.player.getPos()) > Objects.requireNonNull(CoffeeMain.client.player).getAttributeValue(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE)) {
                     continue;
                 }
                 boolean checked = false;

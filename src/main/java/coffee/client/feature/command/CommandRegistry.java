@@ -5,12 +5,11 @@
 
 package coffee.client.feature.command;
 
+import coffee.client.CoffeeMain;
 import coffee.client.feature.addon.Addon;
 import coffee.client.feature.command.exception.CommandException;
-import coffee.client.feature.command.impl.ApplyEffect;
 import coffee.client.feature.command.impl.ApplyVel;
 import coffee.client.feature.command.impl.Author;
-import coffee.client.feature.command.impl.Ban;
 import coffee.client.feature.command.impl.BaritoneCommand;
 import coffee.client.feature.command.impl.Bind;
 import coffee.client.feature.command.impl.CheckCmd;
@@ -27,14 +26,11 @@ import coffee.client.feature.command.impl.ForEach;
 import coffee.client.feature.command.impl.Gamemode;
 import coffee.client.feature.command.impl.HClip;
 import coffee.client.feature.command.impl.Help;
-import coffee.client.feature.command.impl.HoloImage;
 import coffee.client.feature.command.impl.Hologram;
-import coffee.client.feature.command.impl.Inject;
 import coffee.client.feature.command.impl.Invsee;
 import coffee.client.feature.command.impl.ItemData;
 import coffee.client.feature.command.impl.ItemExploit;
 import coffee.client.feature.command.impl.ItemSpoof;
-import coffee.client.feature.command.impl.Kickall;
 import coffee.client.feature.command.impl.Kill;
 import coffee.client.feature.command.impl.MessageSpam;
 import coffee.client.feature.command.impl.Panic;
@@ -45,8 +41,6 @@ import coffee.client.feature.command.impl.Reset;
 import coffee.client.feature.command.impl.Say;
 import coffee.client.feature.command.impl.Search;
 import coffee.client.feature.command.impl.SelfDestruct;
-import coffee.client.feature.command.impl.SocketKick;
-import coffee.client.feature.command.impl.SpawnData;
 import coffee.client.feature.command.impl.Taco;
 import coffee.client.feature.command.impl.Test;
 import coffee.client.feature.command.impl.TitleLag;
@@ -54,6 +48,9 @@ import coffee.client.feature.command.impl.Toggle;
 import coffee.client.feature.command.impl.VClip;
 import coffee.client.feature.command.impl.ViewNbt;
 import coffee.client.helper.util.Utils;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.command.CommandSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +60,7 @@ public class CommandRegistry {
     private static final List<Command> vanillaCommands = new ArrayList<>();
     private static final List<CustomCommandEntry> customCommands = new ArrayList<>();
     private static final List<Command> sharedCommands = new ArrayList<>();
+    public static final CommandDispatcher<CommandSource> DISPATCHER = new CommandDispatcher<>();
 
     static {
         rebuildSharedCommands();
@@ -112,11 +110,8 @@ public class CommandRegistry {
         vanillaCommands.add(new Taco());
         vanillaCommands.add(new Bind());
         vanillaCommands.add(new Test());
-        vanillaCommands.add(new Kickall());
-        vanillaCommands.add(new Inject());
         vanillaCommands.add(new ApplyVel());
         vanillaCommands.add(new Author());
-        vanillaCommands.add(new Ban());
         vanillaCommands.add(new CheckCmd());
         vanillaCommands.add(new Damage());
         vanillaCommands.add(new Equip());
@@ -125,18 +120,14 @@ public class CommandRegistry {
         vanillaCommands.add(new HClip());
         vanillaCommands.add(new ItemData());
         vanillaCommands.add(new TitleLag());
-        vanillaCommands.add(new SpawnData());
         vanillaCommands.add(new VClip());
         vanillaCommands.add(new MessageSpam());
         vanillaCommands.add(new RandomBook());
-        vanillaCommands.add(new SocketKick());
         vanillaCommands.add(new SelfDestruct());
         vanillaCommands.add(new ItemExploit());
         vanillaCommands.add(new FakeNick());
         vanillaCommands.add(new Reset());
         vanillaCommands.add(new Kill());
-        vanillaCommands.add(new HoloImage());
-        vanillaCommands.add(new ApplyEffect());
         vanillaCommands.add(new BaritoneCommand());
         vanillaCommands.add(new Search());
 
@@ -170,6 +161,10 @@ public class CommandRegistry {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void dispatch(String message) throws CommandSyntaxException {
+        DISPATCHER.execute(message, CoffeeMain.client.getNetworkHandler().getCommandSource());
     }
 
     public static Command getByAlias(String n) {

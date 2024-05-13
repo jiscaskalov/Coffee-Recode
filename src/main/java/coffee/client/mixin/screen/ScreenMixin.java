@@ -5,15 +5,23 @@
 
 package coffee.client.mixin.screen;
 
+import coffee.client.feature.command.CommandRegistry;
 import coffee.client.feature.command.impl.SelfDestruct;
 import coffee.client.feature.gui.HasSpecialCursor;
 import coffee.client.helper.render.Cursor;
+import coffee.client.helper.text.CoffeeClickEvent;
+import coffee.client.helper.text.RunnableClickEvent;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.client.gui.AbstractParentElement;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Style;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
@@ -48,5 +56,13 @@ public abstract class ScreenMixin extends AbstractParentElement {
     public void mouseMoved(double mouseX, double mouseY) {
         handleCursor();
         super.mouseMoved(mouseX, mouseY);
+    }
+
+    @Inject(method = "handleTextClick", at = @At(value = "HEAD"), cancellable = true)
+    private void onInvalidClickEvent(Style style, CallbackInfoReturnable<Boolean> cir) {
+        if (!(style.getClickEvent() instanceof RunnableClickEvent runnableClickEvent)) return;
+
+        runnableClickEvent.runnable.run();
+        cir.setReturnValue(true);
     }
 }

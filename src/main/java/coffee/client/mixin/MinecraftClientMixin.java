@@ -36,11 +36,11 @@ public abstract class MinecraftClientMixin {
     @Shadow
     private int itemUseCooldown;
 
-    @Inject(method = "printCrashReport", at = @At("HEAD"))
-    private static void coffee_printCrash(CrashReport report, CallbackInfo ci) {
-        List<String> strings = ModuleRegistry.getModules().stream().filter(Module::isEnabled).map(Module::getName).toList();
-        report.addElement("Coffee client").add("Enabled modules", strings.isEmpty() ? "None" : String.join(", ", strings.toArray(String[]::new)));
-    }
+//    @Inject(method = "printCrashReport", at = @At("HEAD"))
+//    private static void coffee_printCrash(CrashReport report, CallbackInfo ci) {
+//        List<String> strings = ModuleRegistry.getModules().stream().filter(Module::isEnabled).map(Module::getName).toList();
+//        report.addElement("Coffee client").add("Enabled modules", strings.isEmpty() ? "None" : String.join(", ", strings.toArray(String[]::new)));
+//    }
 
     @Inject(method = "stop", at = @At("HEAD"))
     void coffee_dispatchExit(CallbackInfo ci) {
@@ -87,9 +87,12 @@ public abstract class MinecraftClientMixin {
         return original;
     }
 
-    @ModifyArg(method = "onInitFinished", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V", ordinal = 1), index = 0)
-    Screen coffee_replaceTitleScreenNormal(Screen screen) {
-        return obtain(screen);
+    @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
+    void setScreen(Screen screen, CallbackInfo ci) {
+        if (screen instanceof TitleScreen) {
+            ci.cancel();
+            CoffeeMain.client.setScreen(obtain(screen));
+        }
     }
 
 //    @ModifyArg(method = "method_45026", at = @At(value = "INVOKE",

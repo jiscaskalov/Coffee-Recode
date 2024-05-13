@@ -38,7 +38,7 @@ public class Phase extends Module {
             return;
         }
         Box p = CoffeeMain.client.player.getBoundingBox(CoffeeMain.client.player.getPose()).offset(0, 0.27, 0).expand(0.25);
-        if (p.getYLength() < 2) {
+        if (p.getLengthY() < 2) {
             p = p.expand(0, 1, 0);
         }
         p = p.offset(CoffeeMain.client.player.getPos());

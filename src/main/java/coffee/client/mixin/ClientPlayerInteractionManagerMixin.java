@@ -31,18 +31,19 @@ public class ClientPlayerInteractionManagerMixin {
         return Objects.requireNonNull(ModuleRegistry.getByClass(NoBreakDelay.class)).isEnabled() ? 0 : cd;
     }
 
-    @Inject(method = "getReachDistance", at = @At("HEAD"), cancellable = true)
-    private void coffee_overwriteReach(CallbackInfoReturnable<Float> cir) {
-        if (ModuleRegistry.getByClass(Reach.class).isEnabled()) {
-            cir.setReturnValue((float) ModuleRegistry.getByClass(Reach.class).getReachDistance());
-        }
-    }
-
-    @Inject(method = "hasExtendedReach", at = @At("HEAD"), cancellable = true)
-    private void coffee_setExtendedReach(CallbackInfoReturnable<Boolean> cir) {
-        if (ModuleRegistry.getByClass(Reach.class).isEnabled()) {
-            cir.setReturnValue(true);
-        }
-    }
+    /// @TODO fix
+//    @Inject(method = "getReachDistance", at = @At("HEAD"), cancellable = true)
+//    private void coffee_overwriteReach(CallbackInfoReturnable<Float> cir) {
+//        if (ModuleRegistry.getByClass(Reach.class).isEnabled()) {
+//            cir.setReturnValue((float) ModuleRegistry.getByClass(Reach.class).getReachDistance());
+//        }
+//    }
+//
+//    @Inject(method = "hasExtendedReach", at = @At("HEAD"), cancellable = true)
+//    private void coffee_setExtendedReach(CallbackInfoReturnable<Boolean> cir) {
+//        if (ModuleRegistry.getByClass(Reach.class).isEnabled()) {
+//            cir.setReturnValue(true);
+//        }
+//    }
 
 }

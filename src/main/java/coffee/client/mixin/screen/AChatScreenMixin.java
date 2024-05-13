@@ -63,20 +63,18 @@ public class AChatScreenMixin extends Screen {
         return ModuleRegistry.getByClass(ClientSettings.class).prefix;
     }
 
-    @Redirect(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatScreen;sendMessage(Ljava/lang/String;Z)Z"))
-    boolean coffee_interceptChatMessage(ChatScreen instance, String s, boolean t) {
+    @Redirect(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatScreen;sendMessage(Ljava/lang/String;Z)V"))
+    void coffee_interceptChatMessage(ChatScreen instance, String s, boolean t) {
         String p = getPrefix();
         if (SelfDestruct.shouldSelfDestruct()) {
             if (SelfDestruct.handleMessage(s)) {
-                return true;
+                /// return true;
             }
         } else if (s.startsWith(p)) { // filter all messages starting with .
             CoffeeMain.client.inGameHud.getChatHud().addToMessageHistory(s);
             CommandRegistry.execute(s.substring(p.length())); // cut off prefix
-            return true;
         }
         instance.sendMessage(s, true); // else, go
-        return true;
     }
 
     double padding() {
@@ -183,7 +181,7 @@ public class AChatScreenMixin extends Screen {
         }
         cmdSplit[cmdSplit.length - 1] = suggestions.get(0);
         chatField.setText(p + String.join(" ", cmdSplit) + " ");
-        chatField.setCursorToEnd();
+        chatField.setCursorToEnd(false);
     }
 
     @Inject(method = "render", at = @At("RETURN"))

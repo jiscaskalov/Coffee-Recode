@@ -30,7 +30,6 @@
     "entity.PlayerEntityMixin",
     "network.ClientConnectionMixin",
     "network.ClientConnectionMixin1",
-    "network.ICustomPayloadC2SPacketMixin",
     "network.IEntityVelocityUpdateS2CPacketMixin",
     "network.IParticleS2CPacketMixin",
     "network.IPlayerMoveC2SPacketMixin",
@@ -70,13 +69,11 @@
   "client": [
     "ChatHudMixin",
     "IKeyBindingMixin",
-    "IPlayerListEntryMixin",
     "JsonEffectShaderProgramMixin",
     "KeyboardInputMixin",
     "PostProcessShaderMixin",
     "ShaderEffectMixin",
     "render.ChatHudLineMixin",
-    "screen.DirectConnectScreenMixin",
     "screen.TitleScreenMixin"
   ],
   "server": [],

@@ -10,6 +10,7 @@ import coffee.client.feature.command.Command;
 import coffee.client.feature.command.coloring.ArgumentType;
 import coffee.client.feature.command.coloring.PossibleArgument;
 import coffee.client.feature.command.coloring.StaticArgumentServer;
+import net.minecraft.component.ComponentMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtByte;
 import net.minecraft.nbt.NbtByteArray;
@@ -74,57 +75,57 @@ public class ViewNbt extends Command {
             return;
         }
         ItemStack stack = CoffeeMain.client.player.getInventory().getMainHandStack();
-        NbtCompound c = stack.getNbt();
-        if (!stack.hasNbt() || c == null) {
+        ComponentMap c = stack.getComponents();
+        if (stack.getComponents().isEmpty()) {
             error("stack has no data");
             return;
         }
         if (formatted) {
-            parse(c, "(root)");
+            ///parse(c, "(root)"); @TODO fix
         } else {
             // I've to use .sendMessage because of monkey minecraft api
             if (noColor) {
-                CoffeeMain.client.player.sendMessage(Text.of(c.asString()), false);
+                ///CoffeeMain.client.player.sendMessage(Text.of(c.asString()), false);
             } else {
-                CoffeeMain.client.player.sendMessage(NbtHelper.toPrettyPrintedText(c), false);
+                ///CoffeeMain.client.player.sendMessage(NbtHelper.toPrettyPrintedText(c), false);
             }
         }
         if (copy) {
-            CoffeeMain.client.keyboard.setClipboard(c.asString());
+            ///CoffeeMain.client.keyboard.setClipboard(c.asString());
             success("Copied nbt!");
         }
     }
 
-    void parse(NbtElement ne, String componentName) {
-        if (ne instanceof NbtByteArray || ne instanceof NbtCompound || ne instanceof NbtIntArray || ne instanceof NbtList || ne instanceof NbtLongArray) {
-            message(" ".repeat(i) + (componentName == null ? "-" : componentName + ":"));
-            i += 2;
-            if (ne instanceof NbtByteArray array) {
-                for (NbtByte nbtByte : array) {
-                    parse(nbtByte, null);
-                }
-            } else if (ne instanceof NbtCompound compound) {
-                for (String key : compound.getKeys()) {
-                    NbtElement ne1 = compound.get(key);
-                    parse(ne1, key);
-                }
-            } else if (ne instanceof NbtIntArray nbtIntArray) {
-                for (NbtInt nbtInt : nbtIntArray) {
-                    parse(nbtInt, null);
-                }
-            } else if (ne instanceof NbtList nbtList) {
-                for (NbtElement nbtElement : nbtList) {
-                    parse(nbtElement, null);
-                }
-            } else {
-                NbtLongArray nbtLongArray = (NbtLongArray) ne;
-                for (NbtLong nbtLong : nbtLongArray) {
-                    parse(nbtLong, null);
-                }
-            }
-            i -= 2;
-        } else {
-            message(" ".repeat(i) + (componentName == null ? "-" : componentName + ":") + " " + ne.toString().replaceAll("§", "&"));
-        }
-    }
+//    void parse(ComponentMap ne, String componentName) {
+//        if (ne instanceof NbtByteArray || ne instanceof NbtCompound || ne instanceof NbtIntArray || ne instanceof NbtList || ne instanceof NbtLongArray) {
+//            message(" ".repeat(i) + (componentName == null ? "-" : componentName + ":"));
+//            i += 2;
+//            if (ne instanceof NbtByteArray array) {
+//                for (NbtByte nbtByte : array) {
+//                    parse(nbtByte, null);
+//                }
+//            } else if (ne instanceof NbtCompound compound) {
+//                for (String key : compound.getKeys()) {
+//                    NbtElement ne1 = compound.get(key);
+//                    parse(ne1, key);
+//                }
+//            } else if (ne instanceof NbtIntArray nbtIntArray) {
+//                for (NbtInt nbtInt : nbtIntArray) {
+//                    parse(nbtInt, null);
+//                }
+//            } else if (ne instanceof NbtList nbtList) {
+//                for (NbtElement nbtElement : nbtList) {
+//                    parse(nbtElement, null);
+//                }
+//            } else {
+//                NbtLongArray nbtLongArray = (NbtLongArray) ne;
+//                for (NbtLong nbtLong : nbtLongArray) {
+//                    parse(nbtLong, null);
+//                }
+//            }
+//            i -= 2;
+//        } else {
+//            message(" ".repeat(i) + (componentName == null ? "-" : componentName + ":") + " " + ne.toString().replaceAll("§", "&"));
+//        }
+//    }
 }
