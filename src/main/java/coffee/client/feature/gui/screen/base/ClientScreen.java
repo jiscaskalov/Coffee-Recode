@@ -31,7 +31,7 @@ public class ClientScreen extends Screen {
     public void render(DrawContext matrices, int mouseX, int mouseY, float delta) {
         if (samples != -1) {
             if (!MSAAFramebuffer.framebufferInUse()) {
-                MSAAFramebuffer.use(() -> renderInternal(matrices, mouseX, mouseY, delta));
+                MSAAFramebuffer.use(false, () -> renderInternal(matrices, mouseX, mouseY, delta));
             } else {
                 renderInternal(matrices, mouseX, mouseY, delta);
             }

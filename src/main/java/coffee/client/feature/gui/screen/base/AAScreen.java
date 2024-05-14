@@ -163,7 +163,7 @@ public class AAScreen extends Screen implements FastTickable {
     public void render(DrawContext matrices, int mouseX, int mouseY, float delta) {
         if (samples != -1) {
             if (!MSAAFramebuffer.framebufferInUse()) {
-                MSAAFramebuffer.use(() -> renderInternal(matrices.getMatrices(), mouseX, mouseY, delta));
+                MSAAFramebuffer.use(false, () -> renderInternal(matrices.getMatrices(), mouseX, mouseY, delta));
             } else {
                 renderInternal(matrices.getMatrices(), mouseX, mouseY, delta);
             }

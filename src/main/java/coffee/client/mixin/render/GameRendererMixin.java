@@ -77,7 +77,7 @@ public abstract class GameRendererMixin {
         ms.push();
         ms.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.getPitch()));
         ms.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(camera.getYaw() + 180.0F));
-        MSAAFramebuffer.use(() -> {
+        MSAAFramebuffer.use(false, () -> {
             for (Module module : ModuleRegistry.getModules()) {
                 if (module.isEnabled()) {
                     module.onWorldRender(ms);
@@ -107,8 +107,8 @@ public abstract class GameRendererMixin {
                 break;
             }
         }
-        if (shouldMsaa && !(instance instanceof ClientScreen)) { // only do msaa if we dont already do it and need it
-            MSAAFramebuffer.use(() -> instance.render(context, mouseX, mouseY, delta));
+        if (shouldMsaa && !(instance instanceof ClientScreen)) { // only do msaa if we don't already do it and need it
+            MSAAFramebuffer.use(false, () -> instance.render(context, mouseX, mouseY, delta));
         } else {
             instance.render(context, mouseX, mouseY, delta);
         }
@@ -117,7 +117,7 @@ public abstract class GameRendererMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", shift = At.Shift.BEFORE, ordinal = 0), method = "render")
     void coffee_postHudRenderNoCheck(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
         AccurateFrameRateCounter.globalInstance.recordFrame();
-        MSAAFramebuffer.use(() -> {
+        MSAAFramebuffer.use(false, () -> {
             Utils.TickManager.render();
             for (Module module : ModuleRegistry.getModules()) {
                 if (module.isEnabled()) {

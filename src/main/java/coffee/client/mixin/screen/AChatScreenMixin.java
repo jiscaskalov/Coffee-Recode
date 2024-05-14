@@ -68,11 +68,12 @@ public class AChatScreenMixin extends Screen {
         String p = getPrefix();
         if (SelfDestruct.shouldSelfDestruct()) {
             if (SelfDestruct.handleMessage(s)) {
-                /// return true;
+                return;
             }
         } else if (s.startsWith(p)) { // filter all messages starting with .
             CoffeeMain.client.inGameHud.getChatHud().addToMessageHistory(s);
             CommandRegistry.execute(s.substring(p.length())); // cut off prefix
+            return;
         }
         instance.sendMessage(s, true); // else, go
     }
@@ -189,7 +190,7 @@ public class AChatScreenMixin extends Screen {
         String p = getPrefix();
         String t = chatField.getText();
         if (t.startsWith(p) && !SelfDestruct.shouldSelfDestruct()) {
-            MSAAFramebuffer.use(() -> renderSuggestions(context.getMatrices()));
+            MSAAFramebuffer.use(false, () -> renderSuggestions(context.getMatrices()));
         }
     }
 

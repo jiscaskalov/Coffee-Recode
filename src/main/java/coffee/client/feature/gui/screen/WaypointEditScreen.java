@@ -17,6 +17,7 @@ import coffee.client.feature.gui.element.impl.ColorEditorElement;
 import coffee.client.feature.gui.element.impl.FlexLayoutElement;
 import coffee.client.feature.gui.element.impl.TextFieldElement;
 import coffee.client.feature.gui.element.impl.TexturedButtonElement;
+import coffee.client.feature.gui.notifications.Notification;
 import coffee.client.feature.gui.screen.base.AAScreen;
 import coffee.client.feature.gui.screen.base.CenterOverlayScreen;
 import coffee.client.feature.module.impl.render.Waypoints;
@@ -243,8 +244,9 @@ public class WaypointEditScreen extends AAScreen {
         }
 
         void go() {
-            IBaritone primaryBaritone = BaritoneAPI.getProvider().getPrimaryBaritone();
-            primaryBaritone.getCustomGoalProcess().setGoalAndPath(new GoalXZ((int) wayp.getPosition().x, (int) wayp.getPosition().z));
+//            IBaritone primaryBaritone = BaritoneAPI.getProvider().getPrimaryBaritone();
+//            primaryBaritone.getCustomGoalProcess().setGoalAndPath(new GoalXZ((int) wayp.getPosition().x, (int) wayp.getPosition().z));
+            Notification.create(500, "baritone not loaded", Notification.Type.ERROR);
         }
 
         void delete() {

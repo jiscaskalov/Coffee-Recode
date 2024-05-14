@@ -99,21 +99,29 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
 
     @Override
     public void renderInternal(DrawContext stack, int mouseX, int mouseY, float delta) {
+        // Render background and buttons first
         renderBackground(stack, mouseX, mouseY, delta);
+        super.renderInternal(stack, mouseX, mouseY, delta);
+
+        // Render blurred box
         Renderer.R2D.renderRoundedQuad(
-            stack.getMatrices(),
-            new Color(20, 20, 20),
-            width / 2d - WIDGET_WIDTH / 2d,
-            height / 2d - WIDGET_HEIGHT / 2d,
-            width / 2d + WIDGET_WIDTH / 2d,
-            height / 2d + WIDGET_HEIGHT / 2d,
-            5,
-            20
+                stack.getMatrices(),
+                new Color(20, 20, 20),
+                width / 2d - WIDGET_WIDTH / 2d,
+                height / 2d - WIDGET_HEIGHT / 2d,
+                width / 2d + WIDGET_WIDTH / 2d,
+                height / 2d + WIDGET_HEIGHT / 2d,
+                5,
+                20
         );
+
+        // Setup clipping window
         ClipStack.globalInstance.addWindow(
-            stack.getMatrices(),
-            new Rectangle(width / 2d - WIDGET_WIDTH / 2d, height / 2d - WIDGET_HEIGHT / 2d, width / 2d + WIDGET_WIDTH / 2d, height / 2d + WIDGET_HEIGHT / 2d)
+                stack.getMatrices(),
+                new Rectangle(width / 2d - WIDGET_WIDTH / 2d, height / 2d - WIDGET_HEIGHT / 2d, width / 2d + WIDGET_WIDTH / 2d, height / 2d + WIDGET_HEIGHT / 2d)
         );
+
+        // Render addons or "No addons" message
         double yOffset = 0;
         double xRoot = width / 2d - WIDGET_WIDTH / 2d + 5;
         double yRoot = height / 2d - WIDGET_HEIGHT / 2d + 5;
@@ -127,8 +135,9 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
             addonViewer.render(stack, xRoot, yRoot + yOffset + scroller.getScroll(), mouseX, mouseY);
             yOffset += addonViewer.getHeight() + 5;
         }
+
+        // Pop clipping window
         ClipStack.globalInstance.popWindow();
-        super.renderInternal(stack, mouseX, mouseY, delta);
     }
 
     @Override

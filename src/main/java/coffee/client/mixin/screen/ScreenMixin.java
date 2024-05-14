@@ -27,7 +27,6 @@ import java.util.List;
 
 @Mixin(Screen.class)
 public abstract class ScreenMixin extends AbstractParentElement {
-
     @Shadow
     @Final
     private List<Element> children;

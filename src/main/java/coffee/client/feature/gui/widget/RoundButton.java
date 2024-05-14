@@ -24,7 +24,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.awt.Color;
 
-public class RoundButton implements Element, Drawable, Selectable, FastTickable, DoesMSAA, HasSpecialCursor {
+public class RoundButton implements Element, Drawable, Selectable, FastTickable, HasSpecialCursor {
 
     public static final Color STANDARD = new Color(255, 255, 255);
     public static final Color SUCCESS = new Color(0x24FC2B);
@@ -112,7 +112,6 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
         }
         animProgress += d;
         animProgress = MathHelper.clamp(animProgress, 0, 1);
-
     }
 
     boolean inBounds(double cx, double cy) {
@@ -135,26 +134,26 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
         Renderer.R2D.renderRoundedQuad(matrices, new Color(30, 30, 30), originX, originY, width / 2d, height / 2d, Math.min(height / 2d, 5), 20);
         if (animProgress != 0) {
             Renderer.R2D.renderRoundedShadow(
-                matrices,
-                new Color(10, 10, 10, 100),
-                originX,
-                originY,
-                width / 2d,
-                height / 2d,
-                Math.min(height / 2d, 5),
-                20,
-                animProgress * 3
+                    matrices,
+                    new Color(10, 10, 10, 100),
+                    originX,
+                    originY,
+                    width / 2d,
+                    height / 2d,
+                    Math.min(height / 2d, 5),
+                    20,
+                    animProgress * 3
             );
         }
         FontRenderers.getRenderer()
-            .drawString(
-                matrices,
-                text,
-                -FontRenderers.getRenderer().getStringWidth(text) / 2f,
-                -FontRenderers.getRenderer().getMarginHeight() / 2f,
-                isEnabled() ? textColor.getRGB() : 0xAAAAAA,
-                false
-            );
+                .drawString(
+                        matrices,
+                        text,
+                        -FontRenderers.getRenderer().getStringWidth(text) / 2f,
+                        -FontRenderers.getRenderer().getMarginHeight() / 2f,
+                        isEnabled() ? textColor.getRGB() : 0xAAAAAA,
+                        false
+                );
         matrices.pop();
     }
 

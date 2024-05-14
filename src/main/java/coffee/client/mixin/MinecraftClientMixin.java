@@ -7,11 +7,13 @@ package coffee.client.mixin;
 
 import coffee.client.CoffeeMain;
 import coffee.client.feature.command.impl.SelfDestruct;
+import coffee.client.feature.gui.screen.HomeScreen;
 import coffee.client.feature.gui.screen.LoadingScreen;
 import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleRegistry;
 import coffee.client.feature.module.impl.world.FastUse;
 import coffee.client.helper.manager.ConfigManager;
+import coffee.client.helper.text.CoffeeClickEvent;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
@@ -41,6 +43,8 @@ public abstract class MinecraftClientMixin {
 //        List<String> strings = ModuleRegistry.getModules().stream().filter(Module::isEnabled).map(Module::getName).toList();
 //        report.addElement("Coffee client").add("Enabled modules", strings.isEmpty() ? "None" : String.join(", ", strings.toArray(String[]::new)));
 //    }
+
+    @Shadow private static MinecraftClient instance;
 
     @Inject(method = "stop", at = @At("HEAD"))
     void coffee_dispatchExit(CallbackInfo ci) {
@@ -89,6 +93,7 @@ public abstract class MinecraftClientMixin {
 
     @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
     void setScreen(Screen screen, CallbackInfo ci) {
+        if (screen instanceof TitleScreen && CoffeeMain.client.currentScreen == HomeScreen.instance()) return;
         if (screen instanceof TitleScreen) {
             ci.cancel();
             CoffeeMain.client.setScreen(obtain(screen));

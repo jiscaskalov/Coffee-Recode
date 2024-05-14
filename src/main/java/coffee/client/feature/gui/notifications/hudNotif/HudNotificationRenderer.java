@@ -25,7 +25,7 @@ public class HudNotificationRenderer {
         notifs.removeIf(HudNotification::isDead);
         double x = CoffeeMain.client.getWindow().getScaledWidth() - 5;
         final double[] y = { 5 };
-        MSAAFramebuffer.use(() -> {
+        MSAAFramebuffer.use(false, () -> {
             for (HudNotification notif : notifs) {
                 notif.render(stack, x, y[0]);
 
