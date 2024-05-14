@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "coffee",
   "version": "${version}",
-  "name": "Coffee client",
-  "description": "Very based utility mod",
+  "name": "Coffee-Recode",
+  "description": "A very based 1.20.6 Minecraft client with some of the best visuals currently on the market.",
   "authors": [
     "0x150"
   ],
@@ -13,7 +13,7 @@
   ],
   "contact": {
     "homepage": "https://client.coffee",
-    "sources": "https://github.com/Coffee-Client/Coffee"
+    "sources": "https://github.com/jiscaskalov/Coffee-Recode"
   },
   "license": "All-Rights-Reserved",
   "icon": "assets/coffee/icon.png",

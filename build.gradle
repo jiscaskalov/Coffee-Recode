@@ -3,8 +3,8 @@ plugins {
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_21
+targetCompatibility = JavaVersion.VERSION_21
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -77,6 +77,7 @@ dependencies {
 	libImpl(name: "NetMC-1.0.1")
 	libImpl(project(":Authlib"))
 	libImpl(project(":Eventlib"))
+	modImpl("org.ladysnake:satin:${project.satin_version}")
 	include modImplementation("com.github.0x3C50:Renderer:master-SNAPSHOT")
 
 	// Baritone (https://github.com/MeteorDevelopment/baritone)
