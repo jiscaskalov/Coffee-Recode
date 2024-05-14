@@ -1,5 +1,6 @@
 # Coffee-Recode
 Remastered and updated version of the original Coffee client, by 0x150.
+
 A very based 1.20.6 Minecraft client with some of the best visuals currently on the market.
 
 ![](https://komarev.com/ghpvc/?username=Coffee-Client&style=for-the-badge&label=Views)
