@@ -6,8 +6,7 @@
 package coffee.client.feature.gui;
 
 import coffee.client.CoffeeMain;
-import coffee.client.feature.gui.theme.Theme;
-import coffee.client.feature.gui.theme.ThemeManager;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.render.Renderer;
 import coffee.client.helper.util.Transitions;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -106,7 +105,7 @@ public class ParticleRenderer {
             long deltaOverall = Math.min(startDelta, endDelta);
             double pk = deltaOverall / (double) fadeTime;
             pk = Transitions.easeOutExpo(pk);
-            Theme theme = ThemeManager.getMainTheme();
+            Themes.Theme theme = Themes.getCurrentTheme();
             stack.push();
             double radToUse = pk * circleRad;
             Renderer.R2D.renderCircle(stack, Renderer.Util.lerp(theme.getAccent(), DYING, pk), x - radToUse / 2d, y - radToUse / 2d, radToUse, 30);

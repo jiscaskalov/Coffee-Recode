@@ -6,9 +6,9 @@
 package coffee.client.feature.gui.hud.element;
 
 import coffee.client.CoffeeMain;
-import coffee.client.feature.gui.theme.ThemeManager;
 import coffee.client.feature.module.ModuleRegistry;
 import coffee.client.feature.module.impl.render.Hud;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.render.Renderer;
 import coffee.client.helper.util.Timer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -55,7 +55,7 @@ public class SpeedHud extends HudElement {
 
                 Renderer.R2D.renderLine(
                     stack,
-                    Renderer.Util.lerp(ThemeManager.getMainTheme().getActive(), ThemeManager.getMainTheme().getAccent(), ppr),
+                    Renderer.Util.lerp(Themes.getCurrentTheme().getActive(), Themes.getCurrentTheme().getAccent(), ppr),
                     x - incrX,
                     previous,
                     x,

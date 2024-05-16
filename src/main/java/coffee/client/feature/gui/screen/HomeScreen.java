@@ -98,7 +98,6 @@ public class HomeScreen extends AAScreen {
             new ButtonGroupElement.ButtonEntry("Realms", () -> CoffeeMain.client.setScreen(new RealmsMainScreen(this))),
             new ButtonGroupElement.ButtonEntry("Alts", () -> CoffeeMain.client.setScreen(AltManagerScreen.instance(this))),
             new ButtonGroupElement.ButtonEntry("Options", () -> CoffeeMain.client.setScreen(new OptionsScreen(this, CoffeeMain.client.options))),
-            new ButtonGroupElement.ButtonEntry("Vanilla", () -> CoffeeMain.client.setScreen(new TitleScreen(false))),
             new ButtonGroupElement.ButtonEntry("Quit", CoffeeMain.client::scheduleStop)
         );
         addChild(bge);
@@ -138,7 +137,6 @@ public class HomeScreen extends AAScreen {
 
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
-
         coffee.client.helper.render.textures.Texture.BACKGROUND.bind();
         Renderer.R2D.renderTexture(stack, 0, 0, width, height, 0, 0, width, height, width, height);
         RenderSystem.defaultBlendFunc();

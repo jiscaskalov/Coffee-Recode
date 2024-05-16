@@ -6,6 +6,7 @@
 package coffee.client.feature.gui.clickgui.element.config;
 
 import coffee.client.feature.config.DoubleSetting;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.font.adapter.FontAdapter;
 import coffee.client.helper.render.Renderer;
@@ -48,7 +49,7 @@ public class DoubleSettingEditor extends SettingEditor<DoubleSetting> {
         Renderer.R2D.renderRoundedQuad(matrices, new Color(50, 50, 50), actualX, remainingH, actualX + actualWidth, remainingH + 1.5, 1.5 / 2, 5);
         Renderer.R2D.renderRoundedQuad(
             matrices,
-            new Color(9, 162, 104),
+            Themes.getCurrentTheme().getSecondary(),
             actualX,
             remainingH,
             actualX + Math.max(actualWidth * getPer(), 1.5),

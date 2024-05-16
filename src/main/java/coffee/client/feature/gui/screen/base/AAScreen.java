@@ -5,6 +5,7 @@
 
 package coffee.client.feature.gui.screen.base;
 
+import coffee.client.CoffeeMain;
 import coffee.client.feature.command.impl.SelfDestruct;
 import coffee.client.feature.gui.FastTickable;
 import coffee.client.feature.gui.HasSpecialCursor;

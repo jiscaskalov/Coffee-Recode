@@ -11,6 +11,7 @@ import coffee.client.feature.gui.element.impl.FlexLayoutElement;
 import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleRegistry;
 import coffee.client.feature.module.ModuleType;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.font.adapter.FontAdapter;
 import coffee.client.helper.render.Rectangle;
@@ -78,7 +79,7 @@ public class CategoryDisplay extends Element {
         layout.updateScroller();
         Renderer.R2D.renderRoundedQuadWithShadow(
             stack,
-            new Color(20, 20, 20),
+                Themes.getCurrentTheme().getInactive(),
             getPositionX(),
             getPositionY(),
             getPositionX() + getWidth(),

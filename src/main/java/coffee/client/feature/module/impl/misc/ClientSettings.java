@@ -5,11 +5,14 @@
 
 package coffee.client.feature.module.impl.misc;
 
+import coffee.client.feature.config.ColorSetting;
 import coffee.client.feature.config.annotation.Setting;
 import coffee.client.feature.gui.notifications.Notification;
 import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
+
+import java.awt.*;
 
 public class ClientSettings extends Module {
     @Setting(name = "Prefix", description = "The prefix to use for commands")

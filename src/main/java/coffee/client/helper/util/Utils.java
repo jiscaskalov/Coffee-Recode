@@ -6,12 +6,15 @@
 package coffee.client.helper.util;
 
 import coffee.client.CoffeeMain;
+import coffee.client.feature.module.ModuleRegistry;
+import coffee.client.feature.module.impl.misc.Timer;
 import coffee.client.helper.font.adapter.FontAdapter;
 import coffee.client.helper.font.renderer.ColoredTextSegment;
 import coffee.client.helper.render.Texture;
 import coffee.client.mixin.ClientWorldMixin;
 import coffee.client.mixin.IMinecraftClientMixin;
 import coffee.client.mixin.IRenderTickCounterMixin;
+import coffee.client.mixin.network.IMinecraftServerMixin;
 import coffee.client.mixinUtil.ChatHudDuck;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -47,26 +50,11 @@ import org.lwjgl.BufferUtils;
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.AbstractMap;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.BitSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Queue;
-import java.util.Spliterator;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.BooleanSupplier;
@@ -76,7 +64,10 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static coffee.client.CoffeeMain.client;
+
 public class Utils {
+    private static final Random random = new Random();
 
     private static final ExecutorService esv = Executors.newCachedThreadPool();
     public static boolean sendPackets = true;
@@ -94,22 +85,85 @@ public class Utils {
         }
     }
 
+    public static boolean canUpdate() {
+        return client != null && client.world != null && client.player != null;
+    }
+
+    public static int random(int min, int max) {
+        return random.nextInt(max - min) + min;
+    }
+
+    public static double random(double min, double max) {
+        return min + (max - min) * random.nextDouble();
+    }
+
+    public static Vec3d getPlayerSpeed() {
+        if (client.player == null) return Vec3d.ZERO;
+
+        double tX = client.player.getX() - client.player.prevX;
+        double tY = client.player.getY() - client.player.prevY;
+        double tZ = client.player.getZ() - client.player.prevZ;
+
+//        Timer timer = ModuleRegistry.getByClass(Timer.class);
+//        if (timer.isEnabled()) {
+//            tX *= timer.getMultiplier();
+//            tY *= timer.getMultiplier();
+//            tZ *= timer.getMultiplier();
+//        }
+
+        tX *= 20;
+        tY *= 20;
+        tZ *= 20;
+
+        return new Vec3d(tX, tY, tZ);
+    }
+
     public static Stream<LivingEntity> findEntities(Predicate<? super LivingEntity> requirement) {
-        Spliterator<Entity> spliterator = CoffeeMain.client.world.getEntities().spliterator();
+        Spliterator<Entity> spliterator = client.world.getEntities().spliterator();
 
         return StreamSupport.stream(spliterator, false)
-            .filter(entity -> !entity.equals(CoffeeMain.client.player))
+            .filter(entity -> !entity.equals(client.player))
             .filter(entity -> entity instanceof LivingEntity)
             .map(entity -> (LivingEntity) entity)
             .filter(requirement);
     }
 
     public static boolean isABFree(Vec3d a, Vec3d b) {
-        assert CoffeeMain.client.player != null;
-        assert CoffeeMain.client.world != null;
-        RaycastContext rc = new RaycastContext(a, b, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, CoffeeMain.client.player);
-        BlockHitResult raycast = CoffeeMain.client.world.raycast(rc);
+        assert client.player != null;
+        assert client.world != null;
+        RaycastContext rc = new RaycastContext(a, b, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, client.player);
+        BlockHitResult raycast = client.world.raycast(rc);
         return raycast.getType() == HitResult.Type.MISS;
+    }
+
+    public static String getWorldName() {
+        // Singleplayer
+        if (client.isInSingleplayer()) {
+            if (client.world == null) return "";
+
+            File folder = ((IMinecraftServerMixin) client.getServer()).getSession().getWorldDirectory(client.world.getRegistryKey()).toFile();
+            if (folder.toPath().relativize(client.runDirectory.toPath()).getNameCount() != 2) {
+                folder = folder.getParentFile();
+            }
+            return folder.getName();
+        }
+
+        // Multiplayer
+        if (client.getCurrentServerEntry() != null) {
+            return client.getCurrentServerEntry().isRealm() ? "realms" : client.getCurrentServerEntry().address;
+        }
+
+        return "";
+    }
+
+    public static String getWorldTime() {
+        if (client.world == null) return "00:00";
+
+        int ticks = (int) (client.world.getTimeOfDay() % 24000);
+        ticks += 6000;
+        if (ticks > 24000) ticks -= 24000;
+
+        return String.format("%02d:%02d", ticks / 1000, (int) (ticks % 1000 / 1000.0 * 60));
     }
 
     public static float dist(double ax, double ay, double bx, double by) {
@@ -218,12 +272,12 @@ public class Utils {
 
     public static void sendPacketNoEvent(Packet<?> packet) {
         sendPackets = false;
-        CoffeeMain.client.player.networkHandler.sendPacket(packet);
+        client.player.networkHandler.sendPacket(packet);
         sendPackets = true;
     }
 
     public static void setClientTps(float tps) {
-        IRenderTickCounterMixin accessor = (IRenderTickCounterMixin) ((IMinecraftClientMixin) CoffeeMain.client).getRenderTickCounter();
+        IRenderTickCounterMixin accessor = (IRenderTickCounterMixin) ((IMinecraftClientMixin) client).getRenderTickCounter();
         accessor.setTickTime(1000f / tps);
     }
 
@@ -234,7 +288,7 @@ public class Utils {
     public static Vec3d getInterpolatedEntityPosition(Entity entity) {
         Vec3d a = entity.getPos();
         Vec3d b = new Vec3d(entity.prevX, entity.prevY, entity.prevZ);
-        float p = CoffeeMain.client.getTickDelta();
+        float p = client.getTickDelta();
         return new Vec3d(MathHelper.lerp(p, b.x, a.x), MathHelper.lerp(p, b.y, a.y), MathHelper.lerp(p, b.z, a.z));
     }
 
@@ -317,7 +371,7 @@ public class Utils {
             ByteBuffer data = BufferUtils.createByteBuffer(content.length).put(content);
             data.flip();
             NativeImageBackedTexture tex = new NativeImageBackedTexture(NativeImage.read(data));
-            CoffeeMain.client.execute(() -> CoffeeMain.client.getTextureManager().registerTexture(i, tex));
+            client.execute(() -> client.getTextureManager().registerTexture(i, tex));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -394,26 +448,26 @@ public class Utils {
 
         public static void drop(int index) {
             int translatedSlotId = slotIndexToId(index);
-            Objects.requireNonNull(CoffeeMain.client.interactionManager)
+            Objects.requireNonNull(client.interactionManager)
                 .clickSlot(
-                    Objects.requireNonNull(CoffeeMain.client.player).currentScreenHandler.syncId,
+                    Objects.requireNonNull(client.player).currentScreenHandler.syncId,
                     translatedSlotId,
                     1,
                     SlotActionType.THROW,
-                    CoffeeMain.client.player
+                    client.player
                 );
         }
 
         public static void moveStackToOther(int slotIdFrom, int slotIdTo) {
-            Objects.requireNonNull(CoffeeMain.client.interactionManager)
-                .clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, CoffeeMain.client.player); // pick up item from stack
-            CoffeeMain.client.interactionManager.clickSlot(0, slotIdTo, 0, SlotActionType.PICKUP, CoffeeMain.client.player); // put item to target
-            CoffeeMain.client.interactionManager.clickSlot(
+            Objects.requireNonNull(client.interactionManager)
+                .clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, client.player); // pick up item from stack
+            client.interactionManager.clickSlot(0, slotIdTo, 0, SlotActionType.PICKUP, client.player); // put item to target
+            client.interactionManager.clickSlot(
                 0,
                 slotIdFrom,
                 0,
                 SlotActionType.PICKUP,
-                CoffeeMain.client.player
+                client.player
             ); // (in case target slot had item) put item from target back to from
         }
     }
@@ -456,11 +510,11 @@ public class Utils {
     public static class Mouse {
 
         public static double getMouseX() {
-            return CoffeeMain.client.mouse.getX() / CoffeeMain.client.getWindow().getScaleFactor();
+            return client.mouse.getX() / client.getWindow().getScaleFactor();
         }
 
         public static double getMouseY() {
-            return CoffeeMain.client.mouse.getY() / CoffeeMain.client.getWindow().getScaleFactor();
+            return client.mouse.getY() / client.getWindow().getScaleFactor();
         }
     }
 
@@ -468,7 +522,7 @@ public class Utils {
     public static class Packets {
 
         public static PlayerInteractBlockC2SPacket generatePlace(BlockPos pos) {
-            PendingUpdateManager pendingUpdateManager = getUpdateManager(CoffeeMain.client.world).incrementSequence();
+            PendingUpdateManager pendingUpdateManager = getUpdateManager(client.world).incrementSequence();
 
             var packet = new PlayerInteractBlockC2SPacket(
                 Hand.MAIN_HAND,
@@ -522,15 +576,15 @@ public class Utils {
                 .append(Text.literal("]").styled(style -> style.withColor(0x454545)))
                 .append(" ")
                 .append(t);
-            return ((ChatHudDuck) CoffeeMain.client.inGameHud.getChatHud()).coffee_addChatMessage(append);
+            return ((ChatHudDuck) client.inGameHud.getChatHud()).coffee_addChatMessage(append);
         }
 
         public static void removeMessage(int v) {
-            ((ChatHudDuck) CoffeeMain.client.inGameHud.getChatHud()).coffee_removeChatMessage(v);
+            ((ChatHudDuck) client.inGameHud.getChatHud()).coffee_removeChatMessage(v);
         }
 
         static void sendMessages() {
-            if (CoffeeMain.client.player != null) {
+            if (client.player != null) {
                 Text next;
                 while ((next = messageQueue.poll()) != null) {
                     sendMessage(next);

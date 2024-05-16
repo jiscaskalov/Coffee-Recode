@@ -12,8 +12,12 @@ import coffee.client.feature.gui.screen.LoadingScreen;
 import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleRegistry;
 import coffee.client.feature.module.impl.world.FastUse;
+import coffee.client.helper.event.EventSystem;
+import coffee.client.helper.event.impl.OpenScreenEvent;
+import coffee.client.helper.event.impl.ResourcePacksReloadedEvent;
 import coffee.client.helper.manager.ConfigManager;
 import coffee.client.helper.text.CoffeeClickEvent;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
@@ -32,6 +36,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
@@ -70,6 +75,11 @@ public abstract class MinecraftClientMixin {
         }
     }
 
+    @ModifyReturnValue(method = "reloadResources(ZLnet/minecraft/client/MinecraftClient$LoadingContext;)Ljava/util/concurrent/CompletableFuture;", at = @At("RETURN"))
+    private CompletableFuture<Void> onReloadResourcesNewCompletableFuture(CompletableFuture<Void> original) {
+        return original.thenRun(() -> EventSystem.manager.send(new ResourcePacksReloadedEvent()));
+    }
+
     @Inject(method = "getGameVersion", at = @At("HEAD"), cancellable = true)
     void coffee_replaceGameVersion(CallbackInfoReturnable<String> cir) {
         if (SelfDestruct.shouldSelfDestruct()) {
@@ -93,6 +103,10 @@ public abstract class MinecraftClientMixin {
 
     @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
     void setScreen(Screen screen, CallbackInfo ci) {
+        OpenScreenEvent se = new OpenScreenEvent(screen);
+        EventSystem.manager.send(se);
+        if (se.isCancelled()) ci.cancel();
+
         if (screen instanceof TitleScreen && CoffeeMain.client.currentScreen == HomeScreen.instance()) return;
         if (screen instanceof TitleScreen) {
             ci.cancel();

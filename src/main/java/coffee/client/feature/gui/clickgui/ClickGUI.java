@@ -12,6 +12,7 @@ import coffee.client.feature.gui.element.impl.ClickableTextElement;
 import coffee.client.feature.gui.screen.HelpScreen;
 import coffee.client.feature.gui.screen.base.AAScreen;
 import coffee.client.feature.module.ModuleType;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.manager.ShaderManager;
 import coffee.client.helper.render.AlphaOverride;
@@ -243,7 +244,7 @@ public class ClickGUI extends AAScreen {
             double textWid = FontRenderers.getRenderer().getStringWidth(oldSearchTerm);
             Renderer.R2D.renderRoundedQuad(
                 stack,
-                new Color(20, 20, 20),
+                    Themes.getCurrentTheme().getInactive(),
                 width - pad - pad - textWid - pad,
                 height - pad - hei,
                 width - pad,
@@ -264,7 +265,7 @@ public class ClickGUI extends AAScreen {
             double width = Arrays.stream(split).map(s -> FontRenderers.getRenderer().getStringWidth(s)).max(Comparator.comparingDouble(value -> value)).orElse(0f) + 4f;
             double tooltipX = Math.min(this.tooltipX, this.width - 4 - width);
 
-            Renderer.R2D.renderRoundedQuadWithShadow(stack, new Color(30, 30, 30), tooltipX, tooltipY, tooltipX + width, tooltipY + height, 2, 6);
+            Renderer.R2D.renderRoundedQuadWithShadow(stack, Themes.getCurrentTheme().getInactive(), tooltipX, tooltipY, tooltipX + width, tooltipY + height, 2, 6);
             double y = 0;
             for (String s : split) {
                 FontRenderers.getRenderer().drawString(stack, s, tooltipX + 2, tooltipY + 1 + y, 0xFFFFFF);

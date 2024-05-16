@@ -5,6 +5,7 @@
 
 package coffee.client.feature.gui.screen.base;
 
+import coffee.client.CoffeeMain;
 import coffee.client.helper.render.MSAAFramebuffer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -31,7 +32,7 @@ public class ClientScreen extends Screen {
     public void render(DrawContext matrices, int mouseX, int mouseY, float delta) {
         if (samples != -1) {
             if (!MSAAFramebuffer.framebufferInUse()) {
-                MSAAFramebuffer.use(false, () -> renderInternal(matrices, mouseX, mouseY, delta));
+                MSAAFramebuffer.use(true, () -> renderInternal(matrices, mouseX, mouseY, delta));
             } else {
                 renderInternal(matrices, mouseX, mouseY, delta);
             }

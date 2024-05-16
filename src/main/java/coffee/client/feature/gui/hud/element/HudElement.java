@@ -6,7 +6,7 @@
 package coffee.client.feature.gui.hud.element;
 
 import coffee.client.CoffeeMain;
-import coffee.client.feature.gui.theme.ThemeManager;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -50,10 +50,10 @@ public abstract class HudElement {
     }
 
     public void renderOutline() {
-        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), ThemeManager.getMainTheme().getAccent(), posX, posY, posX + width, posY);
-        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), ThemeManager.getMainTheme().getAccent(), posX + width, posY, posX + width, posY + height);
-        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), ThemeManager.getMainTheme().getAccent(), posX + width, posY + height, posX, posY + height);
-        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), ThemeManager.getMainTheme().getAccent(), posX, posY + height, posX, posY);
+        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), Themes.getCurrentTheme().getAccent(), posX, posY, posX + width, posY);
+        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), Themes.getCurrentTheme().getAccent(), posX + width, posY, posX + width, posY + height);
+        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), Themes.getCurrentTheme().getAccent(), posX + width, posY + height, posX, posY + height);
+        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), Themes.getCurrentTheme().getAccent(), posX, posY + height, posX, posY);
 
         double rpoY = posY - FontRenderers.getRenderer().getFontHeight();
         if (posY < FontRenderers.getRenderer().getFontHeight()) { // too small to render text properly

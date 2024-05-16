@@ -12,6 +12,11 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ClientPlayerInteractionManager.class)
 public interface IClientPlayerInteractionManagerMixin {
+    @Accessor("currentBreakingProgress")
+    float getBreakingProgress();
+
+    @Accessor("currentBreakingProgress")
+    void setCurrentBreakingProgress(float progress);
 
     @Accessor("currentBreakingPos")
     BlockPos getCurrentBreakingPos();

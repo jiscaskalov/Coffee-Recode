@@ -6,6 +6,7 @@
 package coffee.client.feature.gui.clickgui.element.config;
 
 import coffee.client.feature.config.EnumSetting;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.font.adapter.FontAdapter;
 import coffee.client.helper.render.ClipStack;
@@ -120,7 +121,7 @@ public class EnumSettingEditor extends SettingEditor<EnumSetting<?>> {
                 if (enumSettingEntry.ordinal() == configValue.getValue().ordinal()) {
                     Renderer.R2D.renderCircle(
                         stack,
-                        new Color(9, 162, 104),
+                        Themes.getCurrentTheme().getSecondary(),
                         getPositionX() + 2 + ballDim,
                         getPositionY() + headerHeight() + offsetY + fa.getFontHeight() / 2d,
                         innerBallDim,

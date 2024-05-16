@@ -6,7 +6,7 @@
 package coffee.client.feature.gui.notifications;
 
 import coffee.client.CoffeeMain;
-import coffee.client.feature.gui.theme.ThemeManager;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.font.adapter.FontAdapter;
 import coffee.client.helper.render.ClipStack;
@@ -123,8 +123,8 @@ public class NotificationRenderer {
             if (notification.duration == -1) {
                 double seedR = (System.currentTimeMillis() % 2000) / 2000d;
                 double seed = Math.abs((Math.sin(Math.toRadians(seedR * 360)) + 1) / 2);
-                Color start = Renderer.Util.lerp(ThemeManager.getMainTheme().getActive(), ThemeManager.getMainTheme().getAccent(), seed);
-                Color end = Renderer.Util.lerp(ThemeManager.getMainTheme().getActive(), ThemeManager.getMainTheme().getAccent(), 1 - seed);
+                Color start = Renderer.Util.lerp(Themes.getCurrentTheme().getActive(), Themes.getCurrentTheme().getAccent(), seed);
+                Color end = Renderer.Util.lerp(Themes.getCurrentTheme().getActive(), Themes.getCurrentTheme().getAccent(), 1 - seed);
                 Renderer.R2D.renderQuadGradient(
                     ms,
                     end,
@@ -138,7 +138,7 @@ public class NotificationRenderer {
             } else {
                 Renderer.R2D.renderQuad(
                     ms,
-                    ThemeManager.getMainTheme().getActive(),
+                    Themes.getCurrentTheme().getActive(),
                     notification.renderPosX - width,
                     notification.renderPosY + height - 1,
                     notification.renderPosX + width + 1,
@@ -146,7 +146,7 @@ public class NotificationRenderer {
                 );
                 Renderer.R2D.renderQuad(
                     ms,
-                    ThemeManager.getMainTheme().getAccent(),
+                    Themes.getCurrentTheme().getAccent(),
                     notification.renderPosX - width,
                     notification.renderPosY + height - 1,
                     notification.renderPosX - width + (width + 1) * 2 * timeRemainingInv,

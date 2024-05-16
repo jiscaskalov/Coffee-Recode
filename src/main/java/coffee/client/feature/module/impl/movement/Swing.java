@@ -6,9 +6,9 @@
 package coffee.client.feature.module.impl.movement;
 
 import coffee.client.CoffeeMain;
-import coffee.client.feature.gui.theme.ThemeManager;
 import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleType;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.event.impl.MouseEvent;
 import coffee.client.helper.event.impl.PacketEvent;
 import coffee.client.helper.render.Renderer;
@@ -92,7 +92,7 @@ public class Swing extends Module {
         Vec3d cringe = new Vec3d(swinging.getX(), swinging.getY(), swinging.getZ());
         Vec3d cringe2 = new Vec3d(swinging.getX() + 0.5, swinging.getY() + 0.5, swinging.getZ() + 0.5);
         Vec3d eSource = Utils.getInterpolatedEntityPosition(CoffeeMain.client.player);
-        Renderer.R3D.renderFilled(matrices, ThemeManager.getMainTheme().getInactive(), cringe.add(.5, .5, .5).subtract(.25, .25, .25), new Vec3d(.5, .5, .5));
+        Renderer.R3D.renderFilled(matrices, Themes.getCurrentTheme().getInactive(), cringe.add(.5, .5, .5).subtract(.25, .25, .25), new Vec3d(.5, .5, .5));
         Renderer.R3D.renderLine(matrices, line, eSource, cringe2);
     }
 

@@ -6,6 +6,7 @@
 package coffee.client.feature.gui.clickgui.element.config;
 
 import coffee.client.feature.config.RangeSetting;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.font.adapter.FontAdapter;
 import coffee.client.helper.render.Renderer;
@@ -44,7 +45,7 @@ public class RangeSettingEditor extends SettingEditor<RangeSetting> {
         double xB = getPerB() * actualWidth;
         double barWidth = xB - xA;
         barWidth = Math.max(barWidth, 1.5);
-        Renderer.R2D.renderRoundedQuad(matrices, new Color(9, 162, 104), actualX + xA, remainingH, actualX + xA + barWidth, remainingH + 1.5, 1.5 / 2, 5);
+        Renderer.R2D.renderRoundedQuad(matrices, Themes.getCurrentTheme().getSecondary(), actualX + xA, remainingH, actualX + xA + barWidth, remainingH + 1.5, 1.5 / 2, 5);
     }
 
     void handleClickA(double translated) {

@@ -31,6 +31,7 @@
     "network.ClientConnectionMixin",
     "network.ClientConnectionMixin1",
     "network.IEntityVelocityUpdateS2CPacketMixin",
+    "network.IMinecraftServerMixin",
     "network.IParticleS2CPacketMixin",
     "network.IPlayerMoveC2SPacketMixin",
     "network.IVehicleMoveC2SPacketMixin",
@@ -68,6 +69,7 @@
   ],
   "client": [
     "ChatHudMixin",
+    "ClientPlayNetworkHandlerMixin",
     "IKeyBindingMixin",
     "JsonEffectShaderProgramMixin",
     "KeyboardInputMixin",

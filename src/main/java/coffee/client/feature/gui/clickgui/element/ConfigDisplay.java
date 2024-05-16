@@ -22,6 +22,7 @@ import coffee.client.feature.gui.clickgui.element.config.StringSettingEditor;
 import coffee.client.feature.gui.element.Element;
 import coffee.client.feature.gui.element.impl.FlexLayoutElement;
 import coffee.client.feature.gui.element.impl.TextElement;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.font.adapter.FontAdapter;
 import coffee.client.helper.render.Renderer;
@@ -110,7 +111,7 @@ public class ConfigDisplay extends Element {
         if (height1 > 1.5) {
             Renderer.R2D.renderRoundedQuad(
                 stack,
-                new Color(9, 162, 104),
+                    Themes.getCurrentTheme().getSecondary(),
                 getPositionX() + 2,
                 getPositionY(),
                 getPositionX() + 3.5,

@@ -10,7 +10,6 @@ import coffee.client.feature.config.BooleanSetting;
 import coffee.client.feature.gui.hud.HudRenderer;
 import coffee.client.feature.gui.notifications.Notification;
 import coffee.client.feature.gui.notifications.NotificationRenderer;
-import coffee.client.feature.gui.theme.ThemeManager;
 import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleRegistry;
 import coffee.client.feature.module.ModuleType;
@@ -23,8 +22,6 @@ import coffee.client.helper.util.AccurateFrameRateCounter;
 import coffee.client.helper.util.Timer;
 import coffee.client.helper.util.Transitions;
 import coffee.client.helper.util.Utils;
-import coffee.client.mixin.render.IInGameHudMixin;
-import coffee.client.mixin.screen.IDebugHudMixin;
 import me.x150.jmessenger.MessageSubscription;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
@@ -206,7 +203,7 @@ public class Hud extends Module {
 
         double width = pad + newWidth + 5 + FontRenderers.getRenderer().getStringWidth(desc) + pad;
         double height = pad * 2 + Math.max(newHeight, FontRenderers.getRenderer().getFontHeight());
-        Renderer.R2D.renderRoundedQuadWithShadow(ms, ThemeManager.getMainTheme().getConfig(), 0, 0, width, height, 5, 20);
+        Renderer.R2D.renderRoundedQuadWithShadow(ms, Themes.getCurrentTheme().getConfig(), 0, 0, width, height, 5, 20);
         Texture.ICON.bind();
         Renderer.R2D.renderTexture(ms, pad, height / 2d - newHeight / 2d, newWidth, newHeight, 0, 0, newWidth, newHeight, newWidth, newHeight);
         FontRenderers.getRenderer().drawString(ms, desc, pad + newWidth + 5, height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 0xFFFFFF);
@@ -227,10 +224,10 @@ public class Hud extends Module {
             double slideProg = MathHelper.clamp(prog - 1, 0, 1); // 1-2 as 0-1 from 0-2
             double hei = FontRenderers.getRenderer().getMarginHeight() + 2;
             double wid = moduleEntry.getValue().getRenderWidth() + 2;
-            Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), width - (wid + 1), y, width, y + hei * expandProg);
+            Renderer.R2D.renderQuad(ms, Themes.getCurrentTheme().getActive(), width - (wid + 1), y, width, y + hei * expandProg);
             ms.push();
             ms.translate((1 - slideProg) * wid, 0, 0);
-            Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), width - wid, y, width, y + hei * expandProg);
+            Renderer.R2D.renderQuad(ms, Themes.getCurrentTheme().getModule(), width - wid, y, width, y + hei * expandProg);
             double nameW = FontRenderers.getRenderer().getStringWidth(moduleEntry.getKey().getName());
             FontRenderers.getRenderer().drawString(ms, moduleEntry.getKey().getName(), width - wid + 1, y + 1, 0xFFFFFF);
             if (moduleEntry.getKey().getContext() != null && !moduleEntry.getKey().getContext().isEmpty()) {

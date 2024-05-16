@@ -6,6 +6,7 @@
 package coffee.client.feature.gui.clickgui.element.config;
 
 import coffee.client.feature.config.ListSetting;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.font.adapter.FontAdapter;
 import coffee.client.helper.render.ClipStack;
@@ -94,7 +95,7 @@ public class ListSettingEditor extends SettingEditor<ListSetting<?>> {
                 if (configValue.getValue().getChecked().contains(enumSettingEntry)) {
                     Renderer.R2D.renderCheckmark(
                         stack,
-                        new Color(9, 162, 104),
+                        Themes.getCurrentTheme().getSecondary(),
                         getPositionX() + 1 + indicatorWid / 2,
                         getPositionY() + headerHeight() + offsetY + fa.getFontHeight() / 2d - .5,
                         3,

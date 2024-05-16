@@ -8,6 +8,7 @@ package coffee.client.feature.gui.widget;
 import coffee.client.feature.gui.DoesMSAA;
 import coffee.client.feature.gui.FastTickable;
 import coffee.client.feature.gui.HasSpecialCursor;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.render.Cursor;
 import coffee.client.helper.render.Renderer;
@@ -131,7 +132,7 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
         matrices.scale(MathHelper.lerp(animProgress, 1f, 1.01f), MathHelper.lerp(animProgress, 1f, 1.01f), 1f);
         double originX = -width / 2d;
         double originY = -height / 2d;
-        Renderer.R2D.renderRoundedQuad(matrices, new Color(30, 30, 30), originX, originY, width / 2d, height / 2d, Math.min(height / 2d, 5), 20);
+        Renderer.R2D.renderRoundedQuad(matrices, Themes.getCurrentTheme().getInactive(), originX, originY, width / 2d, height / 2d, Math.min(height / 2d, 5), 20);
         if (animProgress != 0) {
             Renderer.R2D.renderRoundedShadow(
                     matrices,

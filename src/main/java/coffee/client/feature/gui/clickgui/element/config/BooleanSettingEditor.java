@@ -6,6 +6,7 @@
 package coffee.client.feature.gui.clickgui.element.config;
 
 import coffee.client.feature.config.BooleanSetting;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.font.adapter.FontAdapter;
 import coffee.client.helper.render.Renderer;
@@ -55,7 +56,7 @@ public class BooleanSettingEditor extends SettingEditor<BooleanSetting> {
             bruhHeight,
             15
         );
-        Renderer.R2D.renderCircle(stack, new Color(9, 162, 104), ballX, getPositionY() + getHeight() / 2d, ballDim, 20);
+        Renderer.R2D.renderCircle(stack, Themes.getCurrentTheme().getSecondary(), ballX, getPositionY() + getHeight() / 2d, ballDim, 20);
     }
 
     @Override

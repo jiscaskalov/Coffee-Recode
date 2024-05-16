@@ -5,7 +5,6 @@
 
 package coffee.client.feature.module.impl.render;
 
-import coffee.client.feature.gui.theme.ThemeManager;
 import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleRegistry;
 import coffee.client.feature.module.ModuleType;
@@ -121,7 +120,7 @@ public class TabGui extends Module {
             double height = tabPane.entries.size() * oneHeight + padOuter * 2;
 
             double width = padOuter + scrollerWidth + 2 + Math.ceil(widest.width + 1) + 3;
-            Renderer.R2D.renderRoundedQuadWithShadow(stack, ThemeManager.getMainTheme().getConfig(), 0, 0, width, height, 3, 20);
+            Renderer.R2D.renderRoundedQuadWithShadow(stack, Themes.getCurrentTheme().getConfig(), 0, 0, width, height, 3, 20);
             Renderer.R2D.renderRoundedQuad(stack, new Color(60, 60, 60), padOuter, yOffset + scrollerYOffset, width - padOuter, yOffset + scrollerYEnd, 2, 10);
 
             double lastEnabledStackHeight = 0;
@@ -138,7 +137,7 @@ public class TabGui extends Module {
                     if (lastEnabledStackHeight != 0) {
                         Renderer.R2D.renderRoundedQuad(
                             stack,
-                            ThemeManager.getMainTheme().getAccent(),
+                            Themes.getCurrentTheme().getAccent(),
                             scrollerWidth + padOuter,
                             lastEnabledStackY + 1,
                             scrollerWidth + 1.5 + padOuter,

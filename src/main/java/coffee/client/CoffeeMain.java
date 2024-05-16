@@ -11,11 +11,14 @@ import coffee.client.feature.gui.FastTickable;
 import coffee.client.feature.gui.notifications.NotificationRenderer;
 import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleRegistry;
+import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.CompatHelper;
 import coffee.client.helper.event.EventSystem;
 import coffee.client.helper.event.impl.WindowInitEvent;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.manager.ConfigManager;
+import coffee.client.helper.text.CoffeeStarscript;
+import coffee.client.helper.util.Names;
 import coffee.client.helper.util.Rotations;
 import coffee.client.helper.util.Utils;
 import me.x150.jmessenger.MessageSubscription;
@@ -28,6 +31,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -38,7 +42,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class CoffeeMain implements ModInitializer {
 
-    public static final String MOD_NAME = "Coffee";
+    public static final String MOD_NAME = "Coffee-Recode";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "coffee");
@@ -47,7 +51,7 @@ public class CoffeeMain implements ModInitializer {
     public static Thread MODULE_FTTICKER;
     public static Thread FAST_TICKER;
 
-    private static int CLIENT_VERSION = -1;
+    public static int CLIENT_VERSION = -1;
 
     public static int getClientVersion() {
         if (CLIENT_VERSION == -1) {
@@ -93,6 +97,12 @@ public class CoffeeMain implements ModInitializer {
 
         log(Level.INFO, "Loading config");
         ConfigManager.loadState();
+
+        log(Level.INFO, "Loading themes");
+        Themes.init();
+
+        Names.init();
+        CoffeeStarscript.init();
 
         log(Level.INFO, "Checking for compat issues");
         CompatHelper.init();

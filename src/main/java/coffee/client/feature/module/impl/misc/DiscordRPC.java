@@ -5,6 +5,7 @@
 
 package coffee.client.feature.module.impl.misc;
 
+import coffee.client.CoffeeMain;
 import coffee.client.feature.config.StringSetting;
 import coffee.client.feature.gui.notifications.Notification;
 import coffee.client.feature.module.Module;
@@ -23,14 +24,14 @@ public class DiscordRPC extends Module {
     static final ExecutorService offThreadExec = Executors.newFixedThreadPool(1);
     long updateRequested = 0;
     boolean updateOutstanding = false;
-    final StringSetting details = this.config.create(new StringSetting.Builder("Using Coffee").name("Title")
+    final StringSetting details = this.config.create(new StringSetting.Builder("Drinking coffee").name("Title")
         .description("What to put as the title of the rpc")
         .onChanged(s -> update())
         .get());
     final StringSetting state = this.config.create(new StringSetting.Builder("Obliterating minecraft").name("Description")
-        .description("What to put as the description of the rpc")
-        .onChanged(s -> update())
-        .get());
+            .description("What to put as the description of the rpc")
+            .onChanged(s -> update())
+            .get());
     long startTime;
 
     public DiscordRPC() {
@@ -62,12 +63,13 @@ public class DiscordRPC extends Module {
 
     }
 
+
     void setState() {
         RichPresence rp = new RichPresence();
         rp.setDetails(details.getValue());
         rp.setState(state.getValue());
-        rp.setLargeImage("icon", "discord.gg/moles");
-        rp.setSmallImage("haker", "0x150#8918");
+        rp.setLargeImage("icon", String.valueOf(CoffeeMain.CLIENT_VERSION));
+        rp.setSmallImage("cat", "https://discord.gg/tXPcUAgRYF");
         rp.setStart(startTime);
         DiscordIPC.setActivity(rp);
     }
@@ -84,10 +86,14 @@ public class DiscordRPC extends Module {
         startTime = Instant.now().getEpochSecond();
         Notification.create(3000, "Discord RPC", Notification.Type.INFO, "Attempting to connect...");
         offThreadExec.execute(() -> {
-            boolean result = DiscordIPC.start(996048747060543558L, this::applyRpc);
-            if (!result) {
-                Notification.create(5000, "Discord RPC", Notification.Type.ERROR, "Discord isn't open! Open discord and enable the module again.");
-                setEnabled(false);
+            try {
+                boolean result = DiscordIPC.start(1240047051694411786L, this::applyRpc);
+                if (!result) {
+                    Notification.create(5000, "Discord RPC", Notification.Type.ERROR, "Discord isn't open! Open discord and enable the module again.");
+                    setEnabled(false);
+                }
+            } catch (Exception e) {
+                Notification.create(5000, "Discord RPC", Notification.Type.ERROR, "Caught exception in thread: " + e.getMessage());
             }
         });
     }
