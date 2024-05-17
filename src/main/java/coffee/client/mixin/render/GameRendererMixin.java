@@ -73,18 +73,16 @@ public abstract class GameRendererMixin {
         ms.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.getPitch()));
         ms.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(camera.getYaw() + 180.0F));
 
-        /// Injected Code ------------------------------------------------\
-            for (Module module : ModuleRegistry.getModules()) {         ///
-                if (module.isEnabled()) {                               ///
-                    module.onWorldRender(ms);                           ///
-                }                                                       ///
-            }                                                           ///
-            EventSystem.manager.send(new RenderEvent.World(ms));        ///
-            Renderer.R3D.renderFadingBlocks(ms);                        ///
-            Renderer.R3D.renderActions();                               ///
-        /// Injected Code ------------------------------------------------/
+        for (Module module : ModuleRegistry.getModules()) {
+            if (module.isEnabled()) {
+                module.onWorldRender(ms);
+            }
+        }
+        EventSystem.manager.send(new RenderEvent.World(ms));
+        Renderer.R3D.renderFadingBlocks(ms);
+        Renderer.R3D.renderActions();
 
-/// Disabled Code : (disabled msaa)
+/// Disabled msaa for 3d shit because its broken
 //        MSAAFramebuffer.use(false, () -> {
 //            for (Module module : ModuleRegistry.getModules()) {
 //                if (module.isEnabled()) {
