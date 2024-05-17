@@ -45,7 +45,7 @@ public class HudNotification {
     }
 
     public double getHeight() {
-        return pad + Math.max(FontRenderers.getRenderer().getFontHeight(), texDim) + pad;
+        return pad + Math.max(FontRenderers.getAdapter().getFontHeight(), texDim) + pad;
     }
 
     public double easeInOutBack(double x) {
@@ -65,7 +65,7 @@ public class HudNotification {
     }
 
     public void render(MatrixStack stack, double x, double y) {
-        FontAdapter fa = FontRenderers.getRenderer();
+        FontAdapter fa = FontRenderers.getAdapter();
         double anim = getAnimProg();
         double moveAnim = easeInOutBack(MathHelper.clamp(anim, 0, 0.5) * 2);
         double expandAnim = easeInOutBack(MathHelper.clamp(anim, 0.1, 1.1) - .1);

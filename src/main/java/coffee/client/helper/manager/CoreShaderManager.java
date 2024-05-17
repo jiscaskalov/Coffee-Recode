@@ -9,7 +9,7 @@ import coffee.client.CoffeeMain;
 import coffee.client.helper.render.shader.Shader;
 import coffee.client.mixinUtil.ShaderEffectDuck;
 
-public class ShaderManager {
+public class CoreShaderManager {
     public static final Shader BLUR = Shader.create("blur", managedShaderEffect -> managedShaderEffect.setUniformf("radius", 5f));
     public static final Shader LSD = Shader.create("lsd", managedShaderEffect -> {
     });

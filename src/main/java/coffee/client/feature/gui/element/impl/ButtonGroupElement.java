@@ -172,12 +172,12 @@ public class ButtonGroupElement extends Element {
             } else {
                 Renderer.R2D.renderQuad(stack, c, getPositionX(), getPositionY(), getPositionX() + getWidth(), getPositionY() + getHeight());
             }
-            FontRenderers.getRenderer()
+            FontRenderers.getAdapter()
                 .drawCenteredString(
                     stack,
                     t,
                     getPositionX() + getWidth() / 2d,
-                    getPositionY() + getHeight() / 2d - FontRenderers.getRenderer().getFontHeight() / 2d,
+                    getPositionY() + getHeight() / 2d - FontRenderers.getAdapter().getFontHeight() / 2d,
                     1f,
                     1f,
                     1f,

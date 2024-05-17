@@ -18,7 +18,7 @@ public class AreaEffectCloudEntityMixin {
     @ModifyVariable(method = "tick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/MathHelper;ceil(F)I"), index = 4)
     int coffee_modifyIteration(int value) {
         AntiCrash ac = AntiCrash.instance();
-        if (ac.isEnabled() && ac.getCapParticles().getValue()) {
+        if (ac != null && ac.isEnabled() && ac.getCapParticles().getValue()) {
             int partTotal = ((ParticleManagerDuck) CoffeeMain.client.particleManager).getTotalParticles();
             int newCount = partTotal + value;
             if (newCount >= ac.getParticleMax().getValue()) {

@@ -121,23 +121,23 @@ public class Waypoints extends Module {
                 if (Renderer.R2D.isOnScreen(screenSpaceCoordinate)) {
                     real.add(() -> {
                         String t = waypoint.getName();
-                        float width = FontRenderers.getRenderer().getStringWidth(t) + 4;
+                        float width = FontRenderers.getAdapter().getStringWidth(t) + 4;
                         Renderer.R2D.renderRoundedQuad(
                             Renderer.R3D.getEmptyMatrixStack(),
                             new Color(20, 20, 20, 255),
                             screenSpaceCoordinate.x - width / 2d,
-                            screenSpaceCoordinate.y - FontRenderers.getRenderer().getFontHeight() / 2d - 2,
+                            screenSpaceCoordinate.y - FontRenderers.getAdapter().getFontHeight() / 2d - 2,
                             screenSpaceCoordinate.x + width / 2d,
-                            screenSpaceCoordinate.y + FontRenderers.getRenderer().getFontHeight() / 2d + 2,
+                            screenSpaceCoordinate.y + FontRenderers.getAdapter().getFontHeight() / 2d + 2,
                             5,
                             10
                         );
-                        FontRenderers.getRenderer()
+                        FontRenderers.getAdapter()
                             .drawCenteredString(
                                 Renderer.R3D.getEmptyMatrixStack(),
                                 t,
                                 screenSpaceCoordinate.x,
-                                screenSpaceCoordinate.y - FontRenderers.getRenderer().getFontHeight() / 2d,
+                                screenSpaceCoordinate.y - FontRenderers.getAdapter().getFontHeight() / 2d,
                                 1f,
                                 1f,
                                 1f,

@@ -34,7 +34,7 @@ public class ConfigsDisplay extends Element {
     private static final char[] ILLEGAL_CHARACTERS = { '/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':' };
     public static ConfigsDisplay instance;
     final FlexLayoutElement layout;
-    final FontAdapter titleRenderer = FontRenderers.getRenderer();
+    final FontAdapter titleRenderer = FontRenderers.getAdapter();
     boolean held = false;
 
     public ConfigsDisplay(double x, double y, double width) {

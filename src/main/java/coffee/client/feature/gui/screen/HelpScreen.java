@@ -12,7 +12,7 @@ import coffee.client.feature.gui.element.impl.SpacerElement;
 import coffee.client.feature.gui.element.impl.TextElement;
 import coffee.client.feature.gui.screen.base.AAScreen;
 import coffee.client.helper.font.FontRenderers;
-import coffee.client.helper.manager.ShaderManager;
+import coffee.client.helper.manager.CoreShaderManager;
 import coffee.client.helper.render.Renderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -30,13 +30,13 @@ public class HelpScreen extends AAScreen {
     }
 
     private static TextElement constructDefault(String text) {
-        return new TextElement(FontRenderers.getRenderer(), text, sub, false, 0, 0);
+        return new TextElement(FontRenderers.getAdapter(), text, sub, false, 0, 0);
     }
 
     @Override
     protected void initInternal() {
         TextElement title = new TextElement(FontRenderers.getCustomSize(30), "Coffee Manual", Color.WHITE, false, 0, 0);
-        TextElement hello = new TextElement(FontRenderers.getRenderer(), "Welcome to Coffee!", Color.WHITE, false, 0, 0);
+        TextElement hello = new TextElement(FontRenderers.getAdapter(), "Welcome to Coffee!", Color.WHITE, false, 0, 0);
         SpacerElement spacer = new SpacerElement(0, 0, 0, 10);
         TextElement intro = constructDefault("Coffee is an extremely versatile client, suited for a lot of things.");
         FlexLayoutElement element = new FlexLayoutElement(
@@ -60,7 +60,7 @@ public class HelpScreen extends AAScreen {
                 0,
                 0,
                 "If you have more questions, click here to join the discord",
-                FontRenderers.getRenderer(),
+                FontRenderers.getAdapter(),
                 () -> Util.getOperatingSystem().open("https://discord.gg/yxEbQCdDus"),
                 0xFFFFFF
             )
@@ -80,8 +80,8 @@ public class HelpScreen extends AAScreen {
         if (parent != null) {
             parent.render(matrices, -999, -999, delta);
         }
-        ShaderManager.BLUR.setUniformf("progress", (float) 1);
-        ShaderManager.BLUR.render(delta);
+        CoreShaderManager.BLUR.setUniformf("progress", (float) 1);
+        CoreShaderManager.BLUR.render(delta);
         super.render(matrices, mouseX, mouseY, delta);
     }
 

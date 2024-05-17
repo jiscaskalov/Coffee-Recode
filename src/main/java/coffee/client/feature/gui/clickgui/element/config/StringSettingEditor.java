@@ -17,7 +17,7 @@ public class StringSettingEditor extends SettingEditor<StringSetting> {
 
     public StringSettingEditor(double x, double y, double width, StringSetting confValue) {
         super(x, y, width, fa.getFontHeight() + 20, confValue);
-        FontAdapter def = FontRenderers.getRenderer();
+        FontAdapter def = FontRenderers.getAdapter();
         this.rtfw = new TextFieldElement(x, y + fa.getFontHeight(), width, def.getFontHeight() + 2, "");
         this.rtfw.set(confValue.getValue());
         this.rtfw.setChangeListener(() -> this.configValue.setValue(this.rtfw.get()));

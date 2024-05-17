@@ -35,7 +35,8 @@ public abstract class BlockMixin extends AbstractBlock {
 
     @Inject(method = "shouldDrawSide", at = @At("HEAD"), cancellable = true)
     private static void coffee_overwriteDrawingSide(BlockState state, BlockView world, BlockPos pos, Direction side, BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
-        if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
+        XRAY xray = ModuleRegistry.getByClass(XRAY.class);
+        if (xray != null && xray.isEnabled()) {
             cir.setReturnValue(XRAY.blocks.contains(state.getBlock()));
         }
     }
@@ -70,7 +71,7 @@ public abstract class BlockMixin extends AbstractBlock {
 
     @Inject(method = "onEntityLand", at = @At("HEAD"), cancellable = true)
     void coffee_onEntityLandBounce(BlockView world, Entity entity, CallbackInfo ci) {
-        if (getBoing().isEnabled() && entity.getWorld().isClient()) {
+        if (getBoing() != null && getBoing().isEnabled() && entity.getWorld().isClient()) {
             bounce(entity);
             ci.cancel();
         }
@@ -78,7 +79,7 @@ public abstract class BlockMixin extends AbstractBlock {
 
     @Inject(method = "getSlipperiness", at = @At("HEAD"), cancellable = true)
     void coffee_replaceSlipperiness(CallbackInfoReturnable<Float> cir) {
-        if (getSlippy().isEnabled()) {
+        if (getSlippy() != null && getSlippy().isEnabled()) {
             cir.setReturnValue((float) getSlippy().slipperiness);
         }
     }

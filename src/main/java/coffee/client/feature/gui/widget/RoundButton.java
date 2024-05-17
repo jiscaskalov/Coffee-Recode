@@ -5,7 +5,6 @@
 
 package coffee.client.feature.gui.widget;
 
-import coffee.client.feature.gui.DoesMSAA;
 import coffee.client.feature.gui.FastTickable;
 import coffee.client.feature.gui.HasSpecialCursor;
 import coffee.client.feature.module.impl.render.Themes;
@@ -146,12 +145,12 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
                     animProgress * 3
             );
         }
-        FontRenderers.getRenderer()
+        FontRenderers.getAdapter()
                 .drawString(
                         matrices,
                         text,
-                        -FontRenderers.getRenderer().getStringWidth(text) / 2f,
-                        -FontRenderers.getRenderer().getMarginHeight() / 2f,
+                        -FontRenderers.getAdapter().getStringWidth(text) / 2f,
+                        -FontRenderers.getAdapter().getMarginHeight() / 2f,
                         isEnabled() ? textColor.getRGB() : 0xAAAAAA,
                         false
                 );

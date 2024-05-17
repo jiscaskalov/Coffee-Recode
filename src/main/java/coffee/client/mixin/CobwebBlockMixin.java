@@ -23,7 +23,7 @@ public abstract class CobwebBlockMixin {
     @Inject(method = "onEntityCollision", at = @At("HEAD"), cancellable = true)
     void coffee_preventEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, CallbackInfo ci) {
         NoSlow noSlow = ModuleRegistry.getByClass(NoSlow.class);
-        if (entity.equals(CoffeeMain.client.player) && noSlow.isEnabled() && noSlow.isCobwebs()) {
+        if (entity.equals(CoffeeMain.client.player) && noSlow != null && noSlow.isEnabled() && noSlow.isCobwebs()) {
             ci.cancel(); // cancel rest of method
         }
     }

@@ -8,7 +8,7 @@ package coffee.client.feature.module.impl.render;
 import coffee.client.feature.config.annotation.Setting;
 import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleType;
-import coffee.client.helper.manager.ShaderManager;
+import coffee.client.helper.manager.CoreShaderManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
@@ -59,11 +59,11 @@ public class LSD extends Module {
         fadeInTime = MathHelper.clamp(fadeInTime, 0, 1);
         float s = (System.currentTimeMillis() % 5000) / 5000f;
         float time = (System.currentTimeMillis() - startTime) / 5000f;
-        ShaderManager.LSD.setUniformf("strength", fadeInTime);
-        ShaderManager.LSD.setUniformf("time", time);
-        ShaderManager.LSD.setUniformf("seed", s);
-        ShaderManager.LSD.setUniformf("rotations", (float) intensity * fadeInTime);
-        ShaderManager.LSD.render(client.getTickDelta());
+        CoreShaderManager.LSD.setUniformf("strength", fadeInTime);
+        CoreShaderManager.LSD.setUniformf("time", time);
+        CoreShaderManager.LSD.setUniformf("seed", s);
+        CoreShaderManager.LSD.setUniformf("rotations", (float) intensity * fadeInTime);
+        CoreShaderManager.LSD.render(client.getTickDelta());
     }
 
 }

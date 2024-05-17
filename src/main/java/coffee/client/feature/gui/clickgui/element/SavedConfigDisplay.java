@@ -77,9 +77,9 @@ public class SavedConfigDisplay extends Element {
                 }
             }
         }
-        String renderableConfigName = Utils.capAtLength(configName, getWidth() - this.delete.getWidth() - 4, FontRenderers.getRenderer());
-        FontRenderers.getRenderer()
-            .drawString(stack, renderableConfigName, getPositionX() + 2, getPositionY() + getHeight() / 2d - FontRenderers.getRenderer().getFontHeight() / 2d, 0xFFFFFF);
+        String renderableConfigName = Utils.capAtLength(configName, getWidth() - this.delete.getWidth() - 4, FontRenderers.getAdapter());
+        FontRenderers.getAdapter()
+            .drawString(stack, renderableConfigName, getPositionX() + 2, getPositionY() + getHeight() / 2d - FontRenderers.getAdapter().getFontHeight() / 2d, 0xFFFFFF);
         this.delete.setPositionX(getPositionX() + getWidth() - this.delete.getWidth() - 2);
         this.delete.setPositionY(getPositionY() + 2);
         if (hovered) {

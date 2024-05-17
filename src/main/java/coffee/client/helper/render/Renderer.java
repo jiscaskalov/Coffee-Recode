@@ -6,6 +6,7 @@
 package coffee.client.helper.render;
 
 import coffee.client.CoffeeMain;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.Getter;
 import net.minecraft.client.gl.ShaderProgram;
@@ -17,6 +18,7 @@ import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec2f;
@@ -36,8 +38,18 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class Renderer {
+    public static final Identifier star = new Identifier("coffee", "textures/particles/star.png");
+    public static final Identifier heart = new Identifier("coffee", "textures/particles/heart.png");
+    public static final Identifier firefly = new Identifier("coffee", "textures/particles/firefly.png");
+
     public static void setupRender() {
         RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+    }
+
+    public static void stopRender() {
+        RenderSystem.disableBlend();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
 
@@ -610,6 +622,50 @@ public class Renderer {
             );
         }
 
+        public static void renderGradientTexture(MatrixStack matrices, double x0, double y0, double width, double height, float u, float v, double regionWidth, double regionHeight, double textureWidth, double textureHeight,
+                                                 Color c1, Color c2, Color c3, Color c4) {
+            RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
+            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+            renderGradientTextureInternal(bufferBuilder, matrices, x0, y0, width,height, u, v, regionWidth, regionHeight, textureWidth, textureHeight, c1, c2, c3, c4);
+            BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+        }
+
+        public static void renderGradientTextureInternal(BufferBuilder buff, MatrixStack matrices, double x0, double y0, double width, double height, float u, float v, double regionWidth, double regionHeight, double textureWidth, double textureHeight,
+                                                         Color c1, Color c2, Color c3, Color c4) {
+            double x1 = x0 + width;
+            double y1 = y0 + height;
+            double z = 0;
+            Matrix4f matrix = matrices.peek().getPositionMatrix();
+            buff.vertex(matrix, (float) x0, (float) y1, (float) z).texture((u) / (float) textureWidth, (v + (float) regionHeight) / (float) textureHeight).color(c1.getRGB()).next();
+            buff.vertex(matrix, (float) x1, (float) y1, (float) z).texture((u + (float) regionWidth) / (float) textureWidth, (v + (float) regionHeight) / (float) textureHeight).color(c2.getRGB()).next();
+            buff.vertex(matrix, (float) x1, (float) y0, (float) z).texture((u + (float) regionWidth) / (float) textureWidth, (v) / (float) textureHeight).color(c3.getRGB()).next();
+            buff.vertex(matrix, (float) x0, (float) y0, (float) z).texture((u) / (float) textureWidth, (v + 0.0F) / (float) textureHeight).color(c4.getRGB()).next();
+        }
+
+        public static Color rainbow(int delay, float saturation, float brightness) {
+            double rainbow = Math.ceil((System.currentTimeMillis() + delay) / 16f);
+            rainbow %= 360;
+            return Color.getHSBColor((float) (rainbow / 360), saturation, brightness);
+        }
+
+        public static Color rainbow(int speed, int index, float saturation, float brightness, float opacity) {
+            int angle = (int) ((System.currentTimeMillis() / speed + index) % 360);
+            float hue = angle / 360f;
+            Color color = new Color(Color.HSBtoRGB(hue, saturation, brightness));
+            return new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(0, Math.min(255, (int) (opacity * 255))));
+        }
+
+        public static Color fade(int speed, int index, Color color, float alpha) {
+            float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+            int angle = (int) ((System.currentTimeMillis() / speed + index) % 360);
+            angle = (angle > 180 ? 360 - angle : angle) + 180;
+
+            Color colorHSB = new Color(Color.HSBtoRGB(hsb[0], hsb[1], angle / 360f));
+
+            return new Color(colorHSB.getRed(), colorHSB.getGreen(), colorHSB.getBlue(), Math.max(0, Math.min(255, (int) (alpha * 255))));
+        }
+
         public static void renderRoundedShadowInternal(Matrix4f matrix, float cr, float cg, float cb, float ca, double fromX, double fromY, double toX, double toY, double rad, double samples,
                                                        double wid) {
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
@@ -748,6 +804,10 @@ public class Renderer {
             return pos != null && pos.z > -1 && pos.z < 1;
         }
 
+        public static double interpolate(double oldValue, double newValue, double interpolationValue) {
+            return (oldValue + (newValue - oldValue) * interpolationValue);
+        }
+
         public static Vec3d getScreenSpaceCoordinate(Vec3d pos, MatrixStack stack) {
             Camera camera = CoffeeMain.client.getEntityRenderDispatcher().camera;
             Matrix4f matrix = stack.peek().getPositionMatrix();
@@ -791,6 +851,51 @@ public class Renderer {
                 pos.normalize();
                 return new Vec3d(pos.x(), pos.y(), pos.z());
             }
+        }
+
+        public static void drawOrbiz(MatrixStack matrices, float z, final double r, Color c) {
+            Matrix4f matrix = matrices.peek().getPositionMatrix();
+            setupRender();
+            RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+            bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
+            for (int i = 0; i <= 20; i++) {
+                final float x2 = (float) (Math.sin(((i * 56.548656f) / 180f)) * r);
+                final float y2 = (float) (Math.cos(((i * 56.548656f) / 180f)) * r);
+                bufferBuilder.vertex(matrix, x2, y2, z).color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, 0.4f).next();
+            }
+            BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+            stopRender();
+        }
+
+        public static void drawStar(MatrixStack matrices, Color c, float scale) {
+            setupRender();
+            RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE);
+            RenderSystem.setShaderTexture(0, star);
+            RenderSystem.setShaderColor(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
+            renderGradientTexture(matrices, 0, 0, scale, scale, 0, 0, 128, 128, 128, 128,
+                    c, c, c, c);
+            stopRender();
+        }
+
+        public static void drawHeart(MatrixStack matrices, Color c, float scale) {
+            setupRender();
+            RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE);
+            RenderSystem.setShaderTexture(0, heart);
+            RenderSystem.setShaderColor(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
+            renderGradientTexture(matrices, 0, 0, scale, scale, 0, 0, 128, 128, 128, 128,
+                    c, c, c, c);
+            stopRender();
+        }
+
+        public static void drawBloom(MatrixStack matrices, Color c, float scale) {
+            setupRender();
+            RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE);
+            RenderSystem.setShaderTexture(0, firefly);
+            RenderSystem.setShaderColor(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
+            renderGradientTexture(matrices, 0, 0, scale, scale, 0, 0, 128, 128, 128, 128,
+                    c, c, c, c);
+            stopRender();
         }
 
         public static void renderQuad(MatrixStack matrices, Color c, double x1, double y1, double x2, double y2) {

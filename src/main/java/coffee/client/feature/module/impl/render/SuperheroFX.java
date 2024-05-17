@@ -207,19 +207,19 @@ public class SuperheroFX extends Module {
                     double scaler = size / 32d;
                     MatrixStack st = Renderer.R3D.getEmptyMatrixStack();
                     st.translate(screenSpace.x, screenSpace.y, 0);
-                    st.translate(0, getRenderer().getFontHeight() / 2d, 0);
+                    st.translate(0, getRenderer().getFontHeight(entry.text) / 2d, 0);
                     st.scale((float) (1 - fadeProg), (float) (1 - fadeProg), 1);
 
                     st.scale((float) scaler, (float) scaler, 1);
                     st.scale(1 + (float) ((entry.randomSize - .5) * sizeRandom), 1 + (float) ((entry.randomSize - .5) * sizeRandom), 1);
                     if (shadows) {
-                        getRenderer().drawCenteredString(st, entry.text, 1f, 1f - getRenderer().getFontHeight() / 2f, .05f, .05f, .05f, 1f);
+                        getRenderer().drawCenteredString(st, entry.text, 1f, 1f - getRenderer().getFontHeight(entry.text) / 2f, .05f, .05f, .05f, 1f);
                     }
                     getRenderer().drawCenteredString(
                         st,
                         entry.text,
                         0f,
-                        -getRenderer().getFontHeight() / 2f,
+                        -getRenderer().getFontHeight(entry.text) / 2f,
                         a.getRed() / 255f,
                         a.getGreen() / 255f,
                         a.getBlue() / 255f,

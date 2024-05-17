@@ -10,21 +10,25 @@ import coffee.client.feature.module.ModuleRegistry;
 import coffee.client.feature.module.impl.misc.AntiCrash;
 import coffee.client.feature.module.impl.render.BlockHighlighting;
 import coffee.client.feature.module.impl.render.ESP;
+import coffee.client.feature.module.impl.render.Shaders;
 import coffee.client.helper.event.EventSystem;
 import coffee.client.helper.event.impl.ChunkRenderQuery;
-import coffee.client.helper.manager.ShaderManager;
+import coffee.client.helper.manager.CoreShaderManager;
+import coffee.client.helper.render.shader.ShaderManager;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.PostEffectProcessor;
 import net.minecraft.client.render.BlockBreakingInfo;
 import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -35,6 +39,8 @@ import java.util.stream.StreamSupport;
 
 @Mixin(WorldRenderer.class)
 public class WorldRendererMixin {
+    @Shadow @Final private MinecraftClient client;
+
     @ModifyArg(method = "render",
                at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;setupTerrain(Lnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/Frustum;ZZ)V"), index = 3)
     private boolean coffee_renderEverything(boolean spectator) {
@@ -46,17 +52,21 @@ public class WorldRendererMixin {
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gl/PostEffectProcessor;render(F)V", ordinal = 0))
     void coffee_replaceShader(PostEffectProcessor instance, float tickDelta) {
         ESP byClass = ModuleRegistry.getByClass(ESP.class);
-        if (byClass.isEnabled() && byClass.outlineMode == ESP.Mode.Shader) {
-            ShaderManager.OUTLINE.render(tickDelta);
-        } else {
-            instance.render(tickDelta);
+        Shaders shad = ModuleRegistry.getByClass(Shaders.class);
+        if (shad != null && shad.isEnabled() && client.world != null) {
+            ShaderManager.Shader shaders = shad.mode.getValue();
+            CoffeeMain.SHADER_MANAGER.setupShader(shaders, CoffeeMain.SHADER_MANAGER.getShaderOutline(shaders));
         }
+        else instance.render(tickDelta);
+        if (byClass != null && byClass.isEnabled() && byClass.outlineMode == ESP.Mode.Shader) {
+            CoreShaderManager.OUTLINE.render(tickDelta);
+        } else instance.render(tickDelta);
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/longs/Long2ObjectMap;long2ObjectEntrySet()Lit/unimi/dsi/fastutil/objects/ObjectSet;", remap = false))
     ObjectSet<Long2ObjectMap.Entry<SortedSet<BlockBreakingInfo>>> coffee_highlightBlocks(Long2ObjectMap instance) {
         BlockHighlighting bbr = ModuleRegistry.getByClass(BlockHighlighting.class);
-        if (bbr.isEnabled()) {
+        if (bbr != null && bbr.isEnabled()) {
             return ObjectSet.of();
         }
         return instance.long2ObjectEntrySet();
@@ -66,7 +76,7 @@ public class WorldRendererMixin {
     Iterable<Entity> coffee_filterEntities(ClientWorld instance) {
         AntiCrash inst = ModuleRegistry.getByClass(AntiCrash.class);
         Iterable<Entity> entities = instance.getEntities();
-        if (!inst.isEnabled() || !inst.getHideMassEntities().getValue()) {
+        if (inst == null || !inst.isEnabled() || !inst.getHideMassEntities().getValue()) {
             return entities;
         }
         Object2IntMap<EntityType<?>> entityTypeCount = new Object2IntArrayMap<>();

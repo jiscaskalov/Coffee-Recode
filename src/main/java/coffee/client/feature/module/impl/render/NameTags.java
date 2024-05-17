@@ -49,7 +49,7 @@ public class NameTags extends Module {
     }
 
     void drawInternal(Vec3d screenPos, String text, AbstractClientPlayerEntity entity) {
-        FontAdapter nameDrawer = FontRenderers.getRenderer();
+        FontAdapter nameDrawer = FontRenderers.getAdapter();
         FontAdapter infoDrawer = FontRenderers.getCustomSize(12);
         double healthHeight = 2;
         double labelHeight = 2 + nameDrawer.getFontHeight() + infoDrawer.getFontHeight() + 2 + healthHeight + 2;

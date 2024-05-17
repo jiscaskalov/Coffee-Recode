@@ -33,7 +33,7 @@ public abstract class PlayerEntityMixin {
     @Inject(method = "getMovementSpeed", at = @At("RETURN"), cancellable = true)
     void coffee_overwriteMovementSpeed(CallbackInfoReturnable<Float> cir) {
         VanillaSpeed hs = ModuleRegistry.getByClass(VanillaSpeed.class);
-        if (!hs.isEnabled() || !equals(CoffeeMain.client.player)) {
+        if (hs == null || !hs.isEnabled() || !equals(CoffeeMain.client.player)) {
             return;
         }
         cir.setReturnValue((float) (cir.getReturnValue() * hs.speed.getValue()));
@@ -44,8 +44,9 @@ public abstract class PlayerEntityMixin {
         if (!this.equals(CoffeeMain.client.player)) {
             return;
         }
-        if (ModuleRegistry.getByClass(LongJump.class).isEnabled()) {
-            ModuleRegistry.getByClass(LongJump.class).applyLongJumpVelocity();
+        LongJump lj = ModuleRegistry.getByClass(LongJump.class);
+        if (lj != null && lj.isEnabled()) {
+            lj.applyLongJumpVelocity();
         }
     }
 }

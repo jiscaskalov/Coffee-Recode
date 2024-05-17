@@ -141,12 +141,12 @@ public class ShowTntPrime extends Module {
         MatrixStack nothing = Renderer.R3D.getEmptyMatrixStack();
         Vec2f root = Renderer.R2D.renderTooltip(nothing, new Color(20, 20, 20), screenSpacePos.x, screenSpacePos.y, 30, 30, true);
         String txt = String.valueOf(Utils.Math.roundToDecimal(entity.getFuse() / 20d, 1));
-        FontRenderers.getRenderer()
+        FontRenderers.getAdapter()
             .drawString(
                 nothing,
                 txt,
-                root.x + cWidth / 2d - FontRenderers.getRenderer().getStringWidth(txt) / 2d,
-                root.y + cHeight / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d,
+                root.x + cWidth / 2d - FontRenderers.getAdapter().getStringWidth(txt) / 2d,
+                root.y + cHeight / 2d - FontRenderers.getAdapter().getMarginHeight() / 2d,
                 0xFFFFFF
             );
         semicircle(

@@ -15,7 +15,7 @@ import coffee.client.feature.module.Module;
 import coffee.client.feature.module.ModuleRegistry;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.font.adapter.FontAdapter;
-import coffee.client.helper.manager.ShaderManager;
+import coffee.client.helper.manager.CoreShaderManager;
 import coffee.client.helper.render.ClipStack;
 import coffee.client.helper.render.Rectangle;
 import coffee.client.helper.render.Renderer;
@@ -149,8 +149,8 @@ public class SpotlightScreen extends ClientScreen implements FastTickable {
         if (anim == 0 && closing) {
             client.setScreen(null);
         }
-        ShaderManager.BLUR.setUniformf("progress", (float) anim);
-        ShaderManager.BLUR.render(delta);
+        CoreShaderManager.BLUR.setUniformf("progress", (float) anim);
+        CoreShaderManager.BLUR.render(delta);
         super.render(matrices, mouseX, mouseY, delta);
     }
 
@@ -856,13 +856,13 @@ public class SpotlightScreen extends ClientScreen implements FastTickable {
                 Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), x, y, x + wid, y + height(), 5, 20);
             }
             Texture.ACTION_TYPES.bindAndDraw(stack, x + padUpDown, yCenter - contentSize / 2d, contentSize, contentSize, icon);
-            FontRenderers.getRenderer().drawString(stack, title, x + padUpDown + contentSize + padUpDown, yCenter - contentSize / 2d, 0xAAAAAA);
-            FontRenderers.getRenderer()
-                .drawString(stack, text, x + padUpDown + contentSize + padUpDown, yCenter - contentSize / 2d + FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
+            FontRenderers.getAdapter().drawString(stack, title, x + padUpDown + contentSize + padUpDown, yCenter - contentSize / 2d, 0xAAAAAA);
+            FontRenderers.getAdapter()
+                .drawString(stack, text, x + padUpDown + contentSize + padUpDown, yCenter - contentSize / 2d + FontRenderers.getAdapter().getMarginHeight(), 0xFFFFFF);
         }
 
         public double height() {
-            return FontRenderers.getRenderer().getFontHeight() * 2 + padUpDown * 2;
+            return FontRenderers.getAdapter().getFontHeight() * 2 + padUpDown * 2;
         }
 
         public void clicked(double mx, double my) {

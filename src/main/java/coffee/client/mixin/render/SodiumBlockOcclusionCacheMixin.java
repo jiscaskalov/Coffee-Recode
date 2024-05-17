@@ -25,7 +25,8 @@ import java.util.Objects;
 public class SodiumBlockOcclusionCacheMixin {
     @Inject(method = "shouldDrawSide", at = @At("RETURN"), cancellable = true)
     void real(BlockState state, BlockView view, BlockPos pos, Direction facing, CallbackInfoReturnable<Boolean> cir) {
-        if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
+        XRAY xray = ModuleRegistry.getByClass(XRAY.class);
+        if (xray != null && xray.isEnabled()) {
             cir.setReturnValue(XRAY.blocks.contains(state.getBlock()));
         }
     }

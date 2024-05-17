@@ -19,7 +19,7 @@ public class BossBarHudMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     void coffee_disableRender(DrawContext context, CallbackInfo ci) {
         AntiCrash ac = AntiCrash.instance();
-        if (ac.getDisableBossbars().getValue() && ac.isEnabled()) {
+        if (ac != null && ac.getDisableBossbars().getValue() && ac.isEnabled()) {
             ci.cancel();
         }
     }

@@ -19,7 +19,6 @@ import coffee.client.helper.render.Renderer;
 import coffee.client.helper.render.Texture;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
@@ -145,8 +144,8 @@ public class HomeScreen extends AAScreen {
         propFr.drawString(stack, "Changelog", 6, 6, 0xFFFFFF, false);
         double yoff = 6 + propFr.getMarginHeight();
         for (String s : changelog.split("\n")) {
-            FontRenderers.getRenderer().drawString(stack, s, 6, (float) yoff, 0xAAAAAA, false);
-            yoff += FontRenderers.getRenderer().getMarginHeight();
+            FontRenderers.getAdapter().drawString(stack, s, 6, (float) yoff, 0xAAAAAA, false);
+            yoff += FontRenderers.getAdapter().getMarginHeight();
         }
 
         double origW = 1024, origH = 1024;
@@ -185,7 +184,7 @@ public class HomeScreen extends AAScreen {
         }
         RenderSystem.defaultBlendFunc();
 
-        FontAdapter fa = FontRenderers.getRenderer();
+        FontAdapter fa = FontRenderers.getAdapter();
         String uname = CoffeeMain.client.getSession().getUsername();
         double unameWidth = fa.getStringWidth(uname);
         fa.drawString(stack, uname, width - padding - texDim - padding - unameWidth, padding + texDim / 2d - fa.getFontHeight() / 2d, 0xFFFFFF);

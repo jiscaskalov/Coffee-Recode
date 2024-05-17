@@ -10,8 +10,6 @@ import coffee.client.feature.command.impl.SelfDestruct;
 import coffee.client.feature.gui.element.impl.TextElement;
 import coffee.client.feature.gui.screen.ProxyManagerScreen;
 import coffee.client.feature.gui.widget.RoundButton;
-import coffee.client.helper.font.FontRenderers;
-import coffee.client.helper.font.renderer.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;

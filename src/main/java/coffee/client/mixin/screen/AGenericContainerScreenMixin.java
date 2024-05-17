@@ -55,7 +55,7 @@ public abstract class AGenericContainerScreenMixin extends Screen implements Fas
     @Override
     public void onFastTick() {
         InventoryWalk iw = ModuleRegistry.getByClass(InventoryWalk.class);
-        if (iw.isEnabled() && iw.mouseInInventory) {
+        if (iw != null && iw.isEnabled() && iw.mouseInInventory) {
             Rotations.lookAtPositionSmooth(MathHelper.clamp(initialPitch + pitchOffset, -90.0F, 90.0F), initialYaw + yawOffset, iw.getMSpeed());
         }
     }
@@ -71,7 +71,8 @@ public abstract class AGenericContainerScreenMixin extends Screen implements Fas
 
     @Inject(method = "tick", at = @At("HEAD"))
     public void coffee_preTick(CallbackInfo ci) {
-        if (!ModuleRegistry.getByClass(InventoryWalk.class).isEnabled()) {
+        InventoryWalk iw = ModuleRegistry.getByClass(InventoryWalk.class);
+        if (iw == null || !iw.isEnabled()) {
             return;
         }
         GameOptions go = CoffeeMain.client.options;

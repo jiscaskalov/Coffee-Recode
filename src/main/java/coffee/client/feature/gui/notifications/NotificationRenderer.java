@@ -59,7 +59,7 @@ public class NotificationRenderer {
         float minWidth = 50;
         long c = System.currentTimeMillis();
         ArrayList<Notification> nf = new ArrayList<>(topBarNotifications);
-        nf.sort(Comparator.comparingDouble(value -> -FontRenderers.getRenderer().getStringWidth(String.join(" ", value.contents))));
+        nf.sort(Comparator.comparingDouble(value -> -FontRenderers.getAdapter().getStringWidth(String.join(" ", value.contents))));
         for (Notification notification : nf) {
             double timeRemaining = Math.abs(c - notification.creationDate - notification.duration) / (double) notification.duration;
             timeRemaining = MathHelper.clamp(timeRemaining, 0, 1);
@@ -88,7 +88,7 @@ public class NotificationRenderer {
             }
             notification.shouldDoAnimation = notification.animationGoal != notification.animationProgress;
             String contents = String.join(" ", notification.contents);
-            float width = FontRenderers.getRenderer().getStringWidth(contents) + 5;
+            float width = FontRenderers.getAdapter().getStringWidth(contents) + 5;
             width = width / 2f;
             width = Math.max(minWidth, width);
             ClipStack.globalInstance.addWindow(
@@ -108,12 +108,12 @@ public class NotificationRenderer {
                 notification.renderPosX + width + 1,
                 notification.renderPosY + height
             );
-            FontRenderers.getRenderer()
+            FontRenderers.getAdapter()
                 .drawCenteredString(
                     ms,
                     contents,
                     notification.renderPosX,
-                    notification.renderPosY + height / 2f - FontRenderers.getRenderer().getFontHeight() / 2f,
+                    notification.renderPosY + height / 2f - FontRenderers.getAdapter().getFontHeight() / 2f,
                     0xFFFFFF
                 );
             double timeRemainingInv = 1 - timeRemaining;
@@ -164,7 +164,7 @@ public class NotificationRenderer {
         double yOffset = 0;
         double bottomRightStartX = CoffeeMain.client.getWindow().getScaledWidth() - padding;
         double bottomRightStartY = CoffeeMain.client.getWindow().getScaledHeight() - padding;
-        FontAdapter fontRenderer = FontRenderers.getRenderer();
+        FontAdapter fontRenderer = FontRenderers.getAdapter();
         double texPadding = 4;
         double iconDimensions = 24;
         double minWidth = 100;

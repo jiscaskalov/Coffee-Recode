@@ -183,19 +183,19 @@ public class ModuleDisplay extends Element {
             cachedSegment = null;
         }
         if (cachedSegment != null) {
-            ((RendererFontAdapter) FontRenderers.getRenderer()).drawString(
+            ((RendererFontAdapter) FontRenderers.getAdapter()).drawString(
                 stack,
                 cachedSegment,
                 (float) getPositionX() + 6,
-                (float) (getPositionY() + bruhHeight / 2d - FontRenderers.getRenderer().getFontHeight() / 2d)
+                (float) (getPositionY() + bruhHeight / 2d - FontRenderers.getAdapter().getFontHeight() / 2d)
             );
         } else {
-            FontRenderers.getRenderer()
+            FontRenderers.getAdapter()
                 .drawString(
                     stack,
                     module.getName(),
                     (float) getPositionX() + 6,
-                    (float) (getPositionY() + bruhHeight / 2d - FontRenderers.getRenderer().getFontHeight() / 2d),
+                    (float) (getPositionY() + bruhHeight / 2d - FontRenderers.getAdapter().getFontHeight() / 2d),
                     1f,
                     1f,
                     1f,

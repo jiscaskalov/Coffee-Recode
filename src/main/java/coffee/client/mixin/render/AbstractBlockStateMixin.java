@@ -20,7 +20,8 @@ public class AbstractBlockStateMixin {
 
     @Inject(method = "getLuminance", at = @At("HEAD"), cancellable = true)
     public void coffee_luminateBlock(CallbackInfoReturnable<Integer> cir) {
-        if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
+        XRAY xray = ModuleRegistry.getByClass(XRAY.class);
+        if (xray != null && xray.isEnabled()) {
             cir.setReturnValue(15);
         }
     }

@@ -11,7 +11,6 @@ import coffee.client.helper.render.Texture;
 import com.mojang.blaze3d.systems.RenderSystem;
 //import net.minecraft.client.gui.DrawableHelper;
 import me.x150.renderer.render.Renderer2d;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class Taco extends HudElement {
@@ -26,7 +25,7 @@ public class Taco extends HudElement {
         }
         coffee.client.feature.command.impl.Taco.Frame frame = coffee.client.feature.command.impl.Taco.getCurrentFrame();
         if (frame == null) {
-            FontRenderers.getRenderer().drawString(stack, "Nothing to show", 0, 0, 0xFFFFFF);
+            FontRenderers.getAdapter().drawString(stack, "Nothing to show", 0, 0, 0xFFFFFF);
             return;
         }
         Texture current = frame.getI();

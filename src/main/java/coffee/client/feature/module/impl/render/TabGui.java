@@ -57,8 +57,8 @@ public class TabGui extends Module {
                             module::isEnabled,
                             module::toggle,
                             tabStack::pop,
-                            FontRenderers.getRenderer().getStringWidth(module.getName()),
-                            FontRenderers.getRenderer().getMarginHeight()
+                            FontRenderers.getAdapter().getStringWidth(module.getName()),
+                            FontRenderers.getAdapter().getMarginHeight()
                         );
                         modules.entries.add(ge1);
                     }
@@ -67,7 +67,7 @@ public class TabGui extends Module {
                     }
                     tabStack.add(modules);
                 }, () -> {
-                }, FontRenderers.getRenderer().getStringWidth(value.getName()), FontRenderers.getRenderer().getMarginHeight());
+                }, FontRenderers.getAdapter().getStringWidth(value.getName()), FontRenderers.getAdapter().getMarginHeight());
                 tbp.entries.add(ge);
             }
             tabStack.add(tbp);
@@ -114,7 +114,7 @@ public class TabGui extends Module {
             double padOuter = 2;
             double scrollerWidth = 1.5;
             double yOffset = padOuter;
-            double oneHeight = FontRenderers.getRenderer().getMarginHeight();
+            double oneHeight = FontRenderers.getAdapter().getMarginHeight();
             double scrollerYOffset = tabPane.smoothCursor * oneHeight;
             double scrollerYEnd = (tabPane.smoothCursor + 1) * oneHeight;
             double height = tabPane.entries.size() * oneHeight + padOuter * 2;
@@ -152,7 +152,7 @@ public class TabGui extends Module {
                 yOff += oneHeight;
             }
             for (GuiEntry entry : tabPane.entries) {
-                FontRenderers.getRenderer()
+                FontRenderers.getAdapter()
                     .drawString(
                         stack,
                         entry.text,

@@ -43,13 +43,17 @@ public class ClientPlayerEntityMixin {
 
     @Redirect(method = "updateNausea", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;shouldPause()Z"))
     public boolean coffee_overwritePauseScreen(Screen screen) {
-        return Objects.requireNonNull(ModuleRegistry.getByClass(PortalGUI.class)).isEnabled() || screen.shouldPause();
+        PortalGUI pg = ModuleRegistry.getByClass(PortalGUI.class);
+        return pg != null && pg.isEnabled() || screen.shouldPause();
     }
 
     @Inject(method = "pushOutOfBlocks", at = @At("HEAD"), cancellable = true)
     public void coffee_preventPush(double x, double z, CallbackInfo ci) {
-        if (Objects.requireNonNull(ModuleRegistry.getByClass(Freecam.class)).isEnabled() || Objects.requireNonNull(ModuleRegistry.getByClass(NoPush.class))
-            .isEnabled() || Objects.requireNonNull(ModuleRegistry.getByClass(Phase.class)).isEnabled()) {
+        Freecam freecam = ModuleRegistry.getByClass(Freecam.class);
+        NoPush noPush = ModuleRegistry.getByClass(NoPush.class);
+        Phase phase = ModuleRegistry.getByClass(Phase.class);
+        if (freecam == null || noPush == null || phase == null) return;
+        if (freecam.isEnabled() || noPush.isEnabled() || phase.isEnabled()) {
             ci.cancel();
         }
     }
@@ -75,7 +79,7 @@ public class ClientPlayerEntityMixin {
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"), require = 0)
     boolean coffee_fakeIsUsingItem(ClientPlayerEntity instance) {
         NoSlow noSlow = ModuleRegistry.getByClass(NoSlow.class);
-        if (this.equals(CoffeeMain.client.player) && noSlow.isEnabled() && noSlow.isEating()) {
+        if (this.equals(CoffeeMain.client.player) && noSlow != null && noSlow.isEnabled() && noSlow.isEating()) {
             return false;
         }
         return instance.isUsingItem();

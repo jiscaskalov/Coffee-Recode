@@ -231,7 +231,7 @@ MatrixStack stack = stack2.getMatrices();
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
             FontAdapter title = FontRenderers.getCustomSize(30);
-            FontAdapter normal = FontRenderers.getRenderer();
+            FontAdapter normal = FontRenderers.getAdapter();
             double entireHeight = title.getFontHeight() + normal.getFontHeight() * 2d;
             if (addon.isEnabled()) {
                 title.drawString(stack, addon.name, (float) (x + padding + iconDimensions + padding), (float) (y + getHeight() / 2d - entireHeight / 2d), 0xFFFFFF);

@@ -14,10 +14,10 @@ public class TabGui extends HudElement {
     coffee.client.feature.module.impl.render.TabGui tgui;
 
     public TabGui() {
-        super("Tab gui", 5, 100, 0, ModuleType.values().length * FontRenderers.getRenderer().getMarginHeight() + 4);
+        super("Tab gui", 5, 100, 0, ModuleType.values().length * FontRenderers.getAdapter().getMarginHeight() + 4);
         double longest = 0;
         for (ModuleType value : ModuleType.values()) {
-            longest = Math.max(FontRenderers.getRenderer().getStringWidth(value.getName()), longest);
+            longest = Math.max(FontRenderers.getAdapter().getStringWidth(value.getName()), longest);
         }
         longest = Math.ceil(longest + 1);
         width = 2 + 1.5 + 2 + longest + 3;

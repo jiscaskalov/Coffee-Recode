@@ -14,7 +14,7 @@ import coffee.client.feature.gui.screen.base.AAScreen;
 import coffee.client.feature.module.ModuleType;
 import coffee.client.feature.module.impl.render.Themes;
 import coffee.client.helper.font.FontRenderers;
-import coffee.client.helper.manager.ShaderManager;
+import coffee.client.helper.manager.CoreShaderManager;
 import coffee.client.helper.render.AlphaOverride;
 import coffee.client.helper.render.Renderer;
 import coffee.client.helper.util.Transitions;
@@ -25,7 +25,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -85,9 +84,9 @@ public class ClickGUI extends AAScreen {
     protected void initInternal() {
         help = new ClickableTextElement(
             5,
-            client.getWindow().getScaledHeight() - FontRenderers.getRenderer().getFontHeight() - 5,
+            client.getWindow().getScaledHeight() - FontRenderers.getAdapter().getFontHeight() - 5,
             "Click me for help",
-            FontRenderers.getRenderer(),
+            FontRenderers.getAdapter(),
             () -> client.setScreen(new HelpScreen(this)),
             0xCCCCCC
         );
@@ -207,8 +206,8 @@ public class ClickGUI extends AAScreen {
         }
         MatrixStack matrices = m1atrices.getMatrices();
         double interpolated = Transitions.easeOutExpo(progress);
-        ShaderManager.BLUR.setUniformf("progress", (float) interpolated);
-        ShaderManager.BLUR.render(delta);
+        CoreShaderManager.BLUR.setUniformf("progress", (float) interpolated);
+        CoreShaderManager.BLUR.render(delta);
         matrices.push();
         double maxScale = 1.02;
         double minScale = 1;
@@ -239,9 +238,9 @@ public class ClickGUI extends AAScreen {
         if (searchAnim != 0) {
             stack.push();
             double pad = 2;
-            double hei = pad + FontRenderers.getRenderer().getFontHeight() + pad;
+            double hei = pad + FontRenderers.getAdapter().getFontHeight() + pad;
             stack.translate(0, (hei + pad) * (1 - Transitions.easeOutExpo(searchAnim)), 0);
-            double textWid = FontRenderers.getRenderer().getStringWidth(oldSearchTerm);
+            double textWid = FontRenderers.getAdapter().getStringWidth(oldSearchTerm);
             Renderer.R2D.renderRoundedQuad(
                 stack,
                     Themes.getCurrentTheme().getInactive(),
@@ -255,21 +254,21 @@ public class ClickGUI extends AAScreen {
                 2,
                 10
             );
-            FontRenderers.getRenderer()
-                .drawString(stack, oldSearchTerm, width - pad - pad - textWid, height - pad - pad - FontRenderers.getRenderer().getFontHeight(), 0xFFFFFF);
+            FontRenderers.getAdapter()
+                .drawString(stack, oldSearchTerm, width - pad - pad - textWid, height - pad - pad - FontRenderers.getAdapter().getFontHeight(), 0xFFFFFF);
             stack.pop();
         }
         if (tooltipContent != null) {
             String[] split = tooltipContent.split("\n");
-            double height = FontRenderers.getRenderer().getFontHeight() * split.length + 2;
-            double width = Arrays.stream(split).map(s -> FontRenderers.getRenderer().getStringWidth(s)).max(Comparator.comparingDouble(value -> value)).orElse(0f) + 4f;
+            double height = FontRenderers.getAdapter().getFontHeight() * split.length + 2;
+            double width = Arrays.stream(split).map(s -> FontRenderers.getAdapter().getStringWidth(s)).max(Comparator.comparingDouble(value -> value)).orElse(0f) + 4f;
             double tooltipX = Math.min(this.tooltipX, this.width - 4 - width);
 
             Renderer.R2D.renderRoundedQuadWithShadow(stack, Themes.getCurrentTheme().getInactive(), tooltipX, tooltipY, tooltipX + width, tooltipY + height, 2, 6);
             double y = 0;
             for (String s : split) {
-                FontRenderers.getRenderer().drawString(stack, s, tooltipX + 2, tooltipY + 1 + y, 0xFFFFFF);
-                y += FontRenderers.getRenderer().getFontHeight();
+                FontRenderers.getAdapter().drawString(stack, s, tooltipX + 2, tooltipY + 1 + y, 0xFFFFFF);
+                y += FontRenderers.getAdapter().getFontHeight();
             }
 
             tooltipContent = null;

@@ -20,7 +20,6 @@ import coffee.client.helper.render.textures.Texture;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.util.math.MatrixStack;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class CategoryDisplay extends Element {
     final ModuleType type;
     final List<Module> modules = new ArrayList<>();
     final FlexLayoutElement layout;
-    final FontAdapter titleRenderer = FontRenderers.getRenderer();
+    final FontAdapter titleRenderer = FontRenderers.getAdapter();
 
 
     boolean held = false;

@@ -17,6 +17,7 @@ import coffee.client.helper.event.EventSystem;
 import coffee.client.helper.event.impl.WindowInitEvent;
 import coffee.client.helper.font.FontRenderers;
 import coffee.client.helper.manager.ConfigManager;
+import coffee.client.helper.render.shader.ShaderManager;
 import coffee.client.helper.text.CoffeeStarscript;
 import coffee.client.helper.util.Names;
 import coffee.client.helper.util.Rotations;
@@ -33,6 +34,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +52,7 @@ public class CoffeeMain implements ModInitializer {
     public static CoffeeMain INSTANCE;
     public static Thread MODULE_FTTICKER;
     public static Thread FAST_TICKER;
+    public static ShaderManager SHADER_MANAGER = new ShaderManager();
 
     public static int CLIENT_VERSION = -1;
 
@@ -111,7 +114,13 @@ public class CoffeeMain implements ModInitializer {
     }
 
     void initFonts() {
-        FontRenderers.setRenderer(FontRenderers.getCustomSize(18f));
+        try {
+            FontRenderers.renderer = FontRenderers.create(18f, "Font");
+            FontRenderers.setAdapter(FontRenderers.getCustomSize(18f));
+        } catch (IOException | FontFormatException | NullPointerException e) {
+            String[] klass = e.getClass().getName().split("\\.");
+            log(Level.FATAL, "Caught '%s' while initializing fonts: %s".formatted(klass[klass.length - 1], e.getStackTrace()));
+        }
     }
 
     void tickModulesNWC() {

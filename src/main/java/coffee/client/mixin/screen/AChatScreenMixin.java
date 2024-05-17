@@ -147,17 +147,17 @@ public class AChatScreenMixin extends Screen {
         if (suggestions.isEmpty()) {
             return;
         }
-        double probableHeight = suggestions.size() * FontRenderers.getRenderer().getMarginHeight() + padding();
+        double probableHeight = suggestions.size() * FontRenderers.getAdapter().getMarginHeight() + padding();
         float yC = (float) (chatField.getY() - padding() - probableHeight);
         double probableWidth = 0;
         for (String suggestion : suggestions) {
-            probableWidth = Math.max(probableWidth, FontRenderers.getRenderer().getStringWidth(suggestion) + 1);
+            probableWidth = Math.max(probableWidth, FontRenderers.getAdapter().getStringWidth(suggestion) + 1);
         }
         float xC = (float) cmdXS;
         Renderer.R2D.renderRoundedQuad(stack, new Color(30, 30, 30, 255), xC - padding(), yC - padding(), xC + probableWidth + padding(), yC + probableHeight, 5, 20);
         for (String suggestion : suggestions) {
-            FontRenderers.getRenderer().drawString(stack, suggestion, xC, yC, 0xFFFFFF, false);
-            yC += FontRenderers.getRenderer().getMarginHeight();
+            FontRenderers.getAdapter().drawString(stack, suggestion, xC, yC, 0xFFFFFF, false);
+            yC += FontRenderers.getAdapter().getMarginHeight();
         }
     }
 
@@ -209,10 +209,11 @@ public class AChatScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("TAIL"))
     public void coffee_init(CallbackInfo ci) {
+        InfChatLength icl = ModuleRegistry.getByClass(InfChatLength.class);
         if (SelfDestruct.shouldSelfDestruct()) {
             return;
         }
-        chatField.setMaxLength(ModuleRegistry.getByClass(InfChatLength.class).isEnabled() ? Integer.MAX_VALUE : 256);
+        chatField.setMaxLength((icl != null && icl.isEnabled()) ? Integer.MAX_VALUE : 256);
         chatField.setRenderTextProvider((s, integer) -> {
             String t;
             if (integer == 0) {

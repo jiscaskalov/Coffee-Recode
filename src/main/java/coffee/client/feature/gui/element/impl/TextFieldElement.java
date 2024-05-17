@@ -84,8 +84,8 @@ public class TextFieldElement extends Element implements HasSpecialCursor {
             char[] chars = text.toCharArray();
             int foundIndex = -1;
             for (int i = 0; i < chars.length; i++) {
-                currentWidth += FontRenderers.getRenderer().getStringWidth(String.valueOf(chars[i]));
-                if (start + currentWidth - FontRenderers.getRenderer().getStringWidth(String.valueOf(chars[i])) / 2 >= x) {
+                currentWidth += FontRenderers.getAdapter().getStringWidth(String.valueOf(chars[i]));
+                if (start + currentWidth - FontRenderers.getAdapter().getStringWidth(String.valueOf(chars[i])) / 2 >= x) {
                     foundIndex = i;
                     break;
                 }
@@ -369,7 +369,7 @@ public class TextFieldElement extends Element implements HasSpecialCursor {
         mouseOver = inBounds(mouseX, mouseY);
         double pad = 2;
         double overflowWidth = getOverflowWidthForRender();
-        double innerHeight = FontRenderers.getRenderer().getFontHeight();
+        double innerHeight = FontRenderers.getAdapter().getFontHeight();
         double centerY = getPositionY() + height / 2d - innerHeight / 2d;
 
         Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), getPositionX(), getPositionY(), getPositionX() + width, getPositionY() + height, radius, 10);
@@ -393,16 +393,16 @@ public class TextFieldElement extends Element implements HasSpecialCursor {
         ClipStack.globalInstance.addWindow(stack, new Rectangle(getPositionX() + pad, getPositionY(), getPositionX() + width - pad, getPositionY() + height));
         // Text content
         if (!text.isEmpty()) {
-            FontRenderers.getRenderer().drawString(stack, text, (float) (getPositionX() + pad - overflowWidth), (float) centerY, 0xFFFFFF, false);
+            FontRenderers.getAdapter().drawString(stack, text, (float) (getPositionX() + pad - overflowWidth), (float) centerY, 0xFFFFFF, false);
         } else {
-            FontRenderers.getRenderer().drawString(stack, suggestion, (float) (getPositionX() + pad - overflowWidth), (float) centerY, 0xAAAAAA, false);
+            FontRenderers.getAdapter().drawString(stack, suggestion, (float) (getPositionX() + pad - overflowWidth), (float) centerY, 0xAAAAAA, false);
         }
 
         // Text highlighting
         if (focused && (cursor != selectionStart || cursor != selectionEnd)) {
             double selStart = getPositionX() + pad + getTextWidth(selectionStart) - overflowWidth;
             double selEnd = getPositionX() + pad + getTextWidth(selectionEnd) - overflowWidth;
-            Renderer.R2D.renderQuad(stack, new Color(50, 50, 255, 100), selStart, centerY, selEnd, centerY + FontRenderers.getRenderer().getMarginHeight());
+            Renderer.R2D.renderQuad(stack, new Color(50, 50, 255, 100), selStart, centerY, selEnd, centerY + FontRenderers.getAdapter().getMarginHeight());
         }
         ClipStack.globalInstance.popWindow();
         boolean renderCursor = (System.currentTimeMillis() % 1000) / 500d > 1;
@@ -413,7 +413,7 @@ public class TextFieldElement extends Element implements HasSpecialCursor {
                 getPositionX() + pad + getTextWidth(cursor) - overflowWidth,
                 centerY,
                 getPositionX() + pad + getTextWidth(cursor) - overflowWidth + 1,
-                centerY + FontRenderers.getRenderer().getMarginHeight()
+                centerY + FontRenderers.getAdapter().getMarginHeight()
             );
         }
 
@@ -478,7 +478,7 @@ public class TextFieldElement extends Element implements HasSpecialCursor {
     }
 
     private double textWidth() {
-        return FontRenderers.getRenderer().getStringWidth(text);
+        return FontRenderers.getAdapter().getStringWidth(text);
     }
 
     private void cursorChanged() {
@@ -500,7 +500,7 @@ public class TextFieldElement extends Element implements HasSpecialCursor {
             return 0;
         }
         int pos1 = Math.min(text.length(), pos);
-        return FontRenderers.getRenderer().getStringWidth(text.substring(0, pos1));
+        return FontRenderers.getAdapter().getStringWidth(text.substring(0, pos1));
     }
 
     protected double getCursorTextWidth(int offset) {
@@ -564,8 +564,8 @@ public class TextFieldElement extends Element implements HasSpecialCursor {
                 char[] chars = text.toCharArray();
                 int foundIndex = -1;
                 for (int i = 0; i < chars.length; i++) {
-                    currentWidth += FontRenderers.getRenderer().getStringWidth(String.valueOf(chars[i]));
-                    if (start + currentWidth - FontRenderers.getRenderer().getStringWidth(String.valueOf(chars[i])) / 2 >= mouseX) {
+                    currentWidth += FontRenderers.getAdapter().getStringWidth(String.valueOf(chars[i]));
+                    if (start + currentWidth - FontRenderers.getAdapter().getStringWidth(String.valueOf(chars[i])) / 2 >= mouseX) {
                         foundIndex = i;
                         break;
                     }

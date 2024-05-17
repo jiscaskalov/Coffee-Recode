@@ -19,7 +19,8 @@ public class Deadmau5FeatureRendererMixin {
     @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/network/AbstractClientPlayerEntity;FFFFFF)V",
               at = @At(value = "INVOKE", target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z"))
     boolean coffee_overwriteNameMatch(String s, Object anObject) {
-        if (ModuleRegistry.getByClass(MouseEars.class).isEnabled()) {
+        MouseEars me = ModuleRegistry.getByClass(MouseEars.class);
+        if (me != null && me.isEnabled()) {
             return true;
         }
         return s.equals(anObject);

@@ -30,6 +30,7 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.RotationAxis;
+import org.apache.logging.log4j.Level;
 import org.joml.Matrix4f;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
@@ -71,18 +72,36 @@ public abstract class GameRendererMixin {
         ms.push();
         ms.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.getPitch()));
         ms.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(camera.getYaw() + 180.0F));
-        MSAAFramebuffer.use(false, () -> {
-            for (Module module : ModuleRegistry.getModules()) {
-                if (module.isEnabled()) {
-                    module.onWorldRender(ms);
-                }
-            }
-            EventSystem.manager.send(new RenderEvent.World(ms));
-            Renderer.R3D.renderFadingBlocks(ms);
-            Renderer.R3D.renderActions();
-        });
+
+        /// Injected Code ------------------------------------------------\
+            for (Module module : ModuleRegistry.getModules()) {         ///
+                if (module.isEnabled()) {                               ///
+                    module.onWorldRender(ms);                           ///
+                }                                                       ///
+            }                                                           ///
+            EventSystem.manager.send(new RenderEvent.World(ms));        ///
+            Renderer.R3D.renderFadingBlocks(ms);                        ///
+            Renderer.R3D.renderActions();                               ///
+        /// Injected Code ------------------------------------------------/
+
+/// Disabled Code : (disabled msaa)
+//        MSAAFramebuffer.use(false, () -> {
+//            for (Module module : ModuleRegistry.getModules()) {
+//                if (module.isEnabled()) {
+//                    module.onWorldRender(ms);
+//                }
+//            }
+//            EventSystem.manager.send(new RenderEvent.World(ms));
+//            Renderer.R3D.renderFadingBlocks(ms);
+//            Renderer.R3D.renderActions();
+//        });
         ms.pop();
         RenderSystem.restoreProjectionMatrix();
+    }
+
+    @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;renderHand(Lnet/minecraft/client/render/Camera;FLorg/joml/Matrix4f;)V", shift = At.Shift.AFTER))
+    public void postRender3dHook(float tickDelta, long limitTime, CallbackInfo ci) {
+        CoffeeMain.SHADER_MANAGER.renderShaders();
     }
 
     void clearViewBobbing(float tickDelta) {
@@ -144,8 +163,8 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "getFov", at = @At("RETURN"), cancellable = true)
     public void coffee_overwriteFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
-        double zv = ModuleRegistry.getByClass(Zoom.class).getZoomValue(cir.getReturnValue());
-        cir.setReturnValue(zv);
+        Zoom zoom = ModuleRegistry.getByClass(Zoom.class);
+        if (zoom != null) cir.setReturnValue(zoom.getZoomValue(cir.getReturnValue()));
     }
 
     @Inject(method = "render", at = @At("RETURN"))
@@ -159,7 +178,7 @@ public abstract class GameRendererMixin {
             return;
         }
         LSD byClass = ModuleRegistry.getByClass(LSD.class);
-        if (byClass.isEnabled()) {
+        if (byClass != null && byClass.isEnabled()) {
             byClass.draw();
         }
     }

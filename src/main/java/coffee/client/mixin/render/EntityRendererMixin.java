@@ -18,7 +18,7 @@ public class EntityRendererMixin {
     Text coffee_capText(Text text) {
         Text text1 = text;
         AntiCrash ac = AntiCrash.instance();
-        if (ac.isEnabled() && ac.getCapNames().getValue()) {
+        if (ac != null && ac.isEnabled() && ac.getCapNames().getValue()) {
             String t = text1.getString();
             int maxlen = (int) Math.floor(ac.getNameMax().getValue());
             int len = t.length();

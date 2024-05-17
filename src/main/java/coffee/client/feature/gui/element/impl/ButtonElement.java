@@ -89,12 +89,12 @@ public class ButtonElement extends Element implements HasSpecialCursor {
                 animProgress * 3
             );
         }
-        FontRenderers.getRenderer()
+        FontRenderers.getAdapter()
             .drawString(
                 matrices,
                 text,
-                -FontRenderers.getRenderer().getStringWidth(text) / 2f,
-                -FontRenderers.getRenderer().getMarginHeight() / 2f,
+                -FontRenderers.getAdapter().getStringWidth(text) / 2f,
+                -FontRenderers.getAdapter().getMarginHeight() / 2f,
                 isEnabled() ? textColor.getRGB() : 0xAAAAAA,
                 false
             );

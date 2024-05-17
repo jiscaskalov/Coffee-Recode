@@ -82,7 +82,7 @@ public abstract class ChatHudMixin implements ChatHudDuck {
 
 
         MoreChatHistory byClass = ModuleRegistry.getByClass(MoreChatHistory.class);
-        int history = byClass.isEnabled() ? byClass.getHistSize() : 100;
+        int history = (byClass != null && byClass.isEnabled()) ? byClass.getHistSize() : 100;
         while (this.visibleMessages.size() > history) {
             ChatHudLine.Visible visible = this.visibleMessages.get(this.visibleMessages.size() - 1);
             for (int integer : new IntArraySet(this.idToHudLineMap.keySet())) {

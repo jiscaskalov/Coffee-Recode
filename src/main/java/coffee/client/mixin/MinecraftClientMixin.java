@@ -68,7 +68,8 @@ public abstract class MinecraftClientMixin {
 
     @Redirect(method = "handleInputEvents", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/MinecraftClient;itemUseCooldown:I"))
     public int coffee_replaceItemUseCooldown(MinecraftClient minecraftClient) {
-        if (Objects.requireNonNull(ModuleRegistry.getByClass(FastUse.class)).isEnabled()) {
+        FastUse fu = ModuleRegistry.getByClass(FastUse.class);
+        if (fu != null && fu.isEnabled()) {
             return 0;
         } else {
             return this.itemUseCooldown;

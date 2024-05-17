@@ -9,7 +9,7 @@ import coffee.client.feature.gui.element.impl.ButtonElement;
 import coffee.client.feature.gui.notifications.Notification;
 import coffee.client.feature.gui.screen.base.AAScreen;
 import coffee.client.helper.font.FontRenderers;
-import coffee.client.helper.manager.ShaderManager;
+import coffee.client.helper.manager.CoreShaderManager;
 import coffee.client.helper.render.Renderer;
 import coffee.client.helper.render.textures.Texture;
 import coffee.client.helper.util.Transitions;
@@ -36,7 +36,7 @@ public class NotificationScreen extends AAScreen {
     public NotificationScreen(Notification.Type icon, String title, String content, Screen parent) {
         this.title = title;
         this.icon = icon;
-        contentSplit = Utils.splitLinesToWidth(content, maxWidth - pad * 2, FontRenderers.getRenderer());
+        contentSplit = Utils.splitLinesToWidth(content, maxWidth - pad * 2, FontRenderers.getAdapter());
         this.parent = parent;
     }
 
@@ -74,8 +74,8 @@ public class NotificationScreen extends AAScreen {
         if (parent != null) {
             parent.render(matrices, mouseX, mouseY, delta);
         }
-        ShaderManager.BLUR.setUniformf("progress", (float) anim);
-        ShaderManager.BLUR.render(delta);
+        CoreShaderManager.BLUR.setUniformf("progress", (float) anim);
+        CoreShaderManager.BLUR.render(delta);
         matrices.getMatrices().push();
         matrices.getMatrices().translate(this.width / 2d * (1 - anim), this.height / 2d * (1 - anim), 0);
         matrices.getMatrices().scale((float) anim, (float) anim, 1);
@@ -86,10 +86,10 @@ public class NotificationScreen extends AAScreen {
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
         double width = 0;
-        double headheight = FontRenderers.getRenderer().getFontHeight();
-        double height = pad + headheight + pad + FontRenderers.getRenderer().getFontHeight() * contentSplit.length + pad + 20 + pad;
+        double headheight = FontRenderers.getAdapter().getFontHeight();
+        double height = pad + headheight + pad + FontRenderers.getAdapter().getFontHeight() * contentSplit.length + pad + 20 + pad;
         for (String s : contentSplit) {
-            width = Math.max(FontRenderers.getRenderer().getStringWidth(s), width);
+            width = Math.max(FontRenderers.getAdapter().getStringWidth(s), width);
         }
         width += pad * 2;
         double startX = this.width / 2d - width / 2d;
@@ -100,15 +100,15 @@ public class NotificationScreen extends AAScreen {
         RenderSystem.setShaderColor(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, 1f);
         Texture.NOTIFICATION_TYPES.bindAndDraw(stack, startX + pad, startY + pad + headheight / 2d - texDims / 2d, texDims, texDims, icon.getSpriteName());
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        FontRenderers.getRenderer()
-            .drawString(stack, title, startX + pad + texDims + pad, startY + pad + headheight / 2d - FontRenderers.getRenderer().getFontHeight() / 2d, 0xCCCCCC);
+        FontRenderers.getAdapter()
+            .drawString(stack, title, startX + pad + texDims + pad, startY + pad + headheight / 2d - FontRenderers.getAdapter().getFontHeight() / 2d, 0xCCCCCC);
         double yOffset = 0;
         for (String s : contentSplit) {
-            FontRenderers.getRenderer().drawString(stack, s, startX + pad, startY + FontRenderers.getRenderer().getFontHeight() + pad * 2 + yOffset, 0xFFFFFF);
-            yOffset += FontRenderers.getRenderer().getFontHeight();
+            FontRenderers.getAdapter().drawString(stack, s, startX + pad, startY + FontRenderers.getAdapter().getFontHeight() + pad * 2 + yOffset, 0xFFFFFF);
+            yOffset += FontRenderers.getAdapter().getFontHeight();
         }
         this.ok.setPositionX(startX + pad);
-        this.ok.setPositionY(startY + FontRenderers.getRenderer().getFontHeight() + pad * 2 + FontRenderers.getRenderer().getFontHeight() * contentSplit.length + pad);
+        this.ok.setPositionY(startY + FontRenderers.getAdapter().getFontHeight() + pad * 2 + FontRenderers.getAdapter().getFontHeight() * contentSplit.length + pad);
         this.ok.setWidth(width - pad * 2);
 
         super.renderInternal(stack, mouseX, mouseY, delta);

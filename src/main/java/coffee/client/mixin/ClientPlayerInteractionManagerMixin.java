@@ -27,8 +27,9 @@ public class ClientPlayerInteractionManagerMixin {
     @Redirect(method = "updateBlockBreakingProgress",
               at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;blockBreakingCooldown:I", opcode = Opcodes.GETFIELD, ordinal = 0))
     public int coffee_overwriteCooldown(ClientPlayerInteractionManager clientPlayerInteractionManager) {
+        NoBreakDelay nbd = ModuleRegistry.getByClass(NoBreakDelay.class);
         int cd = this.blockBreakingCooldown;
-        return Objects.requireNonNull(ModuleRegistry.getByClass(NoBreakDelay.class)).isEnabled() ? 0 : cd;
+        return (nbd != null && nbd.isEnabled()) ? 0 : cd;
     }
 
     /// @TODO fix

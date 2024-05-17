@@ -5,13 +5,10 @@
 
 package coffee.client.helper.util;
 
-import coffee.client.CoffeeMain;
-import coffee.client.feature.module.ModuleRegistry;
-import coffee.client.feature.module.impl.misc.Timer;
 import coffee.client.helper.font.adapter.FontAdapter;
 import coffee.client.helper.font.renderer.ColoredTextSegment;
 import coffee.client.helper.render.Texture;
-import coffee.client.mixin.ClientWorldMixin;
+import coffee.client.mixin.IClientWorldMixin;
 import coffee.client.mixin.IMinecraftClientMixin;
 import coffee.client.mixin.IRenderTickCounterMixin;
 import coffee.client.mixin.network.IMinecraftServerMixin;
@@ -27,7 +24,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
@@ -52,11 +48,14 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -95,6 +94,32 @@ public class Utils {
 
     public static double random(double min, double max) {
         return min + (max - min) * random.nextDouble();
+    }
+
+    public static double random2(double min, double max) {
+        return ThreadLocalRandom.current().nextDouble() * (max - min) + min;
+    }
+
+    public static float random2(float min, float max) {
+        return (float) (java.lang.Math.random() * (max - min) + min);
+    }
+
+    public static float round(double value) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.floatValue();
+    }
+
+    public static int clamp(int num, int min, int max) {
+        return num < min ? min : java.lang.Math.min(num, max);
+    }
+
+    public static float clamp(float num, float min, float max) {
+        return num < min ? min : java.lang.Math.min(num, max);
+    }
+
+    public static double clamp(double num, double min, double max) {
+        return num < min ? min : java.lang.Math.min(num, max);
     }
 
     public static Vec3d getPlayerSpeed() {
@@ -420,7 +445,7 @@ public class Utils {
     }
 
     public static PendingUpdateManager getUpdateManager(ClientWorld world) {
-        return ((ClientWorldMixin) world).acquirePendingUpdateManager();
+        return ((IClientWorldMixin) world).acquirePendingUpdateManager();
     }
 
     public static int increaseAndCloseUpdateManager(ClientWorld world) {

@@ -48,9 +48,9 @@ public class ProxyManagerScreen extends CenterOverlayScreen {
         double oneWidth = 150;
         double padding = 5;
         double entireWidth = oneWidth * 2 + padding;
-        TextElement mode = new TextElement(FontRenderers.getRenderer(), "Type: " + (isSocks4 ? "SOCKS4" : "SOCKS5"), Color.WHITE, false, 0, 0);
+        TextElement mode = new TextElement(FontRenderers.getAdapter(), "Type: " + (isSocks4 ? "SOCKS4" : "SOCKS5"), Color.WHITE, false, 0, 0);
         TextElement conn = new TextElement(
-            FontRenderers.getRenderer(),
+            FontRenderers.getAdapter(),
             currentProxy == null ? "Not connected" : String.format("Connected to %s:%s", currentProxy.address, currentProxy.port),
             Color.WHITE,
             false,

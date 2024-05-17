@@ -37,7 +37,8 @@ public abstract class SignEditScreenMixin extends Screen {
 
     @Inject(at = @At("HEAD"), method = "init")
     private void coffee_preInit(CallbackInfo ci) {
-        if (ModuleRegistry.getByClass(AutoSign.class).isEnabled()) {
+        AutoSign as = ModuleRegistry.getByClass(AutoSign.class);
+        if (as != null && as.isEnabled()) {
             Text[] array = Arrays.stream(ModuleRegistry.getByClass(AutoSign.class).getText()).map(Text::of).toArray(Text[]::new);
             text = new SignText(array, array, DyeColor.BLACK, false);
             finishEditing();

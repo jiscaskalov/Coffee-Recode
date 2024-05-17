@@ -21,19 +21,14 @@ import coffee.client.feature.module.impl.combat.ShulkerDeflector;
 import coffee.client.feature.module.impl.combat.Velocity;
 import coffee.client.feature.module.impl.exploit.AntiAntiXray;
 import coffee.client.feature.module.impl.exploit.AntiRDI;
-import coffee.client.feature.module.impl.exploit.BoatCrash;
 import coffee.client.feature.module.impl.exploit.ServerSpoof;
-import coffee.client.feature.module.impl.exploit.CarpetBomb;
-import coffee.client.feature.module.impl.exploit.ChunkCrash;
 import coffee.client.feature.module.impl.exploit.InstaBow;
 import coffee.client.feature.module.impl.exploit.LecternCrash;
-import coffee.client.feature.module.impl.exploit.OffhandCrash;
 import coffee.client.feature.module.impl.exploit.Robowalk;
 import coffee.client.feature.module.impl.misc.AdBlock;
 import coffee.client.feature.module.impl.misc.AllowFormatCodes;
 import coffee.client.feature.module.impl.misc.Angryman;
 import coffee.client.feature.module.impl.misc.AntiCrash;
-import coffee.client.feature.module.impl.misc.AntiOffhandCrash;
 import coffee.client.feature.module.impl.misc.AntiPacketKick;
 import coffee.client.feature.module.impl.misc.ChestIndexer;
 import coffee.client.feature.module.impl.misc.ClientSettings;
@@ -41,12 +36,9 @@ import coffee.client.feature.module.impl.misc.DiscordRPC;
 import coffee.client.feature.module.impl.misc.GamemodeAlert;
 import coffee.client.feature.module.impl.misc.InfChatLength;
 import coffee.client.feature.module.impl.misc.MoreChatHistory;
-import coffee.client.feature.module.impl.misc.NoTitles;
-import coffee.client.feature.module.impl.misc.PortalGUI;
 import coffee.client.feature.module.impl.misc.SpinAutism;
 import coffee.client.feature.module.impl.misc.Test;
 import coffee.client.feature.module.impl.misc.Timer;
-import coffee.client.feature.module.impl.misc.XCarry;
 import coffee.client.feature.module.impl.movement.AirJump;
 import coffee.client.feature.module.impl.movement.AntiAnvil;
 import coffee.client.feature.module.impl.movement.AutoElytra;
@@ -88,7 +80,6 @@ import coffee.client.feature.module.impl.world.AutoSign;
 import coffee.client.feature.module.impl.world.AutoTNT;
 import coffee.client.feature.module.impl.world.AutoTool;
 import coffee.client.feature.module.impl.world.BlockTagViewer;
-import coffee.client.feature.module.impl.world.Boom;
 import coffee.client.feature.module.impl.world.Decimator;
 import coffee.client.feature.module.impl.world.FastUse;
 import coffee.client.feature.module.impl.world.Flattener;
@@ -187,6 +178,7 @@ public class ModuleRegistry {
         initialized.set(true);
         vanillaModules.clear();
 
+        registerModule(Animations.class);
         registerModule(Flight.class);
         registerModule(Sprint.class);
         registerModule(Fullbright.class);
@@ -244,6 +236,8 @@ public class ModuleRegistry {
         registerModule(Freecam.class);
         registerModule(FreeLook.class);
         registerModule(ItemByteSize.class);
+        registerModule(ViewModel.class);
+        registerModule(WorldTweaks.class);
         registerModule(Zoom.class);
         registerModule(AutoTool.class);
         registerModule(BlockTagViewer.class);
@@ -269,6 +263,7 @@ public class ModuleRegistry {
         registerModule(ClientSettings.class);
         registerModule(NoLiquidFog.class);
         registerModule(Spotlight.class);
+        registerModule(Shaders.class);
         registerModule(ShowTntPrime.class);
         registerModule(BlockHighlighting.class);
         registerModule(AutoIgnite.class);
@@ -297,6 +292,7 @@ public class ModuleRegistry {
         registerModule(Angryman.class);
         registerModule(UnfocusedCpu.class);
         registerModule(Themes.class);
+        registerModule(HitParticles.class);
 
         rebuildSharedModuleList();
 

@@ -5,10 +5,17 @@
 
 package coffee.client.helper.font;
 
+import coffee.client.CoffeeMain;
 import coffee.client.helper.font.adapter.FontAdapter;
 import coffee.client.helper.font.adapter.impl.RendererFontAdapter;
+import coffee.client.helper.font.renderer.FontRenderer;
+import lombok.Getter;
+import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
-import java.awt.Font;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,12 +24,13 @@ public class FontRenderers {
     private static final List<RendererFontAdapter> fontRenderers = new ArrayList<>();
     private static FontAdapter normal;
     private static FontAdapter mono;
+    @Getter public static FontRenderer renderer;
 
-    public static FontAdapter getRenderer() {
+    public static FontAdapter getAdapter() {
         return normal;
     }
 
-    public static void setRenderer(FontAdapter normal) {
+    public static void setAdapter(FontAdapter normal) {
         FontRenderers.normal = normal;
     }
 
@@ -58,5 +66,9 @@ public class FontRenderers {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static @NotNull FontRenderer create(float size, String name) throws IOException, FontFormatException, NullPointerException {
+        return new FontRenderer(Font.createFont(Font.TRUETYPE_FONT, CoffeeMain.class.getClassLoader().getResourceAsStream(name + ".ttf")).deriveFont(Font.PLAIN, size / 2f), size / 2f);
     }
 }

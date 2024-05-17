@@ -24,7 +24,7 @@ public class PlayerEntityRendererMixin {
         at = @At("HEAD"), cancellable = true)
     void coffee_renderLabel(AbstractClientPlayerEntity abstractClientPlayerEntity, Text text, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, float f, CallbackInfo ci) {
         NameTags nt = ModuleRegistry.getByClass(NameTags.class);
-        if (nt.isEnabled()) {
+        if (nt != null && nt.isEnabled()) {
             ci.cancel();
         }
     }

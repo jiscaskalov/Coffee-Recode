@@ -34,7 +34,7 @@ public class ParticleManagerMixin implements ParticleManagerDuck {
     @Inject(method = "addParticle(Lnet/minecraft/client/particle/Particle;)V", at = @At("HEAD"), cancellable = true)
     void coffee_tick(CallbackInfo ci) {
         AntiCrash ac = AntiCrash.instance();
-        if (ac.isEnabled()) {
+        if (ac != null && ac.isEnabled()) {
             if (ac.getCapParticles().getValue()) {
                 int max = (int) Math.floor(ac.getParticleMax().getValue());
                 int totalParticles = this.particles.values().stream().mapToInt(Collection::size).sum() + this.newParticles.size();

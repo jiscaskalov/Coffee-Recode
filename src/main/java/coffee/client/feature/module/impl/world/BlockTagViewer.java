@@ -99,7 +99,7 @@ public class BlockTagViewer extends Module {
     @Override
     public void onHudRender() {
         List<Entry> l = new ArrayList<>(entries);
-        l.sort(Comparator.comparingDouble(value -> -FontRenderers.getRenderer().getStringWidth(value.v)));
+        l.sort(Comparator.comparingDouble(value -> -FontRenderers.getAdapter().getStringWidth(value.v)));
         entries = l;
         if (l.isEmpty()) {
             return;
@@ -112,7 +112,7 @@ public class BlockTagViewer extends Module {
         float r = 0;
         for (Entry entry : l) {
             if (!entry.removed) {
-                r = FontRenderers.getRenderer().getStringWidth(entry.v) + 4;
+                r = FontRenderers.getAdapter().getStringWidth(entry.v) + 4;
                 break;
             }
         }
@@ -125,10 +125,10 @@ public class BlockTagViewer extends Module {
         for (Entry entry : l.toArray(new Entry[0])) {
             s.push();
             double prog = e(entry.animProg);
-            double c = prog * (FontRenderers.getRenderer().getMarginHeight() + 1);
+            double c = prog * (FontRenderers.getAdapter().getMarginHeight() + 1);
             s.scale(1, (float) prog, 1);
-            Renderer.R2D.renderQuad(s, new Color(0, 0, 0, (int) (prog * 100)), 0, 0, mw, FontRenderers.getRenderer().getMarginHeight() + 1);
-            FontRenderers.getRenderer().drawString(s, entry.v, 1, 0.5f, new Color(255, 255, 255, (int) (prog * 255)).getRGB());
+            Renderer.R2D.renderQuad(s, new Color(0, 0, 0, (int) (prog * 100)), 0, 0, mw, FontRenderers.getAdapter().getMarginHeight() + 1);
+            FontRenderers.getAdapter().drawString(s, entry.v, 1, 0.5f, new Color(255, 255, 255, (int) (prog * 255)).getRGB());
             s.pop();
             s.translate(0, c, 0);
         }
