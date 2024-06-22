@@ -104,53 +104,55 @@ public class ShaderManager {
     }
 
     public void setupShader(Shader shader, ManagedShaderEffect effect) {
-        CoffeeMain.log(Level.WARN, "setupShader(%s, %s) ---\\".formatted(shader.name(), effect.getClass().getName()));
-        Shaders shaders = ModuleRegistry.getByClass(Shaders.class);
-        if (shader == Shader.Gradient) {
-            effect.setUniformValue("alpha0", shaders.glow.getValue() ? -1.0f : shaders.outlineColor.getValue().getAlpha() / 255.0f);
-            effect.setUniformValue("alpha1", (int) Math.floor(shaders.fillAlpha.getValue() / 255f));
-            effect.setUniformValue("alpha2", (int) Math.floor(shaders.alpha2.getValue()) / 255f);
-            effect.setUniformValue("lineWidth", (int) Math.floor(shaders.lineWidth.getValue()));
-            effect.setUniformValue("oct", (int) Math.floor(shaders.octaves.getValue()));
-            effect.setUniformValue("quality", (int) Math.floor(shaders.quality.getValue()));
-            effect.setUniformValue("factor", (float) Math.floor(shaders.factor.getValue()));
-            effect.setUniformValue("moreGradient", (float) Math.floor(shaders.gradient.getValue()));
-            effect.setUniformValue("resolution", (float) client.getWindow().getScaledWidth(), (float) client.getWindow().getScaledHeight());
-            effect.setUniformValue("time", time);
-            effect.render(client.getTickDelta());
-            time += 0.008f;
-        } else if (shader == Shader.Smoke) {
-            effect.setUniformValue("alpha0", shaders.glow.getValue() ? -1.0f : shaders.outlineColor.getValue().getAlpha() / 255.0f);
-            effect.setUniformValue("alpha1", (int) Math.floor(shaders.fillAlpha.getValue() / 255f));
-            effect.setUniformValue("lineWidth", (int) Math.floor(shaders.lineWidth.getValue()));
-            effect.setUniformValue("quality", (int) Math.floor(shaders.quality.getValue()));
-            effect.setUniformValue("first", shaders.outlineColor.getValue().getRed(), shaders.outlineColor.getValue().getGreen(), shaders.outlineColor.getValue().getBlue(), shaders.outlineColor.getValue().getAlpha());
-            effect.setUniformValue("second", shaders.outlineColor1.getValue().getRed(), shaders.outlineColor1.getValue().getGreen(), shaders.outlineColor1.getValue().getBlue());
-            effect.setUniformValue("third", shaders.outlineColor2.getValue().getRed(), shaders.outlineColor2.getValue().getGreen(), shaders.outlineColor2.getValue().getBlue());
-            effect.setUniformValue("ffirst", shaders.fillColor1.getValue().getRed(), shaders.fillColor1.getValue().getGreen(), shaders.fillColor1.getValue().getBlue(), shaders.fillColor1.getValue().getAlpha());
-            effect.setUniformValue("fsecond", shaders.fillColor2.getValue().getRed(), shaders.fillColor2.getValue().getGreen(), shaders.fillColor2.getValue().getBlue());
-            effect.setUniformValue("fthird", shaders.fillColor3.getValue().getRed(), shaders.fillColor3.getValue().getGreen(), shaders.fillColor3.getValue().getBlue());
-            effect.setUniformValue("oct", (int) Math.floor(shaders.octaves.getValue()));
-            effect.setUniformValue("resolution", (float) client.getWindow().getScaledWidth(), (float) client.getWindow().getScaledHeight());
-            effect.setUniformValue("time", time);
-            effect.render(client.getTickDelta());
-            time += 0.008f;
-        } else if (shader == Shader.Default) {
-            effect.setUniformValue("alpha0", shaders.glow.getValue() ? -1.0f : shaders.outlineColor.getValue().getAlpha() / 255.0f);
-            effect.setUniformValue("lineWidth", (int) Math.floor(shaders.lineWidth.getValue()));
-            effect.setUniformValue("quality", (int) Math.floor(shaders.quality.getValue()));
-            effect.setUniformValue("color", shaders.fillColor1.getValue().getRed(), shaders.fillColor1.getValue().getGreen(), shaders.fillColor1.getValue().getBlue(), shaders.fillColor1.getValue().getAlpha());
-            effect.setUniformValue("outlinecolor", shaders.outlineColor.getValue().getRed(), shaders.outlineColor.getValue().getGreen(), shaders.outlineColor.getValue().getBlue(), shaders.outlineColor.getValue().getAlpha());
-            effect.render(client.getTickDelta());
-        } else if (shader == Shader.Snow) {
-            effect.setUniformValue("color", shaders.fillColor1.getValue().getRed(), shaders.fillColor1.getValue().getGreen(), shaders.fillColor1.getValue().getBlue(), shaders.fillColor1.getValue().getAlpha());
-            effect.setUniformValue("quality", (int) Math.floor(shaders.quality.getValue()));
-            effect.setUniformValue("resolution", (float) client.getWindow().getScaledWidth(), (float) client.getWindow().getScaledHeight());
-            effect.setUniformValue("time", time);
-            effect.render(client.getTickDelta());
-            time += 0.008f;
+        try {
+            Shaders shaders = ModuleRegistry.getByClass(Shaders.class);
+            if (shader == Shader.Gradient) {
+                effect.setUniformValue("alpha0", shaders.glow.getValue() ? -1.0f : shaders.outlineColor.getValue().getAlpha() / 255.0f);
+                effect.setUniformValue("alpha1", (int) Math.floor(shaders.fillAlpha.getValue() / 255f));
+                effect.setUniformValue("alpha2", (int) Math.floor(shaders.alpha2.getValue()) / 255f);
+                effect.setUniformValue("lineWidth", (int) Math.floor(shaders.lineWidth.getValue()));
+                effect.setUniformValue("oct", (int) Math.floor(shaders.octaves.getValue()));
+                effect.setUniformValue("quality", (int) Math.floor(shaders.quality.getValue()));
+                effect.setUniformValue("factor", (float) Math.floor(shaders.factor.getValue()));
+                effect.setUniformValue("moreGradient", (float) Math.floor(shaders.gradient.getValue()));
+                effect.setUniformValue("resolution", (float) client.getWindow().getScaledWidth(), (float) client.getWindow().getScaledHeight());
+                effect.setUniformValue("time", time);
+                effect.render(client.getTickDelta());
+                time += 0.008f;
+            } else if (shader == Shader.Smoke) {
+                effect.setUniformValue("alpha0", shaders.glow.getValue() ? -1.0f : shaders.outlineColor.getValue().getAlpha() / 255.0f);
+                effect.setUniformValue("alpha1", (int) Math.floor(shaders.fillAlpha.getValue() / 255f));
+                effect.setUniformValue("lineWidth", (int) Math.floor(shaders.lineWidth.getValue()));
+                effect.setUniformValue("quality", (int) Math.floor(shaders.quality.getValue()));
+                effect.setUniformValue("first", shaders.outlineColor.getValue().getRed(), shaders.outlineColor.getValue().getGreen(), shaders.outlineColor.getValue().getBlue(), shaders.outlineColor.getValue().getAlpha());
+                effect.setUniformValue("second", shaders.outlineColor1.getValue().getRed(), shaders.outlineColor1.getValue().getGreen(), shaders.outlineColor1.getValue().getBlue());
+                effect.setUniformValue("third", shaders.outlineColor2.getValue().getRed(), shaders.outlineColor2.getValue().getGreen(), shaders.outlineColor2.getValue().getBlue());
+                effect.setUniformValue("ffirst", shaders.fillColor1.getValue().getRed(), shaders.fillColor1.getValue().getGreen(), shaders.fillColor1.getValue().getBlue(), shaders.fillColor1.getValue().getAlpha());
+                effect.setUniformValue("fsecond", shaders.fillColor2.getValue().getRed(), shaders.fillColor2.getValue().getGreen(), shaders.fillColor2.getValue().getBlue());
+                effect.setUniformValue("fthird", shaders.fillColor3.getValue().getRed(), shaders.fillColor3.getValue().getGreen(), shaders.fillColor3.getValue().getBlue());
+                effect.setUniformValue("oct", (int) Math.floor(shaders.octaves.getValue()));
+                effect.setUniformValue("resolution", (float) client.getWindow().getScaledWidth(), (float) client.getWindow().getScaledHeight());
+                effect.setUniformValue("time", time);
+                effect.render(client.getTickDelta());
+                time += 0.008f;
+            } else if (shader == Shader.Default) {
+                effect.setUniformValue("alpha0", shaders.glow.getValue() ? -1.0f : shaders.outlineColor.getValue().getAlpha() / 255.0f);
+                effect.setUniformValue("lineWidth", (int) Math.floor(shaders.lineWidth.getValue()));
+                effect.setUniformValue("quality", (int) Math.floor(shaders.quality.getValue()));
+                effect.setUniformValue("color", shaders.fillColor1.getValue().getRed(), shaders.fillColor1.getValue().getGreen(), shaders.fillColor1.getValue().getBlue(), shaders.fillColor1.getValue().getAlpha());
+                effect.setUniformValue("outlinecolor", shaders.outlineColor.getValue().getRed(), shaders.outlineColor.getValue().getGreen(), shaders.outlineColor.getValue().getBlue(), shaders.outlineColor.getValue().getAlpha());
+                effect.render(client.getTickDelta());
+            } else if (shader == Shader.Snow) {
+                effect.setUniformValue("color", shaders.fillColor1.getValue().getRed(), shaders.fillColor1.getValue().getGreen(), shaders.fillColor1.getValue().getBlue(), shaders.fillColor1.getValue().getAlpha());
+                effect.setUniformValue("quality", (int) Math.floor(shaders.quality.getValue()));
+                effect.setUniformValue("resolution", (float) client.getWindow().getScaledWidth(), (float) client.getWindow().getScaledHeight());
+                effect.setUniformValue("time", time);
+                effect.render(client.getTickDelta());
+                time += 0.008f;
+            }
+        } catch (Exception e) {
+            CoffeeMain.log(Level.ERROR, "Failed to setup shader %s, %s".formatted(effect.getShaderEffect().getName(), e.getStackTrace()));
         }
-        CoffeeMain.log(Level.WARN, "setupShader(%s, %s) ---/".formatted(shader.name(), effect.getClass().getName()));
     }
 
     public void reloadShaders() {

@@ -54,6 +54,7 @@ public class WorldRendererMixin {
         ESP byClass = ModuleRegistry.getByClass(ESP.class);
         Shaders shad = ModuleRegistry.getByClass(Shaders.class);
         if (shad != null && shad.isEnabled() && client.world != null) {
+            if (CoffeeMain.SHADER_MANAGER.fullNullCheck()) return;
             ShaderManager.Shader shaders = shad.mode.getValue();
             CoffeeMain.SHADER_MANAGER.setupShader(shaders, CoffeeMain.SHADER_MANAGER.getShaderOutline(shaders));
         }

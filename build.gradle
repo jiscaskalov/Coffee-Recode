@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.6-SNAPSHOT'
+	id 'fabric-loom' version '1.6.11'
 	id 'maven-publish'
 }
 
@@ -11,6 +11,7 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
+	mavenCentral()
 	flatDir {
 		dirs 'lib'
 	}
@@ -34,6 +35,7 @@ repositories {
 		name = "vram"
 		url = "https://maven.vram.io//"
 	}
+	maven { url = uri("https://jitpack.io") }
 	maven {
 		name = 'Ladysnake Mods'
 		url = 'https://maven.ladysnake.org/releases'
@@ -43,8 +45,6 @@ repositories {
 			includeGroupByRegex 'dev\\.onyxstudios.*'
 		}
 	}
-	maven { url 'https://jitpack.io' }
-	mavenCentral()
 }
 
 configurations {
@@ -87,7 +87,7 @@ dependencies {
 	libImpl(project(":Authlib"))
 	libImpl(project(":Eventlib"))
 	modImpl("org.ladysnake:satin:${project.satin_version}")
-	include modImplementation("com.github.0x3C50:Renderer:master-SNAPSHOT")
+	include modImplementation("com.github.0x3C50:Renderer:b2f7b5e")
 
 	// Baritone (https://github.com/MeteorDevelopment/baritone)
 	modCompileOnly "meteordevelopment:baritone:1.20.4-SNAPSHOT"
